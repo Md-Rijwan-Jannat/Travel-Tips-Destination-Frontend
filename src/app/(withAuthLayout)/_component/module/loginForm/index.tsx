@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { setCredentials } from "@/src/redux/features/auth/authSlice";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import GlassLoader from "@/src/components/shared/glassLoader";
+import { toast } from "sonner";
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 interface TDecodedData {
@@ -61,6 +62,7 @@ export default function LoginForm() {
           setCredentials({ user: userData, token: res.data.data.accessToken })
         );
         router.push("/");
+        toast.success("Login successful");
       }
       console.log(res);
     } catch (error) {

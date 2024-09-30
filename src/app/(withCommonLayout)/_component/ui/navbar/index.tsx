@@ -13,6 +13,8 @@ import { ThemeSwitch } from "@/src/components/ui/theme-switch";
 import NavLinks from "./navLinks";
 import SearchInput from "./searchInput";
 import CButton from "@/src/components/ui/CButton/CButton";
+import NavDropdown from "./navDropdown";
+import BrandLogo from "@/src/components/shared/logo";
 
 export default function NavBar() {
   return (
@@ -20,8 +22,8 @@ export default function NavBar() {
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
-            <Logo />
-            <p className="font-bold text-inherit">ACME</p>
+            <BrandLogo />
+            <p className="font-bold text-inherit">TT&DG</p>
           </NextLink>
         </NavbarBrand>
         <div className="hidden md:block">
@@ -41,7 +43,8 @@ export default function NavBar() {
         </NavbarItem>
         <NavbarItem className="hidden md:flex gap-4">
           {/* <CButton text="Dashboard" link="/admin" bgColor="#2db2ff" /> */}
-          <CButton text="Register" link="/register" bgColor="#ff1f71" />
+
+          <NavDropdown />
         </NavbarItem>
       </NavbarContent>
 

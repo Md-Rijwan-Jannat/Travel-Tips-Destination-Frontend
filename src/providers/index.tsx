@@ -8,6 +8,7 @@ import { ThemeProviderProps } from "next-themes/dist/types";
 import { Provider } from "react-redux";
 import { persistor, store } from "../redux/store";
 import { PersistGate } from "redux-persist/integration/react";
+import { Toaster } from "sonner";
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -20,6 +21,7 @@ export function Providers({ children, themeProps }: ProvidersProps) {
   return (
     <NextUIProvider navigate={router.push}>
       <Provider store={store}>
+        <Toaster />
         <PersistGate loading={null} persistor={persistor}>
           <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
         </PersistGate>

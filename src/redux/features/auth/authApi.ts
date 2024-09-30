@@ -19,8 +19,14 @@ const authApi = baseApi.injectEndpoints({
         body: credentials,
       }),
     }),
+    getMe: builder.query({
+      query: () => ({
+        url: "/profile",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
 // Exporting the hooks to use in components
-export const { useLoginMutation, useRegisterMutation } = authApi;
+export const { useLoginMutation, useRegisterMutation, useGetMeQuery } = authApi;

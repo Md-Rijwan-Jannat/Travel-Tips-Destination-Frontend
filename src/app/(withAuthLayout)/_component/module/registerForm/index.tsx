@@ -15,6 +15,7 @@ import { useAppDispatch } from "@/src/redux/hook";
 import { setCredentials } from "@/src/redux/features/auth/authSlice";
 import { useRouter } from "next/navigation";
 import GlassLoader from "@/src/components/shared/glassLoader";
+import { toast } from "sonner";
 
 type RegisterFormInputs = z.infer<typeof registerSchema>;
 
@@ -46,6 +47,7 @@ export default function RegisterForm() {
           setCredentials({ user: userData, token: res.data.data.accessToken })
         );
         router.push("/");
+        toast.success("Register successful");
       }
       console.log(res);
     } catch (error) {

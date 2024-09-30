@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     default: siteConfig.name,
     template: `%s - ${siteConfig.name}`,
   },
-  description: siteConfig.description,
+  description: "This a Travel Tips & Destination Guides Community",
   icons: {
     icon: "/favicon.ico",
   },

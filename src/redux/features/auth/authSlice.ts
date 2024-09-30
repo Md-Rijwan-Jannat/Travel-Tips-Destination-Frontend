@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../../store";
 
 interface AuthState {
   user: {
@@ -38,6 +39,10 @@ const authSlice = createSlice({
     },
   },
 });
+
+export const getUser = (state: RootState) => state.auth.user;
+export const getToken = (state: RootState) => state.auth.token;
+export const getUserRole = (state: RootState) => state.auth.user.role;
 
 export const { setCredentials, clearCredentials } = authSlice.actions;
 
