@@ -16,8 +16,14 @@ import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
 import { IoIosImages } from "react-icons/io";
 import { Select, SelectItem } from "@nextui-org/select";
+import Image from "next/image";
+import { FaX } from "react-icons/fa6";
+import { useCreatePostMutation } from "@/src/redux/features/post/postApi";
+import { toast } from "sonner";
+import GlassLoader from "@/src/components/shared/glassLoader";
+import CButton from "@/src/components/ui/CButton/CButton";
+import { primaryColor } from "@/src/styles/button";
 
-// Custom interface for post data
 interface PostData {
   images: string[];
   title: string;
@@ -31,11 +37,20 @@ interface TPostModalProps {
 }
 
 const PostModal = ({ userInfo }: TPostModalProps) => {
+  const [createPostFn, { isLoading }] = useCreatePostMutation();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [isError, setIsError] = useState<string>();
 
-  // React Hook Form setup
-  const { handleSubmit, control, setValue, watch } = useForm<PostData>({
+  // React Hook Form setup with validation rules
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm<PostData>({
     defaultValues: {
       images: [],
       title: "",
@@ -45,53 +60,79 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
     },
   });
 
+  const images = watch("images");
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     const previews: string[] = [];
 
-    // Image preview
     files.forEach((file) => {
       previews.push(URL.createObjectURL(file));
     });
-    setImagePreviews(previews);
+    setImagePreviews((prevPreviews) => [...prevPreviews, ...previews]);
 
-    // Upload to Cloudinary (replace this with your Cloudinary upload logic)
+    // Upload images to Cloudinary and get URLs
     const uploadedImages = await Promise.all(
       files.map(async (file) => {
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("upload_preset", "your_preset"); // Set your Cloudinary upload preset here
+        formData.append("upload_preset", "travel-tips");
+        formData.append("cloud_name", "Travel-tips&-destination-guides-images");
 
-        const res = await fetch(
-          `https://api.cloudinary.com/v1_1/your_cloudinary_id/image/upload`,
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
+        const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
+
+        const res = await fetch(`${cloudinaryUrl}`, {
+          method: "POST",
+          body: formData,
+        });
         const data = await res.json();
         return data.secure_url;
       })
     );
 
-    // Set the uploaded images to the form
-    setValue("images", uploadedImages);
+    setValue("images", [...images, ...uploadedImages]);
   };
 
   const removeImagePreview = (index: number) => {
     const newPreviews = [...imagePreviews];
     newPreviews.splice(index, 1);
     setImagePreviews(newPreviews);
+
+    const newImageUrls = [...images];
+    newImageUrls.splice(index, 1);
+    setValue("images", newImageUrls);
   };
 
-  const onSubmit = (data: PostData) => {
-    console.log("Form Data:", data);
-    onOpenChange();
+  const onSubmit = async (data: PostData) => {
+    if (data.title) {
+      try {
+        const res = await createPostFn(data);
+        toast.success("Post created successfully");
+        if (res?.data?.success) {
+          reset({
+            images: [],
+            title: "",
+            description: "",
+            status: "FREE",
+            reportCount: 0,
+          });
+          setImagePreviews([]);
+          onOpenChange();
+          setIsError("");
+        }
+      } catch (error: any) {
+        console.log(error);
+        setIsError(error.message);
+        toast.error("Failed to create post");
+      }
+    } else {
+      setIsError("Please add something");
+    }
   };
 
   return (
     <>
-      {/* Clicking the input field opens the modal */}
+      {isLoading && <GlassLoader />}
       <div className="flex items-center gap-4 w-full md:w-[550px] md:ml-4">
         <div className="flex items-center gap-2">
           <Avatar
@@ -116,7 +157,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
         />
       </div>
 
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal hideCloseButton isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           <ModalHeader>
             <div className="flex items-center gap-2">
@@ -137,6 +178,9 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
           </ModalHeader>
           <form onSubmit={handleSubmit(onSubmit)}>
             <ModalBody>
+              <p className="text-center text-red-500 text-xs">
+                {isError && isError}
+              </p>
               <Controller
                 name="title"
                 control={control}
@@ -172,7 +216,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
                   <Select
                     {...field}
                     label="Select post type"
-                    className="max-w-xs"
+                    className="w-full"
                     variant="underlined"
                   >
                     <SelectItem key="FREE">Free</SelectItem>
@@ -183,46 +227,50 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
 
               {/* Image Preview with Remove Option */}
               {imagePreviews.length > 0 && (
-                <div className="mt-4 grid grid-cols-2 gap-4">
+                <div className="mt-4 flex flex-wrap w-full gap-4">
                   {imagePreviews.map((preview, idx) => (
                     <div key={idx} className="relative">
-                      <img
+                      <Image
                         src={preview}
                         alt={`Preview ${idx + 1}`}
-                        className="w-full h-auto rounded-lg"
+                        className="w-[100px] h-[70px] rounded-lg border-dashed object-cover object-center p-0.5"
+                        width={500}
+                        height={500}
                       />
-                      <button
-                        type="button"
-                        onClick={() => removeImagePreview(idx)}
-                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
-                      >
-                        ✕
-                      </button>
+                      <div className="absolute top-1 right-1">
+                        <button
+                          type="button"
+                          onClick={() => removeImagePreview(idx)}
+                          className="text-pink-500 bg-default-100 rounded-full p-1 border border-default-100 text-xs cursor-pointer size-5 flex items-center justify-center"
+                        >
+                          <FaX size={8} />
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
               )}
 
               {/* Image Upload */}
-              <label htmlFor="image">
-                <IoIosImages
-                  className="text-pink-500 cursor-pointer "
-                  size={22}
-                />
-                <input
-                  type="file"
-                  accept="image/*"
-                  id="image"
-                  multiple
-                  onChange={handleFileChange}
-                  className="mt-4 cursor-pointer hidden"
-                />
-              </label>
+              <div className="mt-4">
+                <label htmlFor="image">
+                  <IoIosImages
+                    className="text-pink-500 cursor-pointer "
+                    size={25}
+                  />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="image"
+                    multiple
+                    onChange={handleFileChange}
+                    className="mt-4 cursor-pointer hidden"
+                  />
+                </label>
+              </div>
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" type="submit">
-                Post
-              </Button>
+              <CButton bgColor={primaryColor} type="submit" text="Post" />
             </ModalFooter>
           </form>
         </ModalContent>
