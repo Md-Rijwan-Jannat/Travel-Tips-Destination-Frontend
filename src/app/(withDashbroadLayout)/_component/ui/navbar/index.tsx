@@ -1,8 +1,9 @@
+import NextLink from "next/link";
+import React from "react";
+
 import NavDropdown from "@/src/app/(withCommonLayout)/_component/ui/navbar/navDropdown";
 import SearchInput from "@/src/app/(withCommonLayout)/_component/ui/navbar/searchInput";
 import BrandLogo from "@/src/components/shared/logo";
-import NextLink from "next/link";
-import React from "react";
 
 export default function FeedNavbar() {
   return (

@@ -1,5 +1,4 @@
 import React from "react";
-import { Logo } from "@/src/components/ui/icons";
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -9,11 +8,12 @@ import {
   NavbarItem,
 } from "@nextui-org/navbar";
 import NextLink from "next/link";
-import { ThemeSwitch } from "@/src/components/ui/theme-switch";
+
 import NavLinks from "./navLinks";
 import SearchInput from "./searchInput";
-import CButton from "@/src/components/ui/CButton/CButton";
 import NavDropdown from "./navDropdown";
+
+import { ThemeSwitch } from "@/src/components/ui/theme-switch";
 import BrandLogo from "@/src/components/shared/logo";
 
 export default function NavBar() {

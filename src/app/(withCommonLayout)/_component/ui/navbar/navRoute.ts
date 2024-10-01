@@ -1,7 +1,7 @@
 export const NavRoutes = [
   {
     label: "News Feed",
-    href: "/news-feed",
+    href: "/news-feed/posts",
   },
   {
     label: "Docs",

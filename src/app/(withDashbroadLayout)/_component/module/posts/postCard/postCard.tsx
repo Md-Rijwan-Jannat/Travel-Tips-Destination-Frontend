@@ -1,10 +1,11 @@
 "use client";
 
-import { TPost } from "@/src/types";
 import PostHeader from "./postHeader";
 import PostContent from "./postContent";
 import PostImage from "./postImages";
 import PostActions from "./postActions";
+
+import { TPost } from "@/src/types";
 
 interface TPostCardProps {
   post: TPost;
@@ -22,16 +23,16 @@ export default function PostCard({ post }: TPostCardProps) {
 
         {/* Post Image */}
         {post?.images.length > 0 && (
-          <PostImage images={post.images} altText={post.title} />
+          <PostImage altText={post.title} images={post.images} />
         )}
 
         <hr className="border-default-200 my-4" />
 
         {/* Post Actions */}
         <PostActions
-          likes={post.likes.length}
-          dislikes={post.dislikes.length}
           comments={post.comments.length}
+          dislikes={post.dislikes.length}
+          likes={post.likes.length}
         />
       </article>
     </div>

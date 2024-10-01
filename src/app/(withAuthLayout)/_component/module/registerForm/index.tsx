@@ -5,17 +5,20 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@nextui-org/input";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+import RegisterRightContent from "./registerRightContent";
+import GoogleButton from "./googleButton";
+
 import { registerSchema } from "@/src/schema/auth";
 import { primaryColor } from "@/src/styles/button";
 import CButton from "@/src/components/ui/CButton/CButton";
-import RegisterRightContent from "./registerRightContent";
-import GoogleButton from "./googleButton";
 import { useRegisterMutation } from "@/src/redux/features/auth/authApi";
 import { useAppDispatch } from "@/src/redux/hook";
 import { setCredentials } from "@/src/redux/features/auth/authSlice";
-import { useRouter } from "next/navigation";
 import GlassLoader from "@/src/components/shared/glassLoader";
-import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 type RegisterFormInputs = z.infer<typeof registerSchema>;
 
@@ -47,6 +50,7 @@ export default function RegisterForm() {
           setCredentials({ user: userData, token: res.data.data.accessToken })
         );
         router.push("/");
+        Cookies.set("accessToken", res?.data?.data?.accessToken);
         toast.success("Register successful");
       }
       console.log(res);
@@ -74,19 +78,19 @@ export default function RegisterForm() {
             </div>
             {/* Form Fields */}
             <form
-              onSubmit={handleSubmit(onSubmit)}
               className="w-full flex flex-col gap-4"
+              onSubmit={handleSubmit(onSubmit)}
             >
               <div className="h-16">
                 <Input
                   {...register("name")}
                   className="font-semibold"
-                  type="text"
-                  variant="underlined"
-                  placeholder="What shall we call you?"
-                  label="Name"
                   isInvalid={!!errors.name}
+                  label="Name"
+                  placeholder="What shall we call you?"
+                  type="text"
                   validationState={errors.name ? "invalid" : undefined}
+                  variant="underlined"
                 />
                 {errors.name && (
                   <p className="text-danger-500 text-sm mt-1">
@@ -99,12 +103,12 @@ export default function RegisterForm() {
                 <Input
                   {...register("email")}
                   className="font-semibold"
-                  type="email"
-                  variant="underlined"
-                  placeholder="you@domain.com"
-                  label="Email address"
                   isInvalid={!!errors.email}
+                  label="Email address"
+                  placeholder="you@domain.com"
+                  type="email"
                   validationState={errors.email ? "invalid" : undefined}
+                  variant="underlined"
                 />
                 {errors.email && (
                   <p className="text-danger-500 text-sm mt-1">
@@ -117,12 +121,12 @@ export default function RegisterForm() {
                 <Input
                   {...register("password")}
                   className="font-semibold"
-                  type="password"
-                  variant="underlined"
-                  placeholder="Must be at least 8 characters"
-                  label="Password"
                   isInvalid={!!errors.password}
+                  label="Password"
+                  placeholder="Must be at least 8 characters"
+                  type="password"
                   validationState={errors.password ? "invalid" : undefined}
+                  variant="underlined"
                 />
                 {errors.password && (
                   <p className="text-danger-500 text-sm mt-1">
@@ -133,9 +137,9 @@ export default function RegisterForm() {
 
               <div className="mt-5">
                 <CButton
-                  text={RegisterLoading ? "Register..." : "Register"}
-                  link="#"
                   bgColor={primaryColor}
+                  link="#"
+                  text={RegisterLoading ? "Register..." : "Register"}
                   type="submit"
                 />
               </div>

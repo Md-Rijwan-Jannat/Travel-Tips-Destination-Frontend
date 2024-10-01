@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { NavbarItem } from "@nextui-org/navbar";
 import { link as linkStyles } from "@nextui-org/theme";
 import NextLink from "next/link";
+
 import { NavRoutes } from "./navRoute";
 
 export default function NavLinks() {

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Suspense } from "react";
+import UserProfile from "../../_component/module/userProfile";
 
 export default function Profile() {
   return (
-    <div>
-      <h3>user profile</h3>
-    </div>
+    <Suspense fallback={<p>loading...</p>}>
+      <UserProfile />
+    </Suspense>
   );
 }

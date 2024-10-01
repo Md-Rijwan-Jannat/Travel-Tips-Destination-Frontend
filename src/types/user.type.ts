@@ -11,8 +11,8 @@ export interface TUser {
   password: string;
   role: string;
   status: string;
-  flower: number;
-  flowing: number;
+  flower: string[];
+  flowing: string[];
   verified: boolean;
   country: any;
   address: any;

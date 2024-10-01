@@ -1,9 +1,10 @@
 "use client";
 
-import { SearchIcon } from "@/src/components/ui/icons";
 import { Input } from "@nextui-org/input";
 import { Kbd } from "@nextui-org/kbd";
 import React from "react";
+
+import { SearchIcon } from "@/src/components/ui/icons";
 
 export default function SearchInput() {
   return (
@@ -20,8 +21,8 @@ export default function SearchInput() {
       }
       labelPlacement="outside"
       placeholder="Search..."
-      size="md"
       radius="full"
+      size="md"
       startContent={
         <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
       }

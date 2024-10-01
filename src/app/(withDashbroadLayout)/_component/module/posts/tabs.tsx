@@ -1,5 +1,5 @@
 import React from "react";
 
-export default function PostFrame() {
+export default function PostTabs() {
   return <div />;
 }

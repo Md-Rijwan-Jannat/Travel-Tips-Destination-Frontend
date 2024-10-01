@@ -42,10 +42,10 @@
     "jsx-a11y/interactive-supports-focus": "warn",
     "prettier/prettier": "off",
     "no-unused-vars": "off",
-    "unused-imports/no-unused-vars": "err",
-    "unused-imports/no-unused-imports": "warn",
+    "unused-imports/no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "off",
     "@typescript-eslint/no-unused-vars": [
-      "warn",
+      "off",
       {
         "args": "after-used",
         "ignoreRestSiblings": false,
@@ -53,7 +53,7 @@
       }
     ],
     "import/order": [
-      "warn",
+      "off",
       {
         "groups": [
           "type",

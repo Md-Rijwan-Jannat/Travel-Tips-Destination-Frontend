@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@nextui-org/button";
 import {
   Modal,
   ModalContent,
@@ -11,18 +10,19 @@ import {
 import { Avatar } from "@nextui-org/avatar";
 import { useDisclosure } from "@nextui-org/modal";
 import { Input, Textarea } from "@nextui-org/input";
-import { TUser } from "@/src/types";
 import { useForm, Controller } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IoIosImages } from "react-icons/io";
 import { Select, SelectItem } from "@nextui-org/select";
 import Image from "next/image";
 import { FaX } from "react-icons/fa6";
-import { useCreatePostMutation } from "@/src/redux/features/post/postApi";
 import { toast } from "sonner";
+import { Button } from "@nextui-org/button";
+
+import { useCreatePostMutation } from "@/src/redux/features/post/postApi";
+import { TUser } from "@/src/types";
 import GlassLoader from "@/src/components/shared/glassLoader";
-import CButton from "@/src/components/ui/CButton/CButton";
-import { primaryColor } from "@/src/styles/button";
+
 
 interface PostData {
   images: string[];
@@ -40,16 +40,16 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
   const [createPostFn, { isLoading }] = useCreatePostMutation();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
-  const [isError, setIsError] = useState<string>();
+  const [isError, setIsError] = useState<string>("");
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
 
-  // React Hook Form setup with validation rules
   const {
     handleSubmit,
     control,
     setValue,
     reset,
     watch,
-    formState: { errors },
+    formState: {},
   } = useForm<PostData>({
     defaultValues: {
       images: [],
@@ -61,6 +61,17 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
   });
 
   const images = watch("images");
+  const title = watch("title");
+  const description = watch("description");
+
+  useEffect(() => {
+    // Check if any of the fields have values
+    if (title || description || images.length > 0) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  }, [title, description, images]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -69,78 +80,84 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
     files.forEach((file) => {
       previews.push(URL.createObjectURL(file));
     });
-    setImagePreviews((prevPreviews) => [...prevPreviews, ...previews]);
 
-    // Upload images to Cloudinary and get URLs
-    const uploadedImages = await Promise.all(
-      files.map(async (file) => {
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", "travel-tips");
-        formData.append("cloud_name", "Travel-tips&-destination-guides-images");
+    // Limit to single image upload
+    const limitedPreviews = previews.slice(0, 1);
 
-        const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
+    setImagePreviews(limitedPreviews);
 
-        const res = await fetch(`${cloudinaryUrl}`, {
-          method: "POST",
-          body: formData,
-        });
-        const data = await res.json();
-        return data.secure_url;
-      })
-    );
+    try {
+      const uploadedImages = await Promise.all(
+        files.slice(0, 1).map(async (file) => {
+          const formData = new FormData();
 
-    setValue("images", [...images, ...uploadedImages]);
+          formData.append("file", file);
+          formData.append("upload_preset", "travel-tips");
+          formData.append(
+            "cloud_name",
+            "Travel-tips&-destination-guides-images"
+          );
+
+          const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
+
+          const res = await fetch(`${cloudinaryUrl}`, {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await res.json();
+
+          return data.secure_url;
+        })
+      );
+
+      setValue("images", uploadedImages);
+    } catch (error) {
+      setIsError("Failed to upload image");
+    }
   };
 
-  const removeImagePreview = (index: number) => {
-    const newPreviews = [...imagePreviews];
-    newPreviews.splice(index, 1);
-    setImagePreviews(newPreviews);
-
-    const newImageUrls = [...images];
-    newImageUrls.splice(index, 1);
-    setValue("images", newImageUrls);
+  const removeImagePreview = () => {
+    setImagePreviews([]);
+    setValue("images", []);
   };
 
   const onSubmit = async (data: PostData) => {
-    if (data.title) {
-      try {
-        const res = await createPostFn(data);
+    // Check if all fields are empty
+    // if (!data.title && !data.description && data.images.length === 0) {
+    //   setIsError("Add something");
+    //   return;
+    // }
+
+    try {
+      const res = await createPostFn(data);
+
+      if (res?.data?.success) {
+        setImagePreviews([]);
+        reset();
+        onOpenChange();
         toast.success("Post created successfully");
-        if (res?.data?.success) {
-          reset({
-            images: [],
-            title: "",
-            description: "",
-            status: "FREE",
-            reportCount: 0,
-          });
-          setImagePreviews([]);
-          onOpenChange();
-          setIsError("");
-        }
-      } catch (error: any) {
-        console.log(error);
-        setIsError(error.message);
-        toast.error("Failed to create post");
+        setIsError("");
+      } else {
+        throw new Error("Post creation failed");
       }
-    } else {
-      setIsError("Please add something");
+    } catch (error: any) {
+      setIsError(error.message || "Failed to create post");
+      toast.error("Failed to create post");
     }
   };
 
   return (
     <>
       {isLoading && <GlassLoader />}
-      <div className="flex items-center gap-4 w-full md:w-[550px] md:ml-4">
+      <div className="flex items-center gap-4 w-full md:w-[500px] md:ml-4">
         <div className="flex items-center gap-2">
           <Avatar
-            className="text-xl"
-            src={userInfo?.image || undefined}
-            name={userInfo?.name.charAt(0).toUpperCase()}
             alt="User Avatar"
+            className="text-xl"
+            name={userInfo?.name.charAt(0).toUpperCase()}
             size="md"
+            src={userInfo?.image || undefined}
           />
           <div>
             <p className="whitespace-nowrap text-xs">{userInfo?.name}</p>
@@ -150,10 +167,10 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
           </div>
         </div>
         <input
-          type="text"
-          placeholder={`What's on your mind, ${userInfo?.name}?`}
-          onClick={onOpen}
           className="cursor-pointer w-full px-3 py-2 border rounded-full text-xs focus:border-default-300"
+          placeholder={`What's on your mind, ${userInfo?.name}?`}
+          type="text"
+          onClick={onOpen}
         />
       </div>
 
@@ -162,11 +179,11 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
           <ModalHeader>
             <div className="flex items-center gap-2">
               <Avatar
-                className="text-xl"
-                src={userInfo?.image || undefined}
-                name={userInfo?.name.charAt(0).toUpperCase()}
                 alt="User Avatar"
+                className="text-xl"
+                name={userInfo?.name.charAt(0).toUpperCase()}
                 size="md"
+                src={userInfo?.image || undefined}
               />
               <div>
                 <p className="whitespace-nowrap text-xs">{userInfo?.name}</p>
@@ -178,45 +195,44 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
           </ModalHeader>
           <form onSubmit={handleSubmit(onSubmit)}>
             <ModalBody>
-              <p className="text-center text-red-500 text-xs">
-                {isError && isError}
-              </p>
+              {isError && (
+                <p className="text-center text-red-500 text-xs">{isError}</p>
+              )}
               <Controller
-                name="title"
                 control={control}
+                name="title"
                 render={({ field }) => (
                   <Input
                     {...field}
-                    placeholder="Title"
                     fullWidth
                     className="mb-4"
+                    placeholder="Title"
                     variant="underlined"
                   />
                 )}
               />
               <Controller
-                name="description"
                 control={control}
+                name="description"
                 render={({ field }) => (
                   <Textarea
                     {...field}
+                    fullWidth
                     placeholder={`What's on your mind, ${userInfo?.name}?`}
                     rows={4}
-                    fullWidth
                     variant="underlined"
                   />
                 )}
               />
 
-              {/* Status Selector */}
               <Controller
-                name="status"
                 control={control}
+                name="status"
                 render={({ field }) => (
                   <Select
                     {...field}
+                    className="w-full mt-4"
                     label="Select post type"
-                    className="w-full"
                     variant="underlined"
                   >
                     <SelectItem key="FREE">Free</SelectItem>
@@ -225,23 +241,22 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
                 )}
               />
 
-              {/* Image Preview with Remove Option */}
               {imagePreviews.length > 0 && (
                 <div className="mt-4 flex flex-wrap w-full gap-4">
                   {imagePreviews.map((preview, idx) => (
                     <div key={idx} className="relative">
                       <Image
-                        src={preview}
                         alt={`Preview ${idx + 1}`}
                         className="w-[100px] h-[70px] rounded-lg border-dashed object-cover object-center p-0.5"
-                        width={500}
                         height={500}
+                        src={preview}
+                        width={500}
                       />
                       <div className="absolute top-1 right-1">
                         <button
-                          type="button"
-                          onClick={() => removeImagePreview(idx)}
                           className="text-pink-500 bg-default-100 rounded-full p-1 border border-default-100 text-xs cursor-pointer size-5 flex items-center justify-center"
+                          type="button"
+                          onClick={removeImagePreview}
                         >
                           <FaX size={8} />
                         </button>
@@ -251,7 +266,6 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
                 </div>
               )}
 
-              {/* Image Upload */}
               <div className="mt-4">
                 <label htmlFor="image">
                   <IoIosImages
@@ -259,18 +273,27 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
                     size={25}
                   />
                   <input
-                    type="file"
-                    accept="image/*"
-                    id="image"
                     multiple
-                    onChange={handleFileChange}
+                    accept="image/*"
                     className="mt-4 cursor-pointer hidden"
+                    id="image"
+                    type="file"
+                    onChange={handleFileChange}
                   />
                 </label>
               </div>
             </ModalBody>
             <ModalFooter>
-              <CButton bgColor={primaryColor} type="submit" text="Post" />
+              <div className="flex items-center justify-end gap-2 w-full">
+                <Button
+                  className="bg-pink-500"
+                  isDisabled={!isFormValid}
+                  size="sm"
+                  type="submit"
+                >
+                  Post
+                </Button>
+              </div>
             </ModalFooter>
           </form>
         </ModalContent>

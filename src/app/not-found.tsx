@@ -1,4 +1,5 @@
 import React from "react";
+
 import { title } from "../components/ui/primitives";
 
 export default function NotFoundPage() {

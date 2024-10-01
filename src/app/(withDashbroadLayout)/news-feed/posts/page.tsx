@@ -1,4 +1,5 @@
 import React from "react";
+
 import Post from "../../_component/module/posts";
 
 export default function PostsPage() {

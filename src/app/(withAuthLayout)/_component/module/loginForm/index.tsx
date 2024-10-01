@@ -3,23 +3,26 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
-import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
+import { toast } from "sonner";
+import React from "react";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+
+import GoogleButton from "../registerForm/googleButton";
+
+import LoginRightContent from "./loginRightContent";
+
 import { loginSchema } from "@/src/schema/auth";
 import CButton from "@/src/components/ui/CButton/CButton";
 import { secondaryColor } from "@/src/styles/button";
-import { FaApple } from "react-icons/fa";
-import LoginRightContent from "./loginRightContent";
-import GoogleButton from "../registerForm/googleButton";
 import { useLoginMutation } from "@/src/redux/features/auth/authApi";
 import { useAppDispatch } from "@/src/redux/hook";
-import { useRouter } from "next/navigation";
 import { setCredentials } from "@/src/redux/features/auth/authSlice";
-import { jwtDecode, JwtPayload } from "jwt-decode";
 import GlassLoader from "@/src/components/shared/glassLoader";
-import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 interface TDecodedData {
@@ -29,6 +32,9 @@ interface TDecodedData {
 }
 
 export default function LoginForm() {
+  const [isVisible, setIsVisible] = React.useState(false);
+
+  const toggleVisibility = () => setIsVisible(!isVisible);
   const [loginUser, { isLoading: LoginIsLoading }] = useLoginMutation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -42,7 +48,6 @@ export default function LoginForm() {
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
-      console.log("Login", data);
       const res = await loginUser(data);
 
       if (res?.data?.success && res?.data?.data?.accessToken) {
@@ -62,8 +67,10 @@ export default function LoginForm() {
           setCredentials({ user: userData, token: res.data.data.accessToken })
         );
         router.push("/");
+        Cookies.set("accessToken", res?.data?.data?.accessToken);
         toast.success("Login successful");
       }
+
       console.log(res);
     } catch (error) {
       console.log(error);
@@ -89,20 +96,20 @@ export default function LoginForm() {
 
             {/* Login Form */}
             <form
-              onSubmit={handleSubmit(onSubmit)}
               className="w-full flex flex-col gap-4"
+              onSubmit={handleSubmit(onSubmit)}
             >
               {/* Email Input */}
               <div className="h-16">
                 <Input
                   {...register("email")}
                   className="font-semibold"
-                  type="email"
-                  variant="underlined"
-                  placeholder="you@domain.com"
-                  label="Email address"
                   isInvalid={!!errors.email}
+                  label="Email address"
+                  placeholder="you@domain.com"
+                  type="email"
                   validationState={errors.email ? "invalid" : undefined}
+                  variant="underlined"
                 />
                 {errors.email && (
                   <p className="text-danger-500 text-sm mt-1">
@@ -116,12 +123,26 @@ export default function LoginForm() {
                 <Input
                   {...register("password")}
                   className="font-semibold"
-                  type="password"
-                  variant="underlined"
-                  placeholder="Must be at least 8 characters"
-                  label="Password"
+                  endContent={
+                    <button
+                      aria-label="toggle password visibility"
+                      className="focus:outline-none"
+                      type="button"
+                      onClick={toggleVisibility}
+                    >
+                      {isVisible ? (
+                        <IoEyeOffOutline className="text-2xl text-default-400 pointer-events-none" />
+                      ) : (
+                        <IoEyeOutline className="text-2xl text-default-400 pointer-events-none" />
+                      )}
+                    </button>
+                  }
                   isInvalid={!!errors.password}
+                  label="Password"
+                  placeholder="Must be at least 8 characters"
+                  type={isVisible ? "text" : "password"}
                   validationState={errors.password ? "invalid" : undefined}
+                  variant="underlined"
                 />
                 {errors.password && (
                   <p className="text-danger-500 text-sm mt-1">
@@ -131,9 +152,9 @@ export default function LoginForm() {
               </div>
               <div className="w-full mt-5">
                 <CButton
-                  text="Login"
-                  link="#"
                   bgColor={secondaryColor}
+                  link="#"
+                  text="Login"
                   type="submit"
                 />
               </div>

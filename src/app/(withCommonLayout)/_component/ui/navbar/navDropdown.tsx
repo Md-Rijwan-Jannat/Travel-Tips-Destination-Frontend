@@ -9,62 +9,64 @@ import {
 } from "@nextui-org/dropdown";
 import { usePathname, useRouter } from "next/navigation";
 import { FC, useEffect } from "react";
-import { FaSignOutAlt } from "react-icons/fa";
+
 import { useAppDispatch, useAppSelector } from "@/src/redux/hook";
 import { clearCredentials, getUser } from "@/src/redux/features/auth/authSlice";
-import { useGetMeQuery } from "@/src/redux/features/auth/authApi";
-import { TUser } from "@/src/types";
 import CButton from "@/src/components/ui/CButton/CButton";
 import { useUser } from "@/src/hooks/useUser";
+import Cookies from "js-cookie";
+import { toast } from "sonner";
 
 type TNavDropdownProps = object;
 
 const NavDropdown: FC<TNavDropdownProps> = () => {
   const dispatch = useAppDispatch();
+  const userExists = useAppSelector(getUser);
   const router = useRouter();
   const pathname = usePathname();
 
-  const { userInfo, isFetching } = useUser();
+  const { userInfo } = useUser();
 
   const handleNavigation = (pathname: string) => {
-    router.push(`/user/${pathname}`);
+    router.push(`${pathname}`);
   };
 
   const handleLogout = () => {
     dispatch(clearCredentials());
-    router.push("/login");
+    Cookies.remove("accessToken");
+    router.push("/");
+    toast.success("Logout successful");
   };
 
   return (
     <>
-      {!isFetching && userInfo?.email ? (
+      {userExists?.email ? (
         <Dropdown className="">
           <DropdownTrigger>
             <Avatar
               className={`cursor-pointer text-[24px] font-bold`}
-              size="md"
               name={userInfo?.name.charAt(0).toUpperCase()}
-              src={""}
+              size="md"
+              src={userInfo?.image || undefined}
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="User Actions">
-            <DropdownItem onClick={() => handleNavigation("")}>
+            <DropdownItem onClick={() => handleNavigation("/profile")}>
               Profile
             </DropdownItem>
-            <DropdownItem onClick={() => handleNavigation("claim-requests")}>
-              Claim Requests
+            <DropdownItem
+              onClick={() => handleNavigation("/profile/dashboard")}
+            >
+              Dashboard
             </DropdownItem>
-            <DropdownItem onClick={() => handleNavigation("create-post")}>
-              Create Post
-            </DropdownItem>
-            <DropdownItem onClick={() => handleNavigation("setting")}>
+            <DropdownItem onClick={() => handleNavigation("/profile/setting")}>
               Setting
             </DropdownItem>
             <DropdownItem onClick={handleLogout}>Logout</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       ) : (
-        <CButton text="Register" link="/register" bgColor="#ff1f71" />
+        <CButton bgColor="#ff1f71" link="/register" text="Register" />
       )}
     </>
   );

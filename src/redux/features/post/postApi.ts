@@ -19,7 +19,28 @@ export const PostApi = baseApi.injectEndpoints({
       }),
       providesTags: ["posts"],
     }),
+    // Get my all post
+    getMyPosts: builder.query({
+      query: () => ({
+        url: "/profile/my-posts",
+        method: "GET",
+      }),
+      providesTags: ["posts"],
+    }),
+    // Get my all premium post
+    getMyPremiumPosts: builder.query({
+      query: () => ({
+        url: "/profile/my-premium-posts",
+        method: "GET",
+      }),
+      providesTags: ["posts"],
+    }),
   }),
 });
 
-export const { useCreatePostMutation, useGetAllPostsQuery } = PostApi;
+export const {
+  useCreatePostMutation,
+  useGetAllPostsQuery,
+  useGetMyPostsQuery,
+  useGetMyPremiumPostsQuery,
+} = PostApi;

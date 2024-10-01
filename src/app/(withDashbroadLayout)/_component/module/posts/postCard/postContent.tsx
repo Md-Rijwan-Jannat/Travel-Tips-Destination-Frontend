@@ -1,5 +1,6 @@
-import { TPost } from "@/src/types";
 import Link from "next/link";
+
+import { TPost } from "@/src/types";
 
 interface PostContentProps {
   post: TPost;

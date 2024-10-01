@@ -1,5 +1,6 @@
-import Container from "@/src/components/shared/container";
 import React from "react";
+
+import Container from "@/src/components/shared/container";
 
 export default function WithDashboardLayout({
   children,

@@ -13,7 +13,9 @@
 		"@nextui-org/avatar": "^2.0.33",
 		"@nextui-org/button": "2.0.38",
 		"@nextui-org/code": "2.0.33",
+		"@nextui-org/divider": "^2.0.32",
 		"@nextui-org/dropdown": "^2.1.31",
+		"@nextui-org/image": "^2.0.32",
 		"@nextui-org/input": "2.2.5",
 		"@nextui-org/kbd": "2.0.34",
 		"@nextui-org/link": "2.0.35",
@@ -24,6 +26,7 @@
 		"@nextui-org/snippet": "2.0.43",
 		"@nextui-org/switch": "2.0.34",
 		"@nextui-org/system": "2.2.6",
+		"@nextui-org/tabs": "^2.0.37",
 		"@nextui-org/theme": "2.2.11",
 		"@nextui-org/tooltip": "^2.0.41",
 		"@react-aria/ssr": "3.9.4",
@@ -35,6 +38,7 @@
 		"fns": "^1.0.0",
 		"framer-motion": "^11.9.0",
 		"intl-messageformat": "^10.5.0",
+		"js-cookie": "^3.0.5",
 		"jwt-decode": "^4.0.0",
 		"nexios-http": "^1.1.21",
 		"next": "14.2.4",
@@ -52,6 +56,7 @@
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
+		"@types/js-cookie": "^3.0.6",
 		"@types/node": "20.5.7",
 		"@types/react": "18.3.3",
 		"@types/react-dom": "18.3.0",
