@@ -7,19 +7,17 @@ export const UserApi = baseApi.injectEndpoints({
         url: "/users",
         method: "GET",
       }),
-      providesTags: ["users"],
+      providesTags: ["users", "posts"],
     }),
 
     getSingleUser: builder.query({
       query: (id) => {
-        console.log(id);
-
         return {
           url: `/users/${id}`,
           method: "GET",
         };
       },
-      providesTags: ["users"],
+      providesTags: ["users", "posts"],
     }),
 
     getSingleUserPosts: builder.query({
@@ -42,6 +40,25 @@ export const UserApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["users", "posts"],
     }),
+
+    follow: builder.mutation({
+      query: (userId) => {
+        return {
+          url: `/users/follow/${userId}`,
+          method: "POST",
+        };
+      },
+      invalidatesTags: ["users", "posts"],
+    }),
+    unFollow: builder.mutation({
+      query: (userId) => {
+        return {
+          url: `/users/un-follow/${userId}`,
+          method: "POST",
+        };
+      },
+      invalidatesTags: ["users", "posts"],
+    }),
   }),
 });
 
@@ -50,4 +67,6 @@ export const {
   useUpdateMyProfileMutation,
   useGetSingleUserQuery,
   useGetSingleUserPostsQuery,
+  useFollowMutation,
+  useUnFollowMutation,
 } = UserApi;

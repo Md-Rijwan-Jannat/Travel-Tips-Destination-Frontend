@@ -42,8 +42,6 @@ export default function NavBar() {
           <SearchInput />
         </NavbarItem>
         <NavbarItem className="hidden md:flex gap-4">
-          {/* <CButton text="Dashboard" link="/admin" bgColor="#2db2ff" /> */}
-
           <NavDropdown />
         </NavbarItem>
       </NavbarContent>
@@ -54,6 +52,7 @@ export default function NavBar() {
       >
         <ThemeSwitch />
         <NavbarMenuToggle />
+        <NavDropdown />
       </NavbarContent>
 
       <NavbarMenu>

@@ -35,11 +35,7 @@ export default function PostCard({ post }: TPostCardProps) {
         <hr className="border-default-200 my-4" />
 
         {/* Post Actions */}
-        <PostActions
-          comments={post.comments.length}
-          dislikes={post.dislikes.length}
-          likes={post.likes.length}
-        />
+        <PostActions post={post} />
       </article>
     </motion.div>
   );

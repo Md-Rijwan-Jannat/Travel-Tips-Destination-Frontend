@@ -7,24 +7,26 @@ import "./CButton.modules.css";
 
 interface IButtonProps {
   text: string;
-  link?: string; // Make link optional
+  link?: string;
   bgColor: string;
   type?: "button" | "submit" | "reset";
-  onClick?: () => void; // Optional click handler
+  size?: "sm" | "md" | "lg";
+  onClick?: () => void;
 }
 
 export default function CButton({
   text,
   link,
   bgColor,
-  type = "button", // Default type is "button"
+  type = "button",
+  size = "md",
   onClick,
 }: IButtonProps) {
   return (
     <div className={"container"}>
       <motion.button
         animate={{ opacity: 1 }}
-        className={"btn"}
+        className={`btn ${size}`} // Apply the size class
         initial={{ opacity: 0 }}
         style={
           {

@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import UpdateNameImageModal from "../posts/modal/updateUserModal";
 import UserProfileTabs from "./userProfileTabs";
 import { useUser } from "@/src/hooks/useUser";
+import Follow from "./follow";
 
 interface TUserProps {
   user: TUser | undefined;
@@ -16,6 +17,7 @@ interface TUserProps {
 
 export default function Profile({ user }: TUserProps) {
   const { userInfo: currentUser } = useUser();
+  console.log(user);
 
   if (!user) {
     return <div className="text-center">User not found.</div>;
@@ -26,12 +28,14 @@ export default function Profile({ user }: TUserProps) {
     email,
     name,
     image,
-    flower,
-    flowing,
+    follower,
+    following,
     verified,
     country,
     address,
   } = (user as TUser) || {};
+
+  console.log(follower, "=>>");
 
   return (
     <motion.div
@@ -87,50 +91,30 @@ export default function Profile({ user }: TUserProps) {
           transition={{ delay: 0.2, duration: 0.6 }}
         >
           <div className="text-center">
-            <h3 className="text-xs text-primaryColor">{flower?.length || 0}</h3>
+            <h3 className="text-xs text-primaryColor">
+              {follower?.length || 0}
+            </h3>
             <p className="text-default-500 text-sm">Followers</p>
           </div>
           <div className="text-center">
             <h3 className="text-xs text-primaryColor">
-              {flowing?.length || 0}
+              {following?.length || 0}
             </h3>
             <p className="text-default-500 text-sm">Following</p>
           </div>
         </motion.div>
-        <div className="flex items-center gap-3 mt-3 text-start">
-          <h2 className="text-default-500 text-xs rounded-full px-2 py-1 border border-default-100">
-            {address && address}
-          </h2>
-          <h2 className="text-default-500 text-xs rounded-full px-2 py-1 border border-default-100">
-            {country && country}
-          </h2>
+        <div className="flex flex-col items-center justify-center gap-3 w-full">
+          {/* Follow and Message Buttons */}
+          {currentUser?.email === email ? "" : <Follow userId={_id} />}
+          <div className="flex items-center gap-2">
+            <h2 className="text-default-500 text-xs rounded-full px-2 py-1 border border-default-100">
+              {address && address}
+            </h2>
+            <h2 className="text-default-500 text-xs rounded-full px-2 py-1 border border-default-100">
+              {country && country}
+            </h2>
+          </div>
         </div>
-
-        {/* Follow and Message Buttons */}
-
-        {currentUser?.email === email ? (
-          ""
-        ) : (
-          <motion.div
-            className="flex gap-4 mt-4 justify-between w-full"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.4 }}
-          >
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              className="px-4 py-1 bg-pink-500 text-white rounded-full"
-            >
-              Follow
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              className="px-4 py-1 border border-pink-500 text-pink-500 rounded-full"
-            >
-              Un Follow
-            </motion.button>
-          </motion.div>
-        )}
 
         <Divider className="my-4 text-default-100" />
 

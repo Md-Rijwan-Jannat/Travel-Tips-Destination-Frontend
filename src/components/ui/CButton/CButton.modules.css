@@ -10,7 +10,7 @@
   position: relative;
   top: 0;
   left: 0;
-  width: 120px;
+  width: 100px;
   height: 35px;
   margin: 0;
   display: flex;
@@ -42,6 +42,30 @@
   z-index: 1;
   transition: 0.5s;
   backdrop-filter: blur(15px);
+}
+
+/* Small size */
+.btn.sm {
+  width: 80px;
+  height: 30px;
+  font-size: 10px;
+}
+
+/* Medium size */
+.btn.md {
+  width: 120px;
+  height: 40px;
+  font-size: 14px;
+}
+
+/* Large size */
+.btn.lg {
+  width: 150px;
+  height: 50px;
+  font-size: 16px;
+}
+.container .btn:hover .link {
+  letter-spacing: 3px;
 }
 
 .container .btn:hover .link {

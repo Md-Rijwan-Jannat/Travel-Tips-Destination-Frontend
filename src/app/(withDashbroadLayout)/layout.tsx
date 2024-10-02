@@ -31,8 +31,8 @@ export default function WithDashboardLayout({
           </aside>
 
           {/* Bottom Menu for mobile devices */}
-          <div className="fixed bottom-0 left-0 right-0 lg:hidden border-t ">
-            <MenuBar className="flex w-full justify-between" />
+          <div className="fixed bottom-0 left-0 right-0 lg:hidden border-t border-default-200 ">
+            <MenuBar className="flex w-full justify-between bg-default-50 py-3" />
           </div>
         </div>
       </Container>

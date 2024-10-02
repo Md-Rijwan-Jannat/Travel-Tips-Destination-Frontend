@@ -35,6 +35,46 @@ export const PostApi = baseApi.injectEndpoints({
       }),
       providesTags: ["posts"],
     }),
+
+    like: builder.mutation({
+      query: (userId) => {
+        return {
+          url: `/react/post/${userId}/like`,
+          method: "POST",
+        };
+      },
+      invalidatesTags: ["users", "posts"],
+    }),
+
+    unLike: builder.mutation({
+      query: (userId) => {
+        return {
+          url: `/react/post/${userId}/unlike`,
+          method: "POST",
+        };
+      },
+      invalidatesTags: ["users", "posts"],
+    }),
+
+    disLike: builder.mutation({
+      query: (userId) => {
+        return {
+          url: `/react/post/${userId}/dislike`,
+          method: "POST",
+        };
+      },
+      invalidatesTags: ["users", "posts"],
+    }),
+
+    unDislike: builder.mutation({
+      query: (userId) => {
+        return {
+          url: `/react/post/${userId}/undislike`,
+          method: "POST",
+        };
+      },
+      invalidatesTags: ["users", "posts"],
+    }),
   }),
 });
 
@@ -43,4 +83,8 @@ export const {
   useGetAllPostsQuery,
   useGetMyPostsQuery,
   useGetMyPremiumPostsQuery,
+  useLikeMutation,
+  useUnLikeMutation,
+  useDisLikeMutation,
+  useUnDislikeMutation,
 } = PostApi;

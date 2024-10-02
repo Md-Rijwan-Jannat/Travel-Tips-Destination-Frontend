@@ -12,7 +12,7 @@ import PostCard from "../../module/posts/postCard/postCard";
 import Spinner from "@/src/components/ui/spinner";
 import InfiniteScrollContainer from "@/src/components/ui/infiniteScrollerContainer";
 
-export default function MyProfileTabs() {
+export default function UserProfileTabs() {
   const [page, setPage] = useState(1);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const { data: myPostsData, isFetching: isFetchingMyPosts } =

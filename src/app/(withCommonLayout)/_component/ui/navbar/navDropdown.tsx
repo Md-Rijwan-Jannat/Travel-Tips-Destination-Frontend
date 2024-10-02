@@ -66,7 +66,7 @@ const NavDropdown: FC<TNavDropdownProps> = () => {
           </DropdownMenu>
         </Dropdown>
       ) : (
-        <CButton bgColor="#ff1f71" link="/register" text="Register" />
+        <CButton size="sm" bgColor="#ff1f71" link="/register" text="Register" />
       )}
     </>
   );

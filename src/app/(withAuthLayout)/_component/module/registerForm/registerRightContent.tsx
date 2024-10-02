@@ -4,13 +4,12 @@ import React from "react";
 import { useGetAllUsersQuery } from "@/src/redux/features/user/userApi";
 import { TUser } from "@/src/types";
 
-
 export default function RegisterRightContent() {
   const { data: usersData } = useGetAllUsersQuery(undefined);
   const users = usersData?.data as TUser[];
 
   return (
-    <div className="w-full md:w-[500px] xl:w-[530px] p-8 flex flex-col justify-center items-center rounded-r-lg relative overflow-hidden bg-white shadow-lg">
+    <div className="w-full md:w-[500px] xl:w-[530px] p-8 flex flex-col justify-center items-center rounded-r-lg relative overflow-hidden bg-default-50">
       {/* Rainbow Blur Background */}
       <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-green-400 to-pink-500 opacity-50 blur-2xl" />
 

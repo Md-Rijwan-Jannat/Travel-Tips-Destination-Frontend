@@ -7,8 +7,9 @@ import { Avatar } from "@nextui-org/avatar";
 import { Divider } from "@nextui-org/divider";
 import { motion } from "framer-motion";
 import UpdateNameImageModal from "../posts/modal/updateUserModal";
-import MyProfileTabs from "./myProfileTabs";
+import UserProfileTabs from "./userProfileTabs";
 import { useUser } from "@/src/hooks/useUser";
+import Follow from "./follow";
 
 interface TUserProps {
   user: TUser | undefined;
@@ -26,8 +27,8 @@ export default function Profile({ user }: TUserProps) {
     email,
     name,
     image,
-    flower,
-    flowing,
+    follower,
+    following,
     verified,
     country,
     address,
@@ -82,12 +83,14 @@ export default function Profile({ user }: TUserProps) {
           transition={{ delay: 0.2, duration: 0.6 }}
         >
           <div className="text-center">
-            <h3 className="text-xs text-primaryColor">{flower?.length || 0}</h3>
+            <h3 className="text-xs text-primaryColor">
+              {follower?.length || 0}
+            </h3>
             <p className="text-gray-500 text-sm">Followers</p>
           </div>
           <div className="text-center">
             <h3 className="text-xs text-primaryColor">
-              {flowing?.length || 0}
+              {following?.length || 0}
             </h3>
             <p className="text-gray-500 text-sm">Following</p>
           </div>
@@ -102,35 +105,13 @@ export default function Profile({ user }: TUserProps) {
           </h2>
         </div>
 
-        {/* Follow and Message Buttons */}
-        {currentUser?.email === email ? (
-          ""
-        ) : (
-          <motion.div
-            className="flex gap-4 mt-4 justify-between w-full"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.4 }}
-          >
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              className="px-4 py-1 bg-pink-500 text-white rounded-full"
-            >
-              Follow
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              className="px-4 py-1 border border-pink-500 text-pink-500 rounded-full"
-            >
-              Un Follow
-            </motion.button>
-          </motion.div>
-        )}
+        {/* Follow Buttons */}
+        {currentUser?.email === email ? "" : <Follow userId={_id} />}
 
         <Divider className="my-4 text-default-100" />
 
         {/* Tab Navigation */}
-        <MyProfileTabs />
+        <UserProfileTabs />
       </div>
     </motion.div>
   );

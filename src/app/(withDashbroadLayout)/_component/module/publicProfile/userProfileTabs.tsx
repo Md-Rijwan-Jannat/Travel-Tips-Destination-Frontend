@@ -39,7 +39,7 @@ export default function UserProfileTabs({ userId }: TUserProfileTabsProps) {
       transition={{ delay: 0.4, duration: 0.4 }}
     >
       <Tabs aria-label="Options" className="w-full md:w-[520px] xl:w-[600px]">
-        <Tab key="posts" className="w-full" title="My Posts">
+        <Tab key="posts" className="w-full" title="Posts">
           <InfiniteScrollContainer onBottomReached={loadMorePosts}>
             {isFetchingMore ? (
               <div className="flex justify-center">
