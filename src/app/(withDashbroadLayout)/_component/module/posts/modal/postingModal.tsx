@@ -9,7 +9,7 @@ import {
 } from "@nextui-org/modal";
 import { Avatar } from "@nextui-org/avatar";
 import { useDisclosure } from "@nextui-org/modal";
-import { Input, Textarea } from "@nextui-org/input";
+import { Input } from "@nextui-org/input";
 import { useForm, Controller } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { IoIosImages } from "react-icons/io";
@@ -22,7 +22,7 @@ import { Button } from "@nextui-org/button";
 import { useCreatePostMutation } from "@/src/redux/features/post/postApi";
 import { TUser } from "@/src/types";
 import GlassLoader from "@/src/components/shared/glassLoader";
-
+import { Editor } from "@tinymce/tinymce-react";
 
 interface PostData {
   images: string[];
@@ -64,14 +64,16 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
   const title = watch("title");
   const description = watch("description");
 
+  // Watch TinyMCE content manually
+  const [editorContent, setEditorContent] = useState("");
+
   useEffect(() => {
-    // Check if any of the fields have values
-    if (title || description || images.length > 0) {
+    if (title || editorContent || images.length > 0) {
       setIsFormValid(true);
     } else {
       setIsFormValid(false);
     }
-  }, [title, description, images]);
+  }, [title, editorContent, images]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -99,7 +101,6 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
           );
 
           const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
-
           const res = await fetch(`${cloudinaryUrl}`, {
             method: "POST",
             body: formData,
@@ -123,14 +124,10 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
   };
 
   const onSubmit = async (data: PostData) => {
-    // Check if all fields are empty
-    // if (!data.title && !data.description && data.images.length === 0) {
-    //   setIsError("Add something");
-    //   return;
-    // }
+    const postData = { ...data, description: editorContent };
 
     try {
-      const res = await createPostFn(data);
+      const res = await createPostFn(postData);
 
       if (res?.data?.success) {
         setImagePreviews([]);
@@ -150,7 +147,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
   return (
     <>
       {isLoading && <GlassLoader />}
-      <div className="flex items-center gap-4 w-full md:w-[500px] md:ml-4">
+      <div className="flex items-center gap-4 w-full md:w-[480px] md:ml-4">
         <div className="flex items-center gap-2">
           <Avatar
             alt="User Avatar"
@@ -167,7 +164,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
           </div>
         </div>
         <input
-          className="cursor-pointer w-full px-3 py-2 border rounded-full text-xs focus:border-default-300"
+          className="cursor-pointer w-full px-3 py-2 border border-default-100 rounded-full text-xs focus:border-default-300 focus:outline-none"
           placeholder={`What's on your mind, ${userInfo?.name}?`}
           type="text"
           onClick={onOpen}
@@ -211,19 +208,27 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
                   />
                 )}
               />
-              <Controller
-                control={control}
-                name="description"
-                render={({ field }) => (
-                  <Textarea
-                    {...field}
-                    fullWidth
-                    placeholder={`What's on your mind, ${userInfo?.name}?`}
-                    rows={4}
-                    variant="underlined"
-                  />
-                )}
-              />
+
+              <div className="my-4">
+                <Editor
+                  apiKey="64e5lcmocwpj39ir0p4qoisls2ieanvm3swq9dmxmc2k4upn"
+                  init={{
+                    plugins:
+                      "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount",
+                    toolbar:
+                      "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat",
+                    height: 250,
+                    emoticons_append: {
+                      custom_mind_blown: {
+                        keywords: ["mind", "blown"],
+                        char: "🤯",
+                      },
+                    },
+                  }}
+                  value={editorContent}
+                  onEditorChange={(content) => setEditorContent(content)}
+                />
+              </div>
 
               <Controller
                 control={control}
@@ -272,28 +277,26 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
                     className="text-pink-500 cursor-pointer "
                     size={25}
                   />
-                  <input
-                    multiple
-                    accept="image/*"
-                    className="mt-4 cursor-pointer hidden"
-                    id="image"
-                    type="file"
-                    onChange={handleFileChange}
-                  />
                 </label>
+                <input
+                  multiple
+                  accept="image/*"
+                  className="hidden"
+                  id="image"
+                  type="file"
+                  onChange={handleFileChange}
+                />
               </div>
             </ModalBody>
             <ModalFooter>
-              <div className="flex items-center justify-end gap-2 w-full">
-                <Button
-                  className="bg-pink-500"
-                  isDisabled={!isFormValid}
-                  size="sm"
-                  type="submit"
-                >
-                  Post
-                </Button>
-              </div>
+              <Button
+                fullWidth
+                className="w-full bg-primaryColor text-default-500"
+                disabled={!isFormValid}
+                type="submit"
+              >
+                Post
+              </Button>
             </ModalFooter>
           </form>
         </ModalContent>

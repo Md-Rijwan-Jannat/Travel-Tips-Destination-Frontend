@@ -12,7 +12,7 @@ export default function PostImage({ images, altText }: PostImageProps) {
     <div className="mt-4">
       <Image
         alt={altText}
-        className="w-full h-48 object-cover rounded-lg transition-transform duration-200 group-hover:scale-105"
+        className="w-full md:w-[480px] xl:w-[580px] h-48 object-cover rounded-lg transition-transform duration-200 group-hover:scale-105"
         height={500}
         src={images[0]}
         width={500}

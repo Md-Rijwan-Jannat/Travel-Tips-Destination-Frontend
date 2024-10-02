@@ -5,6 +5,7 @@ import { PiCrownSimpleDuotone } from "react-icons/pi";
 import { Button } from "@nextui-org/button";
 
 import { TPost } from "@/src/types";
+import { motion } from "framer-motion";
 
 interface TPremiumPostSuggestionCardProps {
   post: TPost;
@@ -17,7 +18,12 @@ export default function PremiumPostSuggestionCard({
     post?.title.length > 5 ? post?.title.slice(0, 5) + "..." : post?.title;
 
   return (
-    <div className="bg-default-50 border border-default-200 rounded-md p-2 duration-300 ease-in-out">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.7 }}
+      className="bg-default-50 border border-default-200 rounded-md p-2 duration-300 ease-in-out"
+    >
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <Avatar
@@ -37,12 +43,15 @@ export default function PremiumPostSuggestionCard({
           </div>
         </div>
         <div className="mt-4 flex justify-end">
-          <div className="flex items-center gap-1 rounded-full px-3 py-1 border border-default-200 hover:bg-default-100 transition-colors-opacity duration-500 ease-in-out text-xs text-default-500 cursor-pointer">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="flex items-center gap-1 rounded-full px-3 py-1 border border-default-200 hover:bg-default-100 transition-colors-opacity duration-500 ease-in-out text-xs text-default-500 cursor-pointer"
+          >
             Premium
             <PiCrownSimpleDuotone className="text-yellow-500" size={16} />
-          </div>
+          </motion.div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

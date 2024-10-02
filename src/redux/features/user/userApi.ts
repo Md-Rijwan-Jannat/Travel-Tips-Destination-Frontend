@@ -9,7 +9,45 @@ export const UserApi = baseApi.injectEndpoints({
       }),
       providesTags: ["users"],
     }),
+
+    getSingleUser: builder.query({
+      query: (id) => {
+        console.log(id);
+
+        return {
+          url: `/users/${id}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["users"],
+    }),
+
+    getSingleUserPosts: builder.query({
+      query: (id) => {
+        return {
+          url: `/users/posts/${id}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["users"],
+    }),
+
+    updateMyProfile: builder.mutation({
+      query: (args) => {
+        return {
+          url: `/profile/${args.id}`,
+          method: "PATCH",
+          body: args.data,
+        };
+      },
+      invalidatesTags: ["users", "posts"],
+    }),
   }),
 });
 
-export const { useGetAllUsersQuery } = UserApi;
+export const {
+  useGetAllUsersQuery,
+  useUpdateMyProfileMutation,
+  useGetSingleUserQuery,
+  useGetSingleUserPostsQuery,
+} = UserApi;

@@ -9,7 +9,7 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: credentials,
       }),
-      invalidatesTags: ["user"],
+      invalidatesTags: ["users"],
     }),
 
     // Register mutation
@@ -19,14 +19,14 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: credentials,
       }),
-      invalidatesTags: ["user"],
+      invalidatesTags: ["users"],
     }),
     getMe: builder.query({
       query: () => ({
         url: "/profile",
         method: "GET",
       }),
-      providesTags: ["user"],
+      providesTags: ["users"],
     }),
   }),
 });
