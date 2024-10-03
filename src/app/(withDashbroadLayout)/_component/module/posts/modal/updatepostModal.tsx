@@ -39,15 +39,15 @@ const UpdatePostModal = ({
   const [isError, setIsError] = useState<string>("");
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [editorContent, setEditorContent] = useState(
-    postData.description || ""
+    postData?.description || ""
   );
 
-  const { handleSubmit, control, setValue, reset, watch } = useForm<TPost>({
+  const { handleSubmit, control, reset, watch } = useForm<TPost>({
     defaultValues: {
-      title: postData.title,
-      description: postData.description,
-      status: postData.status || "FREE",
-      reportCount: postData.reportCount || 0,
+      title: postData?.title,
+      description: postData?.description,
+      status: postData?.status || "FREE",
+      reportCount: postData?.reportCount || 0,
     },
   });
 
@@ -87,12 +87,7 @@ const UpdatePostModal = ({
   return (
     <>
       {isLoading && <GlassLoader />}
-      <Modal
-        placement="center"
-        hideCloseButton
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      >
+      <Modal placement="center" isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent className="m-2">
           <ModalHeader>
             <div className="flex items-center gap-2">

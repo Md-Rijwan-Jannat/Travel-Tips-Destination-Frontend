@@ -173,12 +173,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
         />
       </div>
 
-      <Modal
-        placement="center"
-        hideCloseButton
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      >
+      <Modal placement="center" isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent className="m-2">
           <ModalHeader>
             <div className="flex items-center gap-2">

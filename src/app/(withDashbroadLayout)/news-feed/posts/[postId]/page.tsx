@@ -1,9 +1,18 @@
-import React from "react";
+import React, { Suspense } from "react";
+import PostDetails from "../../../_component/module/postDetails";
 
-export default function PostDetailsPage() {
+interface TPostDetailsPage {
+  params: {
+    postId: string;
+  };
+}
+
+export default function PostDetailsPage({ params }: TPostDetailsPage) {
+  const { postId } = params;
+
   return (
-    <div>
-      <h2>post details</h2>
-    </div>
+    <Suspense fallback={<p>loading ...</p>}>
+      <PostDetails postId={postId} />
+    </Suspense>
   );
 }

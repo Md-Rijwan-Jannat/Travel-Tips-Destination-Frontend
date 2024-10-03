@@ -29,8 +29,8 @@ export default function PostActions({ post }: PostActionsProps) {
   const [disLikeFn] = useDisLikeMutation();
   const [unDislikeFn] = useUnDislikeMutation();
 
-  const likeExists = likes.includes(userId);
-  const dislikeExists = dislikes.includes(userId);
+  const likeExists = likes?.includes(userId);
+  const dislikeExists = dislikes?.includes(userId);
 
   // Copy handler
   const handleCopyLink = () => {
@@ -80,23 +80,23 @@ export default function PostActions({ post }: PostActionsProps) {
         <div className="text-xs flex items-center gap-1">
           <AiOutlineLike
             className={` ${
-              likes.length > 0 ? "text-blue-500" : "text-default-600"
+              likes?.length > 0 ? "text-blue-500" : "text-default-600"
             }`}
             size={16}
           />{" "}
-          {likes.length}
+          {likes?.length}
         </div>
         <div className="text-xs flex items-center gap-1">
           <AiOutlineDislike
             className={` ${
-              dislikes.length > 0 ? "text-red-500" : "text-default-600"
+              dislikes?.length > 0 ? "text-red-500" : "text-default-600"
             }`}
             size={16}
           />{" "}
-          {dislikes.length}
+          {dislikes?.length}
         </div>
         <div className="text-xs flex items-center gap-1">
-          <FaRegComment size={16} /> {comments.length}
+          <FaRegComment size={16} /> {comments?.length}
         </div>
         <div className="text-xs flex items-center gap-1">
           <FaShare size={16} /> {0}
@@ -135,7 +135,7 @@ export default function PostActions({ post }: PostActionsProps) {
         </motion.button>
 
         {/* Comment Button */}
-        <Comment />
+        <Comment _id={post?._id} />
 
         {/* Copy Button */}
         <motion.button

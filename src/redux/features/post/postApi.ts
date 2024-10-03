@@ -28,13 +28,21 @@ export const PostApi = baseApi.injectEndpoints({
       }),
       providesTags: ["posts"],
     }),
+    // Get all post
+    getSinglePost: builder.query({
+      query: (postId) => ({
+        url: `/posts/${postId}`,
+        method: "GET",
+      }),
+      providesTags: ["posts", "comments"],
+    }),
     // Get my all post
     getMyPosts: builder.query({
       query: () => ({
         url: "/profile/my-posts",
         method: "GET",
       }),
-      providesTags: ["posts"],
+      providesTags: ["posts", "comments", "users"],
     }),
     // Get my all premium post
     getMyPremiumPosts: builder.query({
@@ -53,6 +61,14 @@ export const PostApi = baseApi.injectEndpoints({
       invalidatesTags: ["posts"],
     }),
 
+    reportPost: builder.mutation({
+      query: ({ postId, reason }) => ({
+        url: `/posts/report/${postId}`,
+        method: "PUT",
+        body: { reason },
+      }),
+      invalidatesTags: ["users", "posts", "comments", "reacts"],
+    }),
     like: builder.mutation({
       query: (userId) => {
         return {
@@ -60,9 +76,18 @@ export const PostApi = baseApi.injectEndpoints({
           method: "POST",
         };
       },
-      invalidatesTags: ["users", "posts"],
+      invalidatesTags: ["users", "posts", "comments", "reacts"],
     }),
 
+    getAllReacts: builder.query({
+      query: () => {
+        return {
+          url: `/react`,
+          method: "GET",
+        };
+      },
+      providesTags: ["users", "posts", "comments", "reacts"],
+    }),
     unLike: builder.mutation({
       query: (userId) => {
         return {
@@ -70,7 +95,7 @@ export const PostApi = baseApi.injectEndpoints({
           method: "POST",
         };
       },
-      invalidatesTags: ["users", "posts"],
+      invalidatesTags: ["users", "posts", "comments", "reacts"],
     }),
 
     disLike: builder.mutation({
@@ -80,7 +105,7 @@ export const PostApi = baseApi.injectEndpoints({
           method: "POST",
         };
       },
-      invalidatesTags: ["users", "posts"],
+      invalidatesTags: ["users", "posts", "comments", "reacts"],
     }),
 
     unDislike: builder.mutation({
@@ -90,7 +115,7 @@ export const PostApi = baseApi.injectEndpoints({
           method: "POST",
         };
       },
-      invalidatesTags: ["users", "posts"],
+      invalidatesTags: ["users", "posts", "comments", "reacts"],
     }),
   }),
 });
@@ -99,9 +124,11 @@ export const {
   useCreatePostMutation,
   useUpdatePostMutation,
   useGetAllPostsQuery,
+  useGetSinglePostQuery,
   useGetMyPostsQuery,
   useGetMyPremiumPostsQuery,
   useSoftDeletePostMutation,
+  useReportPostMutation,
   useLikeMutation,
   useUnLikeMutation,
   useDisLikeMutation,

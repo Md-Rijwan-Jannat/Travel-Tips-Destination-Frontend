@@ -1,14 +1,14 @@
-import { Avatar } from "@nextui-org/avatar";
 import Link from "next/link";
-
+import React from "react";
+import PostDropdown from "../posts/postCard/postActions/postDropdown";
+import { Avatar } from "@nextui-org/avatar";
 import { TPost } from "@/src/types";
-import PostDropdown from "./postActions/postDropdown";
 
 interface PostHeaderProps {
   post: TPost;
 }
 
-export default function PostHeader({ post }: PostHeaderProps) {
+export default function PostDetailsHeader({ post }: PostHeaderProps) {
   return (
     <div className="flex justify-between items-center">
       <div className="flex items-center gap-3">

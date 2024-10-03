@@ -14,6 +14,8 @@ import { useDisclosure } from "@nextui-org/modal";
 import { useUser } from "@/src/hooks/useUser";
 import { toast } from "sonner";
 import { copyToClipboard } from "@/src/utils/copyToClipboard";
+import ReportModal from "../../../modal/reportModal";
+import Link from "next/link";
 
 interface TPostDropdownProps {
   userInfo: TUser;
@@ -37,8 +39,14 @@ export default function PostDropdown({
     onOpenChange: onDeleteChange,
   } = useDisclosure();
 
+  const {
+    isOpen: isReportOpen,
+    onOpen: onReportOpen,
+    onOpenChange: onReportChange,
+  } = useDisclosure();
+
   const handleCopyLink = () => {
-    const postUrl = `${window.location.origin}/posts/${postData._id}`;
+    const postUrl = `${window.location.origin}/posts/${postData?._id}`;
 
     copyToClipboard(postUrl);
   };
@@ -59,7 +67,11 @@ export default function PostDropdown({
           <DropdownItem key="copy-link" onClick={handleCopyLink}>
             Copy link
           </DropdownItem>
-          <DropdownItem key="copy-link" onClick={handleCopyLink}>
+          <DropdownItem
+            key="copy-link"
+            as={Link}
+            href={`/news-feed/posts/${postData?._id}`}
+          >
             View details
           </DropdownItem>
 
@@ -69,6 +81,13 @@ export default function PostDropdown({
             onClick={onEditOpen}
           >
             Edit post
+          </DropdownItem>
+          <DropdownItem
+            className={`text-danger ${userInfo?.email === currentUser?.email && "hidden"}`}
+            key="copy-link"
+            onClick={onReportOpen}
+          >
+            Report a post
           </DropdownItem>
           <DropdownItem
             key="delete-post"
@@ -93,7 +112,14 @@ export default function PostDropdown({
       <DeletePostModal
         isOpen={isDeleteOpen}
         onOpenChange={onDeleteChange}
-        postId={postData._id}
+        postId={postData?._id}
+      />
+
+      {/* Report modal */}
+      <ReportModal
+        isOpen={isReportOpen}
+        onOpenChange={onReportChange}
+        post={postData}
       />
     </>
   );

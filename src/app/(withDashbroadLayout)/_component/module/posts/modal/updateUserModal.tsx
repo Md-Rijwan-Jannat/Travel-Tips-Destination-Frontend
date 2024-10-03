@@ -168,7 +168,6 @@ export default function UpdateUserModal({
       />
       <Modal
         placement="center"
-        hideCloseButton
         className="m-2"
         isOpen={isOpen}
         onOpenChange={onOpenChange}

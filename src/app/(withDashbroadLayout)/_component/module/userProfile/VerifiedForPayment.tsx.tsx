@@ -2,7 +2,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import { GoVerified } from "react-icons/go";
 import { useStartPaymentProcessMutation } from "@/src/redux/features/payment/subscriptionsApi";
-import { TPaymentData, TUser } from "@/src/types";
+import { TPaymentData, TUser, TPost } from "@/src/types";
+import { useGetMyPostsQuery } from "@/src/redux/features/post/postApi";
 
 interface TVerifiedForPaymentProps {
   user: TUser | undefined;
@@ -11,8 +12,14 @@ interface TVerifiedForPaymentProps {
 export default function VerifiedForPayment({ user }: TVerifiedForPaymentProps) {
   const [startPaymentProcess, { isLoading }] = useStartPaymentProcessMutation();
 
+  const { data: postsData } = useGetMyPostsQuery(undefined);
+  const posts = postsData?.data;
+
+  const hasLikedPosts =
+    posts?.length > 0 && posts?.some((post: TPost) => post.likes.length > 0);
+
   const handleVerifyClick = async () => {
-    if (!user) return;
+    if (!user || hasLikedPosts) return; // Prevent click when button is disabled
 
     const paymentData: TPaymentData = {
       user: user._id!,
@@ -42,13 +49,16 @@ export default function VerifiedForPayment({ user }: TVerifiedForPaymentProps) {
   };
 
   return (
-    <motion.span
-      whileHover={{ scale: 1.05 }}
+    <motion.button
+      whileHover={{ scale: !hasLikedPosts ? 1 : 1.05 }}
       onClick={handleVerifyClick}
-      className="text-xs text-default-500 font-semibold flex items-center justify-center gap-1 border border-dashed border-primaryColor px-2 py-1 rounded-full cursor-pointer mt-1"
+      className={`text-xs text-default-500 font-semibold flex items-center justify-center gap-1 border border-dashed border-primaryColor px-2 py-1 rounded-full mt-1 ${
+        !hasLikedPosts ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+      }`}
+      disabled={!hasLikedPosts}
     >
       <GoVerified className="text-primaryColor" size={16} />
       {isLoading ? "Processing..." : "Verify Now"}
-    </motion.span>
+    </motion.button>
   );
 }

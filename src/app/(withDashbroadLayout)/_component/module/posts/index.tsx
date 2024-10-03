@@ -10,6 +10,7 @@ import InfiniteScrollContainer from "@/src/components/ui/infiniteScrollerContain
 import { useUser } from "@/src/hooks/useUser";
 import Spinner from "@/src/components/ui/spinner";
 import Empty from "@/src/components/ui/empty";
+import PremiumPostsMarquee from "../premiumPost/premiumPostsMarquee";
 
 export default function Post() {
   const [page, setPage] = useState(1); // Track the current page
@@ -32,6 +33,10 @@ export default function Post() {
     <InfiniteScrollContainer onBottomReached={loadMorePosts}>
       <div>
         <PostModal userInfo={userInfo as TUser | undefined} />
+      </div>
+
+      <div className="block lg:hidden">
+        <PremiumPostsMarquee posts={posts} />
       </div>
 
       {posts?.length === 0 && <Empty message="No post available" />}

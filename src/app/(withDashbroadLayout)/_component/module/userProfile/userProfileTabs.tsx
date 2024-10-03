@@ -12,6 +12,9 @@ import PostCard from "../../module/posts/postCard/postCard";
 import Spinner from "@/src/components/ui/spinner";
 import InfiniteScrollContainer from "@/src/components/ui/infiniteScrollerContainer";
 import Empty from "@/src/components/ui/empty";
+import { useGetAllPremiumPostsQuery } from "@/src/redux/features/premiumPost/premiumPostApi";
+import { PiCrownSimpleDuotone } from "react-icons/pi";
+import { useUser } from "@/src/hooks/useUser";
 
 export default function UserProfileTabs() {
   const [page, setPage] = useState(1);
@@ -23,6 +26,12 @@ export default function UserProfileTabs() {
   const { data: myPremiumPostsData, isFetching: isFetchingMyPremiumPosts } =
     useGetMyPremiumPostsQuery(undefined);
   const myPremiumPosts = myPremiumPostsData?.data as TPost[];
+
+  const { data: allPremiumPostsData, isFetching: isFetchingAllPremiumPosts } =
+    useGetAllPremiumPostsQuery(undefined);
+  const allPremiumPosts = allPremiumPostsData?.data as TPost[];
+
+  const { userInfo } = useUser();
 
   // Function to load more posts when scrolled to bottom
   const loadMorePosts = async () => {
@@ -58,7 +67,7 @@ export default function UserProfileTabs() {
           </InfiniteScrollContainer>
         </Tab>
 
-        <Tab key="my-premium-posts" className="w-full" title="Premium">
+        <Tab key="my-premium-posts" className="w-full" title="Premium Posts">
           <InfiniteScrollContainer onBottomReached={loadMorePosts}>
             {myPremiumPosts?.length === 0 && (
               <Empty message="There are no premium post available" />
@@ -77,22 +86,35 @@ export default function UserProfileTabs() {
           </InfiniteScrollContainer>
         </Tab>
 
-        <Tab key="my-subscribed-posts" className="w-full" title="Subscribed">
+        <Tab
+          key="my-subscribed-posts"
+          className="w-full"
+          title={
+            <div className="flex items-center gap-1">
+              Subscribed{" "}
+              <PiCrownSimpleDuotone className="text-yellow-500" size={14} />{" "}
+            </div>
+          }
+        >
           <InfiniteScrollContainer onBottomReached={loadMorePosts}>
-            {myPremiumPosts?.length === 0 && (
+            {allPremiumPosts?.length === 0 && (
               <Empty message="There are not subscribed post available" />
             )}
-            <motion.div className="grid grid-cols-1 gap-5">
-              {isFetchingMyPremiumPosts && isFetchingMore ? (
-                <div className="flex justify-center">
-                  <Spinner />
-                </div>
-              ) : (
-                myPremiumPosts?.map((post) => (
-                  <PostCard key={post._id} post={post} />
-                ))
-              )}
-            </motion.div>
+            {userInfo?.verified ? (
+              <motion.div className="grid grid-cols-1 gap-5">
+                {isFetchingAllPremiumPosts && isFetchingMore ? (
+                  <div className="flex justify-center">
+                    <Spinner />
+                  </div>
+                ) : (
+                  allPremiumPosts?.map((post) => (
+                    <PostCard key={post._id} post={post} />
+                  ))
+                )}
+              </motion.div>
+            ) : (
+              <Empty message="Get like and verify your account" />
+            )}
           </InfiniteScrollContainer>
         </Tab>
       </Tabs>

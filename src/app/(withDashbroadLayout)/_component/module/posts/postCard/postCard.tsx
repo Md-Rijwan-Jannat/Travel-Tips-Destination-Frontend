@@ -7,12 +7,18 @@ import PostImage from "./postImages";
 import { TPost } from "@/src/types";
 import { motion } from "framer-motion";
 import PostActions from "./postActions/postActions";
+import { Chip } from "@nextui-org/chip";
+import { PiCrownSimpleDuotone } from "react-icons/pi";
+import { useUser } from "@/src/hooks/useUser";
+import CommentCard from "./postActions/postComments/commentCard";
 
 interface TPostCardProps {
   post: TPost;
 }
 
 export default function PostCard({ post }: TPostCardProps) {
+  const { userInfo: currentUser } = useUser();
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -32,8 +38,25 @@ export default function PostCard({ post }: TPostCardProps) {
           <PostImage altText={post.title} images={post.images} />
         )}
 
+        {post.status === "PREMIUM" && (
+          <Chip
+            className="px-2"
+            endContent={
+              <PiCrownSimpleDuotone
+                className="text-yellow-500 mb-0.5"
+                size={14}
+              />
+            }
+          >
+            {currentUser?.verified ? "Subscribed" : "Premium"}
+          </Chip>
+        )}
+
         {/* Post Actions */}
         <PostActions post={post} />
+
+        {/* Comment Card */}
+        <CommentCard postId={post?._id} />
       </article>
     </motion.div>
   );
