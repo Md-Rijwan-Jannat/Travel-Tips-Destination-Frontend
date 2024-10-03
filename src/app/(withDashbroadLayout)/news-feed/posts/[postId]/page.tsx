@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import PostDetails from "../../../_component/module/postDetails";
+import PostDetailsSkeleton from "@/src/components/ui/skeleton/postDetailsSkeleton";
 
 interface TPostDetailsPage {
   params: {
@@ -11,7 +12,7 @@ export default function PostDetailsPage({ params }: TPostDetailsPage) {
   const { postId } = params;
 
   return (
-    <Suspense fallback={<p>loading ...</p>}>
+    <Suspense fallback={<PostDetailsSkeleton />}>
       <PostDetails postId={postId} />
     </Suspense>
   );

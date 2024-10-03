@@ -11,7 +11,7 @@ export default function PremiumPostsMarquee({
   posts,
 }: PremiumPostsMarqueeProps) {
   return (
-    <div className="w-full mt-5">
+    <div className="w-full my-5 block lg:hidden">
       <Marquee
         pauseOnHover={true} // Stops scrolling on hover
         gradient={false} // Disable gradient for a cleaner look

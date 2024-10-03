@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import PostCard from "./postCard/postCard";
 import PostModal from "./modal/postingModal";
 import { useGetAllPostsQuery } from "@/src/redux/features/post/postApi";
@@ -11,40 +12,17 @@ import Spinner from "@/src/components/ui/spinner";
 import Empty from "@/src/components/ui/empty";
 import PremiumPostsMarquee from "../premiumPost/premiumPostsMarquee";
 import { MdLockReset } from "react-icons/md";
-import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-} from "@nextui-org/dropdown";
-import { Button } from "@nextui-org/button";
-
-const categoriesList = [
-  "Adventure",
-  "Exploration",
-  "Business Travel",
-  "Other",
-  "Culture",
-  "Wildlife",
-  "Beaches",
-  "Mountaineering",
-  "Sports",
-  "Road Trip",
-  "City Tours",
-  "Photography",
-];
+import DropdownFilter from "./postCard/postFilter/dropdownFilter";
+import { categoriesList } from "@/src/constants";
 
 export default function Post() {
   const [page, setPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [filterOption, setFilterOption] = useState<string>("all");
   const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const [selectedTab, setSelectedTab] = useState<string>("forYou"); // Tab state
 
-  const {
-    data: postsData,
-    isLoading,
-    isFetching,
-  } = useGetAllPostsQuery({
+  const { data: postsData, isFetching } = useGetAllPostsQuery({
     searchTerm: selectedCategory || "",
   });
 
@@ -59,28 +37,38 @@ export default function Post() {
     }
   };
 
-  // Filter posts based on selected filter option
+  // Filter posts based on selected filter option and tab
   const filteredPosts = () => {
+    let filtered = posts;
+
     if (filterOption === "popular") {
-      return posts
-        ?.filter((post) => post.likes.length > 0)
+      filtered = filtered
+        .filter((post) => post.likes.length > 0)
         .sort((a, b) => b.likes.length - a.likes.length);
     }
     if (filterOption === "poor") {
-      return posts?.filter((post) => post.likes.length === 0);
+      filtered = filtered.filter((post) => post.likes.length === 0);
     }
 
-    return posts;
+    if (selectedTab === "following") {
+      filtered = filtered.filter((post) =>
+        userInfo?.following.includes(post?.user?._id)
+      );
+    }
+
+    return filtered;
   };
 
   return (
-    <InfiniteScrollContainer onBottomReached={loadMorePosts}>
+    <InfiniteScrollContainer
+      className="w-full md:w-[500px] xl:w-[600px] mx-auto"
+      onBottomReached={loadMorePosts}
+    >
       {/* Post Modal */}
       <div>
         <PostModal userInfo={userInfo as TUser | undefined} />
       </div>
 
-      {/* Category Filter - Flex Box Buttons */}
       <div className="mt-4 mb-6 flex flex-wrap gap-3">
         {categoriesList.map((category) => (
           <button
@@ -89,7 +77,7 @@ export default function Post() {
               selectedCategory === category
                 ? "bg-default-100 text-primaryColor"
                 : "bg-default-50 text-default-700"
-            } hover:bg-default-100 hover:text-primaryColor  hover:transition-colors duration-500`}
+            } hover:bg-default-100 hover:text-primaryColor hover:transition-colors duration-500`}
             onClick={() =>
               setSelectedCategory(category === selectedCategory ? "" : category)
             }
@@ -98,7 +86,7 @@ export default function Post() {
           </button>
         ))}
         <button
-          className={`px-4 py-1 rounded-full border border-default-200  bg-default-50 focus:outline-none hover:bg-default-100 hover:text-primaryColor  hover:transition-colors duration-500`}
+          className={`px-4 py-1 rounded-full border border-default-200 bg-default-50 focus:outline-none hover:bg-default-100 hover:text-primaryColor hover:transition-colors duration-500`}
           onClick={() => setSelectedCategory("")}
         >
           <MdLockReset />
@@ -106,41 +94,44 @@ export default function Post() {
       </div>
 
       {/* Dropdown for Post Filtering */}
-      <div className="mb-6 -mx-3 flex items-center justify-end w-full">
-        <Dropdown>
-          <DropdownTrigger>
-            <Button variant="bordered" className="capitalize">
-              {filterOption === "popular"
-                ? "Popular Posts"
-                : filterOption === "poor"
-                  ? "Poor Posts"
-                  : "All Posts"}
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu
-            aria-label="Post filtering options"
-            selectionMode="single"
-            selectedKeys={new Set([filterOption])}
-            onSelectionChange={(key) =>
-              setFilterOption(Array.from(key)[0] as string)
-            }
-          >
-            <DropdownItem key="all">All Posts</DropdownItem>
-            <DropdownItem key="popular">Popular Posts</DropdownItem>
-            <DropdownItem key="poor">Poor Posts</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-      </div>
+      <DropdownFilter
+        filterOption={filterOption}
+        setFilterOption={setFilterOption}
+      />
 
       {/* Premium Posts (only for mobile view) */}
       <div className="block lg:hidden">
         <PremiumPostsMarquee posts={filteredPosts()} />
       </div>
 
-      {/* Posts */}
-      {filteredPosts()?.length === 0 && <Empty message="No post available" />}
+      {/* Tabs for For You and Following */}
+      <div className="flex my-5 w-full">
+        <button
+          className={`px-4 py-2 rounded-l-full border border-default-200 w-full ${
+            selectedTab === "forYou"
+              ? "bg-default-100 text-primaryColor"
+              : "bg-default-50 text-default-700"
+          }  hover:text-primaryColor transition-colors duration-700 ease-in-out`}
+          onClick={() => setSelectedTab("forYou")}
+        >
+          For You
+        </button>
+        <button
+          className={`px-4 py-2 rounded-r-full border border-default-200 w-full ${
+            selectedTab === "following"
+              ? "bg-default-100 text-primaryColor"
+              : "bg-default-50 text-default-700"
+          }  hover:text-primaryColor transition-colors duration-700 ease-in-out`}
+          onClick={() => setSelectedTab("following")}
+        >
+          Following
+        </button>
+      </div>
 
-      <div className="grid grid-cols-1 gap-5 mt-5">
+      {/* Animated Tab Content */}
+      <div key={selectedTab} className="grid grid-cols-1 gap-5 mt-5">
+        {filteredPosts()?.length === 0 && <Empty message="No post available" />}
+
         {filteredPosts()?.map((post) => (
           <PostCard key={post?._id} post={post} />
         ))}
