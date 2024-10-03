@@ -38,9 +38,6 @@ export default function NavBar() {
         <NavbarItem className="hidden md:flex gap-2">
           <ThemeSwitch />
         </NavbarItem>
-        <NavbarItem className="hidden lg:flex">
-          <SearchInput />
-        </NavbarItem>
         <NavbarItem className="hidden md:flex gap-4">
           <NavDropdown />
         </NavbarItem>
@@ -56,7 +53,6 @@ export default function NavBar() {
       </NavbarContent>
 
       <NavbarMenu>
-        <SearchInput />
         <div className="mx-4 mt-2 flex flex-col gap-2">
           <NavLinks />
         </div>

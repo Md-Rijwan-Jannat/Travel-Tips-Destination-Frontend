@@ -12,6 +12,8 @@ import CommentInput from "./commentInput";
 import ReplyCommentInput from "./replyCommentInput";
 import { Avatar } from "@nextui-org/avatar";
 import { GoVerified } from "react-icons/go";
+import CommentDropdown from "./commentDropdown";
+import { useUser } from "@/src/hooks/useUser";
 
 // Component Props
 interface DetailsCommentCardProps {
@@ -33,6 +35,9 @@ const DetailsCommentCard: React.FC<DetailsCommentCardProps> = ({ postId }) => {
   // Fetching comments data using hook query
   const { data: commentsData } = useGetCommentsForPostsQuery(postId);
   const comments = commentsData?.data as TComment[] | undefined;
+
+  // Current user
+  const { userInfo: currentUser } = useUser();
 
   // Extract replies' _id from comments
   const repliesId =
@@ -112,67 +117,79 @@ const DetailsCommentCard: React.FC<DetailsCommentCardProps> = ({ postId }) => {
       <h2 className="text-xs font-semibold">Comments</h2>
       {transformedComments.map((comment) => (
         <div key={comment.comId} className="space-y-2">
-          <div className="flex items-start space-x-3">
-            <Avatar
-              src={comment.avatarUrl}
-              name={comment.fullName.charAt(0).toUpperCase()}
-              alt={`${comment.fullName}'s avatar`}
-              size="sm"
-            />
-            <div>
-              <div className="font-semibold text-sm flex items-center gap-1">
-                {comment.fullName}
-                {comment?.verified! && (
-                  <GoVerified className="text-primaryColor" />
-                )}{" "}
-              </div>
-              <div className="text-sm">{comment.text}</div>
-
-              {replyingTo === comment.comId ? (
-                <ReplyCommentInput
-                  value={replyCommentText}
-                  onChange={(e) => setReplyCommentText(e.target.value)}
-                  onSubmit={handleReplySubmit}
-                  onCancel={handleReplyCancel}
-                />
-              ) : (
-                <button
-                  className="text-xs text-pink-500 hover:underline"
-                  onClick={() => setReplyingTo(comment.comId)}
-                >
-                  Reply
-                </button>
-              )}
-
-              {/* Render replies */}
-              {comment?.replies?.length! > 0 && (
-                <div className="mt-4 space-y-2 pl-8 border-l-2 border-default-200">
-                  {comment?.replies?.map((reply) => (
-                    <div
-                      key={reply.comId}
-                      className="flex items-start space-x-3"
-                    >
-                      <Avatar
-                        src={reply.avatarUrl}
-                        name={reply.fullName.charAt(0).toUpperCase()}
-                        alt={`${reply.fullName}'s avatar`}
-                        size="sm"
-                      />
-                      <div>
-                        <div className="font-semibold text-sm flex items-center gap-1">
-                          {reply.fullName}{" "}
-                          {reply?.verified! && (
-                            <GoVerified className="text-primaryColor" />
-                          )}
-                        </div>
-                        <div className="text-sm">{reply.text}</div>
-                      </div>
-                    </div>
-                  ))}
+          <div className="flex items-start justify-between space-x-3">
+            <div className="flex items-start space-x-3">
+              <Avatar
+                src={comment.avatarUrl}
+                name={comment.fullName.charAt(0).toUpperCase()}
+                alt={`${comment.fullName}'s avatar`}
+                size="sm"
+              />
+              <div>
+                <div className="font-semibold text-sm flex items-center gap-1">
+                  {comment.fullName}
+                  {comment?.verified! && (
+                    <GoVerified className="text-primaryColor" />
+                  )}{" "}
                 </div>
-              )}
+                <div className="text-sm">{comment.text}</div>
+
+                {replyingTo === comment.comId ? (
+                  <ReplyCommentInput
+                    value={replyCommentText}
+                    onChange={(e) => setReplyCommentText(e.target.value)}
+                    onSubmit={handleReplySubmit}
+                    onCancel={handleReplyCancel}
+                  />
+                ) : (
+                  <button
+                    className="text-xs text-pink-500 hover:underline"
+                    onClick={() => setReplyingTo(comment.comId)}
+                  >
+                    Reply
+                  </button>
+                )}
+              </div>
             </div>
+            {/* Dropdown for Edit/Delete options */}
+            {comment.userId === currentUser?._id && (
+              <CommentDropdown comment={comment} />
+            )}
           </div>
+
+          {/* Render replies */}
+          {comment?.replies?.length! > 0 && (
+            <div className="mt-4 space-y-2 pl-8 border-l-2 border-default-200">
+              {comment?.replies?.map((reply) => (
+                <div
+                  key={reply.comId}
+                  className="flex items-start justify-between space-x-3"
+                >
+                  <div className="flex items-start space-x-3">
+                    <Avatar
+                      src={reply.avatarUrl}
+                      name={reply.fullName.charAt(0).toUpperCase()}
+                      alt={`${reply.fullName}'s avatar`}
+                      size="sm"
+                    />
+                    <div>
+                      <div className="font-semibold text-sm flex items-center gap-1">
+                        {reply.fullName}{" "}
+                        {reply?.verified! && (
+                          <GoVerified className="text-primaryColor" />
+                        )}
+                      </div>
+                      <div className="text-sm">{reply.text}</div>
+                    </div>
+                  </div>
+                  {/* Dropdown for replies as well */}
+                  {reply.userId === currentUser?._id && (
+                    <CommentDropdown comment={reply} />
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       ))}
 

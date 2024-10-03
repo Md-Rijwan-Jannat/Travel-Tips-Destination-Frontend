@@ -20,14 +20,15 @@ export const PostApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["posts"],
     }),
-    // Get all post
+    // postApi.ts
     getAllPosts: builder.query({
-      query: () => ({
-        url: "/posts",
+      query: ({ searchTerm = "", sort = "-createdAt" }) => ({
+        url: `/posts?searchTerm=${searchTerm}&sort=${sort}`,
         method: "GET",
       }),
       providesTags: ["posts"],
     }),
+
     // Get all post
     getSinglePost: builder.query({
       query: (postId) => ({

@@ -60,10 +60,11 @@ export default function CommentEditModal({
           <textarea
             value={updatedCommentText}
             onChange={(e) => setUpdatedCommentText(e.target.value)}
-            className="w-full p-2 border rounded-md"
+            rows={4}
+            className="w-full p-2 border rounded-md border-default-100 text-xs focus:border-default-300 focus:outline-none"
           />
         </ModalBody>
-        <ModalFooter className="flex items-center gap-8">
+        <ModalFooter className="flex items-center gap-8 my-3">
           <CButton
             onClick={handleEdit}
             bgColor={primaryColor}
