@@ -19,6 +19,23 @@ export const CommentApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["comments", "posts", "users"],
     }),
+    // Add comment
+    updateCommentsForPosts: builder.mutation({
+      query: (args) => ({
+        url: `/comments/${args.commentId}`,
+        method: "PATCH",
+        body: args.data,
+      }),
+      invalidatesTags: ["comments", "posts", "users"],
+    }),
+    // Add comment
+    deleteCommentsForPosts: builder.mutation({
+      query: (commentId) => ({
+        url: `/comments/${commentId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["comments", "posts", "users"],
+    }),
     // Replay comment
     replayCommentsForPosts: builder.mutation({
       query: (args) => ({
@@ -34,5 +51,7 @@ export const CommentApi = baseApi.injectEndpoints({
 export const {
   useGetCommentsForPostsQuery,
   useAddCommentsForPostsMutation,
+  useUpdateCommentsForPostsMutation,
+  useDeleteCommentsForPostsMutation,
   useReplayCommentsForPostsMutation,
 } = CommentApi;

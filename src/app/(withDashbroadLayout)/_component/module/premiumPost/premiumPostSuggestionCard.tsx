@@ -26,8 +26,6 @@ export default function PremiumPostSuggestionCard({
   const hasLikedPosts =
     postsFetched && posts?.some((p: TPost) => p.likes?.length > 0);
 
-  console.log(hasLikedPosts);
-
   const truncatedTitle =
     post?.title.length > 5 ? post?.title.slice(0, 5) + "..." : post?.title;
 

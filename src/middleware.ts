@@ -23,15 +23,6 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const user = (await useServerUser()) as TUserProps;
 
-  // Redirect non-authenticated users trying to access news-feed routes to home page
-  if (pathname.startsWith("/news-feed")) {
-    if (!user) {
-      return NextResponse.redirect(new URL("/", request.url)); // Redirect to home page
-    }
-
-    return NextResponse.next();
-  }
-
   if (!user) {
     const isAuthPage = AuthPathname.includes(pathname);
 
@@ -58,7 +49,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/news-feed/:path*",
     "/profile/:path*",
     "/admin-dashboard/:path*",
     "/login",

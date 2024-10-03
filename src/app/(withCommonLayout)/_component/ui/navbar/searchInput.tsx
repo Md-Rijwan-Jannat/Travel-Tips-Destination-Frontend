@@ -5,8 +5,13 @@ import { Kbd } from "@nextui-org/kbd";
 import React from "react";
 
 import { SearchIcon } from "@/src/components/ui/icons";
+import { useGetAllPostsQuery } from "@/src/redux/features/post/postApi";
 
 export default function SearchInput() {
+  const { data: allPostsData } = useGetAllPostsQuery(undefined);
+
+  console.log(allPostsData);
+
   return (
     <Input
       aria-label="Search"

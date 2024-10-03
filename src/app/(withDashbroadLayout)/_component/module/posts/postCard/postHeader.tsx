@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { TPost } from "@/src/types";
 import PostDropdown from "./postActions/postDropdown";
+import { GoVerified } from "react-icons/go";
 
 interface PostHeaderProps {
   post: TPost;
@@ -21,10 +22,13 @@ export default function PostHeader({ post }: PostHeaderProps) {
         </Link>
         <div>
           <Link
-            className="block font-semibold text-default-900 hover:underline"
+            className="font-semibold text-default-900 hover:underline flex items-center gap-1 mt-0.5"
             href={`/profile/${post?.user?._id}`}
           >
-            {post?.user?.name}
+            {post?.user?.name}{" "}
+            {post?.user?.verified && (
+              <GoVerified className="text-primaryColor" />
+            )}
           </Link>
           <Link
             suppressHydrationWarning

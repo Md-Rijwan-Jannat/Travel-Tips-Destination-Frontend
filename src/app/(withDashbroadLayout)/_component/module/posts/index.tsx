@@ -13,7 +13,7 @@ import Empty from "@/src/components/ui/empty";
 import PremiumPostsMarquee from "../premiumPost/premiumPostsMarquee";
 
 export default function Post() {
-  const [page, setPage] = useState(1); // Track the current page
+  const [page, setPage] = useState(1);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const { data: postsData, isLoading, isFetching } = useGetAllPostsQuery(page);
 

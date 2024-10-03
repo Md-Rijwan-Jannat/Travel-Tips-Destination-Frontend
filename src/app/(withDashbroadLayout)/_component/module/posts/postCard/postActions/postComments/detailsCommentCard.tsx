@@ -11,6 +11,7 @@ import "react-comments-section/dist/index.css";
 import CommentInput from "./commentInput";
 import ReplyCommentInput from "./replyCommentInput";
 import { Avatar } from "@nextui-org/avatar";
+import { GoVerified } from "react-icons/go";
 
 // Component Props
 interface DetailsCommentCardProps {
@@ -19,6 +20,7 @@ interface DetailsCommentCardProps {
 
 // Comment Data Interface for rendering purposes
 interface RenderedComment {
+  [x: string]: any;
   userId: string;
   comId: string;
   fullName: string;
@@ -43,8 +45,10 @@ const DetailsCommentCard: React.FC<DetailsCommentCardProps> = ({ postId }) => {
     comments?.filter((comment) => !repliesId.includes(comment._id)) ?? [];
 
   // Transform comments for rendering
-  const transformedComments: RenderedComment[] = filteredComments.map((comment) => ({
+  const transformedComments: RenderedComment[] = filteredComments.map(
+    (comment) => ({
       userId: comment.user._id,
+      verified: comment?.user?.verified,
       comId: comment._id,
       fullName: comment.user.name,
       avatarUrl: comment.user.image,
@@ -52,11 +56,13 @@ const DetailsCommentCard: React.FC<DetailsCommentCardProps> = ({ postId }) => {
       replies: comment.replies?.map((reply) => ({
         userId: reply.user?._id,
         comId: reply._id,
+        verified: reply?.user?.verified,
         fullName: reply.user?.name || "Anonymous",
         avatarUrl: reply.user?.image || undefined,
         text: reply.text,
       })),
-    }));
+    })
+  );
 
   // Comment hook mutations
   const [addComment] = useAddCommentsForPostsMutation();
@@ -114,7 +120,12 @@ const DetailsCommentCard: React.FC<DetailsCommentCardProps> = ({ postId }) => {
               size="sm"
             />
             <div>
-              <div className="font-semibold text-sm">{comment.fullName}</div>
+              <div className="font-semibold text-sm flex items-center gap-1">
+                {comment.fullName}
+                {comment?.verified! && (
+                  <GoVerified className="text-primaryColor" />
+                )}{" "}
+              </div>
               <div className="text-sm">{comment.text}</div>
 
               {replyingTo === comment.comId ? (
@@ -148,8 +159,11 @@ const DetailsCommentCard: React.FC<DetailsCommentCardProps> = ({ postId }) => {
                         size="sm"
                       />
                       <div>
-                        <div className="font-semibold text-sm">
-                          {reply.fullName}
+                        <div className="font-semibold text-sm flex items-center gap-1">
+                          {reply.fullName}{" "}
+                          {reply?.verified! && (
+                            <GoVerified className="text-primaryColor" />
+                          )}
                         </div>
                         <div className="text-sm">{reply.text}</div>
                       </div>

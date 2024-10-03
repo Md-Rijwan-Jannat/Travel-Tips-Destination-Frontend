@@ -25,6 +25,7 @@ import GlassLoader from "@/src/components/shared/glassLoader";
 import { Editor } from "@tinymce/tinymce-react";
 import CButton from "@/src/components/ui/CButton/CButton";
 import { primaryColor } from "@/src/styles/button";
+import { GoVerified } from "react-icons/go";
 
 interface PostData {
   images: string[];
@@ -32,11 +33,27 @@ interface PostData {
   description: string;
   status: string;
   reportCount: number;
+  category: string;
 }
 
 interface TPostModalProps {
   userInfo: TUser | undefined;
 }
+
+const categoriesList = [
+  "Adventure",
+  "Exploration",
+  "Business Travel",
+  "Other",
+  "Culture",
+  "Wildlife",
+  "Beaches",
+  "Mountaineering",
+  "Sports",
+  "Road Trip",
+  "City Tours",
+  "Photography",
+];
 
 const PostModal = ({ userInfo }: TPostModalProps) => {
   const [createPostFn, { isLoading }] = useCreatePostMutation();
@@ -59,6 +76,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
       description: "",
       status: "FREE",
       reportCount: 0,
+      category: "Other",
     },
   });
 
@@ -128,6 +146,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
   const onSubmit = async (data: PostData) => {
     const postData = { ...data, description: editorContent };
 
+    console.log("postData=>", postData);
     try {
       const res = await createPostFn(postData);
 
@@ -159,7 +178,12 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
             src={userInfo?.image || undefined}
           />
           <div>
-            <p className="whitespace-nowrap text-xs">{userInfo?.name}</p>
+            <p className="whitespace-nowrap text-xs flex items-center gap-1 mt-0.5">
+              {userInfo?.name}{" "}
+              {userInfo?.verified! && (
+                <GoVerified className="text-primaryColor" />
+              )}
+            </p>
             <span className="text-xs text-default-400 whitespace-nowrap">
               Create post{" "}
             </span>
@@ -185,7 +209,12 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
                 src={userInfo?.image || undefined}
               />
               <div>
-                <p className="whitespace-nowrap text-xs">{userInfo?.name}</p>
+                <p className="whitespace-nowrap text-xs flex items-center gap-1 mt-0.5">
+                  {userInfo?.name}{" "}
+                  {userInfo?.verified! && (
+                    <GoVerified className="text-primaryColor" />
+                  )}
+                </p>
                 <span className="text-xs text-default-400 whitespace-nowrap">
                   Public
                 </span>
@@ -248,50 +277,65 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
                 )}
               />
 
+              {/* Category Select */}
+              <Controller
+                control={control}
+                name="category"
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    className="w-full mt-4"
+                    label="Select categories"
+                    variant="underlined"
+                    multiple
+                  >
+                    {categoriesList.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                )}
+              />
+
               {imagePreviews.length > 0 && (
                 <div className="mt-4 flex flex-wrap w-full gap-4">
                   {imagePreviews.map((preview, idx) => (
                     <div key={idx} className="relative">
                       <Image
-                        alt={`Preview ${idx + 1}`}
-                        className="w-[100px] h-[70px] rounded-lg border-dashed object-cover object-center p-0.5"
-                        height={500}
+                        alt="Preview Image"
+                        className="rounded-md"
+                        height={200}
                         src={preview}
-                        width={500}
+                        width={200}
                       />
-                      <div className="absolute top-1 right-1">
-                        <button
-                          className="text-pink-500 bg-default-100 rounded-full p-1 border border-default-100 text-xs cursor-pointer size-5 flex items-center justify-center"
-                          type="button"
-                          onClick={removeImagePreview}
-                        >
-                          <FaX size={8} />
-                        </button>
-                      </div>
+                      <FaX
+                        className="absolute top-1 right-1 p-1 rounded-full bg-default-100 cursor-pointer"
+                        onClick={removeImagePreview}
+                      />
                     </div>
                   ))}
                 </div>
               )}
-            </ModalBody>
-            <div className="mt-10 mb-10 px-4  flex items-center justify-end gap-3 w-full">
-              <div>
-                <label htmlFor="image">
-                  <IoIosImages
-                    className="text-pink-500 cursor-pointer "
-                    size={35}
-                  />
-                </label>
+
+              <label htmlFor="file-upload">
                 <input
-                  multiple
                   accept="image/*"
                   className="hidden"
-                  id="image"
-                  type="file"
+                  id="file-upload"
                   onChange={handleFileChange}
+                  type="file"
                 />
-              </div>
-              <CButton type="submit" bgColor={primaryColor} text="Post" />
-            </div>
+                <div className="my-4 flex items-center gap-2 cursor-pointer">
+                  <IoIosImages className="text-xl" />
+                  <span className="text-sm">Upload a photo</span>
+                </div>
+              </label>
+            </ModalBody>
+
+            <ModalFooter>
+              <CButton bgColor={primaryColor} type="submit" text="Post" />
+            </ModalFooter>
           </form>
         </ModalContent>
       </Modal>
