@@ -11,6 +11,15 @@ export const PostApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["posts"],
     }),
+    // Update post
+    updatePost: builder.mutation({
+      query: (args) => ({
+        url: `/posts/${args.id}`,
+        method: "PATCH",
+        body: args.data,
+      }),
+      invalidatesTags: ["posts"],
+    }),
     // Get all post
     getAllPosts: builder.query({
       query: () => ({
@@ -34,6 +43,14 @@ export const PostApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["posts"],
+    }),
+    // Soft Delete post
+    softDeletePost: builder.mutation({
+      query: (postId) => ({
+        url: `/posts/${postId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["posts"],
     }),
 
     like: builder.mutation({
@@ -80,9 +97,11 @@ export const PostApi = baseApi.injectEndpoints({
 
 export const {
   useCreatePostMutation,
+  useUpdatePostMutation,
   useGetAllPostsQuery,
   useGetMyPostsQuery,
   useGetMyPremiumPostsQuery,
+  useSoftDeletePostMutation,
   useLikeMutation,
   useUnLikeMutation,
   useDisLikeMutation,

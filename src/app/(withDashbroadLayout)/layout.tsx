@@ -22,7 +22,7 @@ export default function WithDashboardLayout({
           </aside>
 
           {/* Main Feed Section */}
-          <main className="flex-1 w-full lg:w-3/5 px-4 overflow-hidden mt-20">
+          <main className="flex-1 w-full lg:w-3/5 md:px-4 overflow-hidden mt-20 mb-20 lg:mb-5">
             {children}
           </main>
 
@@ -32,7 +32,7 @@ export default function WithDashboardLayout({
 
           {/* Bottom Menu for mobile devices */}
           <div className="fixed bottom-0 left-0 right-0 lg:hidden border-t border-default-200 ">
-            <MenuBar className="flex w-full justify-between bg-default-50 py-3" />
+            <MenuBar className="flex w-full justify-between bg-default-50 py-2 px-2" />
           </div>
         </div>
       </Container>

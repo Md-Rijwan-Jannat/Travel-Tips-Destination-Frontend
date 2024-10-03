@@ -10,6 +10,8 @@ import UpdateNameImageModal from "../posts/modal/updateUserModal";
 import UserProfileTabs from "./userProfileTabs";
 import { useUser } from "@/src/hooks/useUser";
 import Follow from "./follow";
+import PostModal from "../posts/modal/postingModal";
+import VerifiedForPayment from "./VerifiedForPayment.tsx";
 
 interface TUserProps {
   user: TUser | undefined;
@@ -17,10 +19,6 @@ interface TUserProps {
 
 export default function Profile({ user }: TUserProps) {
   const { userInfo: currentUser } = useUser();
-
-  if (!user) {
-    return <div className="text-center">User not found.</div>;
-  }
 
   const {
     _id,
@@ -48,6 +46,8 @@ export default function Profile({ user }: TUserProps) {
             <UpdateNameImageModal
               defaultImage={image}
               defaultName={name}
+              country={country}
+              address={address}
               userId={_id}
             />
           </div>
@@ -65,15 +65,7 @@ export default function Profile({ user }: TUserProps) {
         <h2 className="text-lg font-bold mt-2 flex items-center gap-2">
           {name} {verified && <GoVerified className="text-primaryColor" />}
         </h2>
-        {!verified && (
-          <motion.span
-            whileHover={{ scale: 1.05 }}
-            className="text-xs text-default-500 font-semibold flex items-center justify-center gap-1 border border-dashed border-primaryColor px-2 py-1 rounded-full cursor-pointer mt-1"
-          >
-            <GoVerified className="text-primaryColor" size={16} />
-            Verify Now
-          </motion.span>
-        )}
+        {!verified && <VerifiedForPayment user={user} />}
 
         {/* Follower and Following Count */}
         <motion.div
@@ -109,6 +101,11 @@ export default function Profile({ user }: TUserProps) {
         {currentUser?.email === email ? "" : <Follow userId={_id} />}
 
         <Divider className="my-4 text-default-100" />
+
+        {/* Post modal */}
+        <div className="mb-5 w-full">
+          <PostModal userInfo={currentUser} />
+        </div>
 
         {/* Tab Navigation */}
         <UserProfileTabs />

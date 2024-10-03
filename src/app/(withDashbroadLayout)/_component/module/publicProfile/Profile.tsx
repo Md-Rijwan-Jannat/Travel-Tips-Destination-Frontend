@@ -51,6 +51,8 @@ export default function Profile({ user }: TUserProps) {
             <UpdateNameImageModal
               defaultImage={image}
               defaultName={name}
+              country={country}
+              address={address}
               userId={_id}
             />
           </div>

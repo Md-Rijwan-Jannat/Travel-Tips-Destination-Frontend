@@ -12,6 +12,7 @@ import { useUser } from "@/src/hooks/useUser";
 import { TPost } from "@/src/types";
 import { motion } from "framer-motion";
 import Comment from "./postComments/comment";
+import { copyToClipboard } from "@/src/utils/copyToClipboard";
 
 interface PostActionsProps {
   post: TPost;
@@ -31,6 +32,12 @@ export default function PostActions({ post }: PostActionsProps) {
   const likeExists = likes.includes(userId);
   const dislikeExists = dislikes.includes(userId);
 
+  // Copy handler
+  const handleCopyLink = () => {
+    const postUrl = `${window.location.origin}/posts/${_id}`;
+
+    copyToClipboard(postUrl);
+  };
   // Handle Like Action
   const handleLike = async () => {
     try {
@@ -69,7 +76,7 @@ export default function PostActions({ post }: PostActionsProps) {
 
   return (
     <div className="flex flex-col items-start">
-      <div className="flex justify-between border-t border-b border-default-200 py-2 w-full">
+      <div className="flex justify-between border-t border-b border-default-200 py-2 w-full mt-5">
         <div className="text-xs flex items-center gap-1">
           <AiOutlineLike
             className={` ${
@@ -96,12 +103,12 @@ export default function PostActions({ post }: PostActionsProps) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-2 py-2 w-full">
+      <div className="flex items-center justify-between gap-2 py-2 w-full border-t border-default-100">
         {/* Like Button */}
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
-          className={`flex items-center text-sm gap-1 rounded px-2 py-1 transition-colors ${
+          className={`flex items-center text-xs md:text-sm gap-1 rounded py-1 transition-colors ${
             likeExists
               ? "text-blue-500"
               : "text-default-600 hover:text-blue-500"
@@ -116,7 +123,7 @@ export default function PostActions({ post }: PostActionsProps) {
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
-          className={`flex items-center text-sm gap-1 rounded px-2 py-1 transition-colors ${
+          className={`flex items-center text-xs md:text-sm gap-1 rounded py-1 transition-colors ${
             dislikeExists
               ? "text-red-500"
               : "text-default-600 hover:text-red-500"
@@ -134,7 +141,8 @@ export default function PostActions({ post }: PostActionsProps) {
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center text-sm text-default-600 hover:text-blue-500 gap-1 rounded px-2 py-1"
+          className="flex items-center text-xs md:text-sm text-default-600 hover:text-blue-500 gap-1 rounded py-1"
+          onClick={handleCopyLink}
         >
           <MdOutlineContentCopy size={16} />
           Copy
@@ -144,7 +152,7 @@ export default function PostActions({ post }: PostActionsProps) {
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center text-sm text-default-600 hover:text-blue-500 gap-1 rounded px-2 py-1"
+          className="flex items-center text-xs md:text-sm text-default-600 hover:text-blue-500 gap-1 rounded py-1"
         >
           <FaShare size={16} />
           Share

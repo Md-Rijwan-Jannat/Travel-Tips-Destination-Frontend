@@ -33,7 +33,7 @@ export default function UserProfileTabs({ userId }: TUserProfileTabsProps) {
 
   return (
     <motion.div
-      className="flex flex-col"
+      className="flex flex-col w-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.4, duration: 0.4 }}
@@ -46,7 +46,7 @@ export default function UserProfileTabs({ userId }: TUserProfileTabsProps) {
                 <Spinner />
               </div>
             ) : (
-              <motion.div className="grid grid-cols-1 gap-5 p-2">
+              <motion.div className="grid grid-cols-1 gap-5">
                 {!myPosts?.length && (
                   <Empty message="There are not post available" />
                 )}

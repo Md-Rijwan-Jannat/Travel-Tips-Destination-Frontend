@@ -37,7 +37,7 @@ export default function MenuBar({ className }: TMenuBarProps) {
           title="Home"
         >
           <div className="flex items-center gap-2 text-pink-500">
-            <GoHome className="text-[25px] lg:text-[20px]" />
+            <GoHome className="text-[20px]" />
             <span className="hidden lg:inline">News Feed</span>
           </div>
         </Link>
@@ -57,7 +57,7 @@ export default function MenuBar({ className }: TMenuBarProps) {
           title="Friends"
         >
           <div className="flex items-center gap-2 text-pink-500">
-            <FaUsers className="text-[25px] lg:text-[20px]" />
+            <FaUsers className="text-[20px]" />
             <span className="hidden lg:inline">Flowers</span>
           </div>
         </Link>
@@ -77,7 +77,7 @@ export default function MenuBar({ className }: TMenuBarProps) {
           title="Flowing"
         >
           <div className="flex items-center gap-2 text-pink-500">
-            <IoIosCheckmarkCircle className="text-[25px] lg:text-[20px]" />
+            <IoIosCheckmarkCircle className="text-[20px]" />
             <span className="hidden lg:inline">Flowing</span>
           </div>
         </Link>
@@ -97,7 +97,7 @@ export default function MenuBar({ className }: TMenuBarProps) {
           title="Notifications"
         >
           <div className="flex items-center gap-2 text-pink-500">
-            <FaBell className="text-[25px] lg:text-[20px]" />
+            <FaBell className="text-[20px]" />
             <span className="hidden lg:inline">Notifications</span>
           </div>
         </Link>
@@ -117,7 +117,7 @@ export default function MenuBar({ className }: TMenuBarProps) {
           title="Messages"
         >
           <div className="flex items-center gap-2 text-pink-500">
-            <FaEnvelope className="text-[25px] lg:text-[20px]" />
+            <FaEnvelope className="text-[20px]" />
             <span className="hidden lg:inline">Messages</span>
           </div>
         </Link>
@@ -137,7 +137,7 @@ export default function MenuBar({ className }: TMenuBarProps) {
           title="Bookmarks"
         >
           <div className="flex items-center gap-2 text-pink-500">
-            <FaBookmark className="text-[25px] lg:text-[20px]" />
+            <FaBookmark className="text-[20px]" />
             <span className="hidden lg:inline">Bookmarks</span>
           </div>
         </Link>

@@ -14,7 +14,7 @@ export default function FeedNavbar() {
             <BrandLogo />
             <p className="font-bold text-inherit">TT&DG</p>
           </NextLink>
-          <div className="w-[300px]">
+          <div className="md:w-[300px]">
             <SearchInput />
           </div>
         </div>

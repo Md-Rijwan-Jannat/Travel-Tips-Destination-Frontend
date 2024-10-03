@@ -23,6 +23,8 @@ import { useCreatePostMutation } from "@/src/redux/features/post/postApi";
 import { TUser } from "@/src/types";
 import GlassLoader from "@/src/components/shared/glassLoader";
 import { Editor } from "@tinymce/tinymce-react";
+import CButton from "@/src/components/ui/CButton/CButton";
+import { primaryColor } from "@/src/styles/button";
 
 interface PostData {
   images: string[];
@@ -147,7 +149,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
   return (
     <>
       {isLoading && <GlassLoader />}
-      <div className="flex items-center gap-4 w-full md:w-[480px] md:ml-4">
+      <div className="flex items-center gap-4 w-full md:w-[490px] xl:w-[590px] mx-auto">
         <div className="flex items-center gap-2">
           <Avatar
             alt="User Avatar"
@@ -171,8 +173,13 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
         />
       </div>
 
-      <Modal hideCloseButton isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
+      <Modal
+        placement="center"
+        hideCloseButton
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      >
+        <ModalContent className="m-2">
           <ModalHeader>
             <div className="flex items-center gap-2">
               <Avatar
@@ -270,12 +277,13 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
                   ))}
                 </div>
               )}
-
-              <div className="mt-4">
+            </ModalBody>
+            <div className="mt-10 mb-10 px-4  flex items-center justify-end gap-3 w-full">
+              <div>
                 <label htmlFor="image">
                   <IoIosImages
                     className="text-pink-500 cursor-pointer "
-                    size={25}
+                    size={35}
                   />
                 </label>
                 <input
@@ -287,17 +295,8 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
                   onChange={handleFileChange}
                 />
               </div>
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                fullWidth
-                className="w-full bg-primaryColor text-default-500"
-                disabled={!isFormValid}
-                type="submit"
-              >
-                Post
-              </Button>
-            </ModalFooter>
+              <CButton type="submit" bgColor={primaryColor} text="Post" />
+            </div>
           </form>
         </ModalContent>
       </Modal>

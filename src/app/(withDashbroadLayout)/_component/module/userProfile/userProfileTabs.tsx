@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import PostCard from "../../module/posts/postCard/postCard";
 import Spinner from "@/src/components/ui/spinner";
 import InfiniteScrollContainer from "@/src/components/ui/infiniteScrollerContainer";
+import Empty from "@/src/components/ui/empty";
 
 export default function UserProfileTabs() {
   const [page, setPage] = useState(1);
@@ -34,15 +35,18 @@ export default function UserProfileTabs() {
 
   return (
     <motion.div
-      className="flex flex-col"
+      className="flex flex-col w-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.4, duration: 0.4 }}
     >
-      <Tabs aria-label="Options" className="w-full md:w-[500px] xl:w-[600px]]">
-        <Tab key="posts" className="w-full" title="My Posts">
+      <Tabs aria-label="Options" className="w-full md:w-[500px] xl:w-[600px]">
+        <Tab key="posts" className="w-full" title="Posts">
           <InfiniteScrollContainer onBottomReached={loadMorePosts}>
-            <motion.div className="grid grid-cols-1 gap-5 p-2">
+            {myPosts?.length === 0 && (
+              <Empty message="There are no post available" />
+            )}
+            <motion.div className="grid grid-cols-1 gap-5">
               {isFetchingMyPosts && isFetchingMore ? (
                 <div className="flex justify-center">
                   <Spinner />
@@ -54,9 +58,12 @@ export default function UserProfileTabs() {
           </InfiniteScrollContainer>
         </Tab>
 
-        <Tab key="my-premium-posts" className="w-full" title="My Premium Posts">
+        <Tab key="my-premium-posts" className="w-full" title="Premium">
           <InfiniteScrollContainer onBottomReached={loadMorePosts}>
-            <motion.div className="grid grid-cols-1 gap-5 p-2">
+            {myPremiumPosts?.length === 0 && (
+              <Empty message="There are no premium post available" />
+            )}
+            <motion.div className="grid grid-cols-1 gap-5">
               {isFetchingMyPremiumPosts && isFetchingMore ? (
                 <div className="flex justify-center">
                   <Spinner />
@@ -70,13 +77,12 @@ export default function UserProfileTabs() {
           </InfiniteScrollContainer>
         </Tab>
 
-        <Tab
-          key="my-subscribed-posts"
-          className="w-full"
-          title="My Subscribed Posts"
-        >
+        <Tab key="my-subscribed-posts" className="w-full" title="Subscribed">
           <InfiniteScrollContainer onBottomReached={loadMorePosts}>
-            <motion.div className="grid grid-cols-1 gap-5 p-2">
+            {myPremiumPosts?.length === 0 && (
+              <Empty message="There are not subscribed post available" />
+            )}
+            <motion.div className="grid grid-cols-1 gap-5">
               {isFetchingMyPremiumPosts && isFetchingMore ? (
                 <div className="flex justify-center">
                   <Spinner />

@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import {
   Modal,
   ModalContent,
@@ -17,6 +15,8 @@ import { Input } from "@nextui-org/input";
 import { IoIosImages } from "react-icons/io";
 import GlassLoader from "@/src/components/shared/glassLoader";
 import { useForm, SubmitHandler } from "react-hook-form";
+import CButton from "@/src/components/ui/CButton/CButton";
+import { primaryColor } from "@/src/styles/button";
 
 interface CloudinaryResponse {
   secure_url: string;
@@ -26,6 +26,8 @@ interface UpdateUserModalProps {
   defaultName: string;
   defaultImage: string | undefined;
   userId: string;
+  country: string;
+  address: string;
 }
 
 interface FormInputs {
@@ -38,32 +40,47 @@ interface FormInputs {
 export default function UpdateUserModal({
   defaultName,
   defaultImage,
+  country,
+  address,
   userId,
 }: UpdateUserModalProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [image, setImage] = useState<string>(defaultImage || "");
   const [isUploading, setIsUploading] = useState<boolean>(false);
 
+  const [updateMyProfileFn, { isLoading }] = useUpdateMyProfileMutation();
+
   const {
     register,
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { isSubmitting },
   } = useForm<FormInputs>({
     defaultValues: {
       name: defaultName,
       imageFile: null,
-      country: "",
-      address: "",
+      country: country || "",
+      address: address || "",
     },
   });
 
-  // Initialize the mutation
-  const [updateMyProfileFn, { isLoading }] = useUpdateMyProfileMutation();
-
   // Watch for image file changes to display preview
   const imageFile = watch("imageFile");
+
+  // Use effect to set default values when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      reset({
+        name: defaultName,
+        imageFile: null,
+        country, // Keep the country value
+        address, // Keep the address value
+      });
+      setImage(defaultImage || "");
+    }
+  }, [isOpen, defaultName, defaultImage, country, address, reset]);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0];
@@ -74,7 +91,6 @@ export default function UpdateUserModal({
     }
   };
 
-  // Function to upload the image to Cloudinary
   const uploadImageToCloudinary = async (file: File): Promise<string> => {
     setIsUploading(true);
     const formData = new FormData();
@@ -92,11 +108,13 @@ export default function UpdateUserModal({
       });
 
       const data: CloudinaryResponse = await res.json();
+
       if (!res.ok) {
         throw new Error("Failed to upload image");
       }
 
       setIsUploading(false);
+
       return data.secure_url;
     } catch (error) {
       setIsUploading(false);
@@ -105,7 +123,6 @@ export default function UpdateUserModal({
     }
   };
 
-  // Form submission handler
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     let uploadedImageUrl = image;
 
@@ -150,13 +167,14 @@ export default function UpdateUserModal({
         onPress={onOpen}
       />
       <Modal
+        placement="center"
         hideCloseButton
         className="m-2"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >
         {(isLoading || isUploading) && <GlassLoader />}
-        <ModalContent>
+        <ModalContent className="m-2">
           <form onSubmit={handleSubmit(onSubmit)}>
             <ModalBody>
               <div className="flex flex-col gap-4 mt-3">
@@ -171,7 +189,6 @@ export default function UpdateUserModal({
                     />
                   )}
                 </div>
-                {/* Name Input */}
                 <Input
                   type="text"
                   {...register("name")}
@@ -196,32 +213,25 @@ export default function UpdateUserModal({
                   className="bg-opacity-0"
                   placeholder="Enter your country"
                 />
+                <div className="mt-3">
+                  <label htmlFor="image">
+                    <IoIosImages
+                      className="text-pink-500 cursor-pointer"
+                      size={32}
+                    />
+                  </label>
+                  <input
+                    className="hidden"
+                    id="image"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                </div>
               </div>
             </ModalBody>
             <ModalFooter className="flex items-center gap-8">
-              <div>
-                <label htmlFor="image">
-                  <IoIosImages
-                    className="text-pink-500 cursor-pointer"
-                    size={32}
-                  />
-                </label>
-                <input
-                  className="hidden"
-                  id="image"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                />
-              </div>
-              <Button
-                className="bg-primaryColor text-default-200"
-                radius="full"
-                type="submit"
-                isLoading={isSubmitting || isUploading || isLoading}
-              >
-                Save
-              </Button>
+              <CButton bgColor={primaryColor} type="submit" text="Save" />
             </ModalFooter>
           </form>
         </ModalContent>

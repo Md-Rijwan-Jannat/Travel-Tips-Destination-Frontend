@@ -2,6 +2,7 @@ import { Avatar } from "@nextui-org/avatar";
 import Link from "next/link";
 
 import { TPost } from "@/src/types";
+import PostDropdown from "./postActions/postDropdown";
 
 interface PostHeaderProps {
   post: TPost;
@@ -34,6 +35,7 @@ export default function PostHeader({ post }: PostHeaderProps) {
           </Link>
         </div>
       </div>
+      <PostDropdown postData={post} userInfo={post?.user} />
     </div>
   );
 }
