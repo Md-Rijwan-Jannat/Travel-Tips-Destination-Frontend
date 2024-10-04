@@ -8,6 +8,7 @@ export interface TPost {
   description: string;
   comments: any[];
   status: string;
+  category: string;
   reportCount: number;
   likes: any[];
   dislikes: any[];

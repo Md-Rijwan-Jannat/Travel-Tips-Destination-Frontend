@@ -93,7 +93,7 @@ export default function MenuBar({ className }: TMenuBarProps) {
           />
           <MenubarButton
             href="/admin-dashboard/payments"
-            title="Manage Payments"
+            title="Payments"
             icon={<RiSecurePaymentFill className="text-[20px]" />}
             delay={0.8}
           />

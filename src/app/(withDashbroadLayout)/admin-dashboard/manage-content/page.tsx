@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Suspense } from "react";
+import ManageContent from "../../_component/module/adminDashboard/manageContent";
 
 export default function PostManagement() {
   return (
-    <div>
-      <h3>post management</h3>
-    </div>
+    <Suspense fallback={<p>loading...</p>}>
+      <ManageContent />
+    </Suspense>
   );
 }

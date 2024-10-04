@@ -19,7 +19,7 @@ const manageUserApi = baseApi.injectEndpoints({
           params,
         };
       },
-      providesTags: ["users"],
+      providesTags: ["posts"],
     }),
 
     // Get all premium users query
@@ -39,7 +39,7 @@ const manageUserApi = baseApi.injectEndpoints({
           params,
         };
       },
-      providesTags: ["users"],
+      providesTags: ["posts"],
     }),
   }),
 });

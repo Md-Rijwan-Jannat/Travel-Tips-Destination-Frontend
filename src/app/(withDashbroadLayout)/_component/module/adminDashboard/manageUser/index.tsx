@@ -11,6 +11,7 @@ import {
 } from "@/src/redux/features/adminManagement/manageUserApi";
 import { TUser } from "@/src/types";
 import UserTable from "./userTable";
+import Empty from "@/src/components/ui/empty";
 
 export default function AllUsers() {
   const [page, setPage] = useState(1);
@@ -88,7 +89,7 @@ export default function AllUsers() {
   return (
     <div className="flex w-full flex-col">
       {isErrorAllUsers || isErrorPremiumUsers ? (
-        <div>Error loading users. Please try again.</div>
+        <Empty />
       ) : (
         <>
           <Tabs aria-label="User Categories">
@@ -114,17 +115,22 @@ export default function AllUsers() {
           </Tabs>
 
           {/* Pagination for All Users */}
-          <div className="mt-10 flex justify-center items-start">
-            <Pagination
-              color="default"
-              variant="flat"
-              showControls
-              total={meta?.totalPage || 1} // Total number of pages from the response meta
-              page={page} // Current page
-              className="mb-5 px-5 py-1 mx-3 border-none shadow-none rounded-full bg-[#F4F4F5]"
-              onChange={handlePageChange} // Update page on change
-            />
-          </div>
+          {meta?.total > limit && (
+            <>
+              {" "}
+              <div className="mt-10 flex justify-center items-start">
+                <Pagination
+                  color="default"
+                  variant="flat"
+                  showControls
+                  total={meta?.totalPage || 1}
+                  page={page}
+                  className="mb-5 px-5 py-1 mx-3 border-none shadow-none rounded-full bg-[#F4F4F5]"
+                  onChange={handlePageChange}
+                />
+              </div>
+            </>
+          )}
         </>
       )}
     </div>
