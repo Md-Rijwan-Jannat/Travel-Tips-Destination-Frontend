@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 import PostCard from "./postCard/postCard";
 import PostModal from "./modal/postingModal";
 import { useGetAllPostsQuery } from "@/src/redux/features/post/postApi";
@@ -14,13 +13,17 @@ import PremiumPostsMarquee from "../premiumPost/premiumPostsMarquee";
 import { MdLockReset } from "react-icons/md";
 import DropdownFilter from "./postCard/postFilter/dropdownFilter";
 import { categoriesList } from "@/src/constants";
+import { useAppSelector } from "@/src/redux/hook";
+import { useRouter } from "next/navigation";
 
 export default function Post() {
   const [page, setPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [filterOption, setFilterOption] = useState<string>("all");
   const [isFetchingMore, setIsFetchingMore] = useState(false);
-  const [selectedTab, setSelectedTab] = useState<string>("forYou"); // Tab state
+  const [selectedTab, setSelectedTab] = useState<string>("forYou");
+  const token = useAppSelector((state) => state.auth.token);
+  const router = useRouter();
 
   const { data: postsData, isFetching } = useGetAllPostsQuery({
     searchTerm: selectedCategory || "",
@@ -59,6 +62,11 @@ export default function Post() {
     return filtered;
   };
 
+  if (!token) {
+    router.push("/login");
+    return null;
+  }
+
   return (
     <InfiniteScrollContainer
       className="w-full md:w-[500px] xl:w-[600px] mx-auto"
@@ -73,7 +81,7 @@ export default function Post() {
         {categoriesList.map((category) => (
           <button
             key={category}
-            className={`px-4 py-1 rounded-full border border-default-200 focus:outline-none ${
+            className={`px-4 text-xs py-1 rounded-full border border-default-200 focus:outline-none ${
               selectedCategory === category
                 ? "bg-default-100 text-primaryColor"
                 : "bg-default-50 text-default-700"

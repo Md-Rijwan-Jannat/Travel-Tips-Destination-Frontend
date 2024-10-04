@@ -14,6 +14,7 @@ import { Avatar } from "@nextui-org/avatar";
 import { GoVerified } from "react-icons/go";
 import CommentDropdown from "./commentDropdown";
 import { useUser } from "@/src/hooks/useUser";
+import Link from "next/link";
 
 // Component Props
 interface TCommentCardProps {
@@ -120,6 +121,8 @@ const CommentCard: React.FC<TCommentCardProps> = ({ postId }) => {
           <div className="flex items-start justify-between space-x-3">
             <div className="flex items-start space-x-3">
               <Avatar
+                as={Link}
+                href={`/profile/${comment?.userId}`}
                 src={comment.avatarUrl}
                 name={comment.fullName.charAt(0).toUpperCase()}
                 alt={`${comment.fullName}'s avatar`}
@@ -167,6 +170,8 @@ const CommentCard: React.FC<TCommentCardProps> = ({ postId }) => {
                 >
                   <div className="flex items-start space-x-3">
                     <Avatar
+                      as={Link}
+                      href={`/profile/${reply?.userId}`}
                       src={reply.avatarUrl}
                       name={reply.fullName.charAt(0).toUpperCase()}
                       alt={`${reply.fullName}'s avatar`}

@@ -191,7 +191,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
         </div>
         <input
           className="cursor-pointer w-full px-3 py-2 border border-default-100 rounded-full text-xs focus:border-default-300 focus:outline-none"
-          placeholder={`What's on your mind, ${userInfo?.name}?`}
+          placeholder={`${userInfo?.role === "USER" ? `What's on your mind, ${userInfo?.name}?` : `Admin announcement`}`}
           type="text"
           onClick={onOpen}
         />

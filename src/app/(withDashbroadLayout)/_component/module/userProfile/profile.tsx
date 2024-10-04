@@ -23,6 +23,7 @@ export default function Profile({ user }: TUserProps) {
   const {
     _id,
     email,
+    role,
     name,
     image,
     follower,
@@ -64,6 +65,7 @@ export default function Profile({ user }: TUserProps) {
 
         <h2 className="text-lg font-bold mt-2 flex items-center gap-2">
           {name} {verified && <GoVerified className="text-primaryColor" />}
+          {role === "ADMIN" && "(Admin)"}
         </h2>
         {!verified && <VerifiedForPayment user={user} />}
 

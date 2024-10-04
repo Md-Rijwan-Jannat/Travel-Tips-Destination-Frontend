@@ -26,8 +26,12 @@ const LandingBanner: FC<TLandingBannerProps> = () => {
       </div>
 
       <div className="flex gap-3 z-10">
-        <CButton bgColor={primaryColor} link="#" text="Explore Now" />
-        <CButton bgColor={secondaryColor} link="#" text="Learn More" />
+        <CButton
+          bgColor={primaryColor}
+          link="/news-feed/posts"
+          text="Explore Now"
+        />
+        <CButton bgColor={secondaryColor} link="/docs" text="Learn More" />
       </div>
 
       <div className="mt-8 z-10">

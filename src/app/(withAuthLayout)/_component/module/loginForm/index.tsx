@@ -5,16 +5,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@nextui-org/input";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 import React from "react";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-
 import GoogleButton from "../registerForm/googleButton";
-
 import LoginRightContent from "./loginRightContent";
-
 import { loginSchema } from "@/src/schema/auth";
 import CButton from "@/src/components/ui/CButton/CButton";
 import { secondaryColor } from "@/src/styles/button";
@@ -23,6 +19,9 @@ import { useAppDispatch } from "@/src/redux/hook";
 import { setCredentials } from "@/src/redux/features/auth/authSlice";
 import GlassLoader from "@/src/components/shared/glassLoader";
 import Cookies from "js-cookie";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { SerializedError } from "@reduxjs/toolkit";
+import { useRouter } from "next/navigation";
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 interface TDecodedData {
@@ -35,13 +34,16 @@ export default function LoginForm() {
   const [isVisible, setIsVisible] = React.useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
-  const [loginUser, { isLoading: LoginIsLoading }] = useLoginMutation();
+  const [loginUser, { isLoading: LoginIsLoading, isSuccess }] =
+    useLoginMutation();
   const dispatch = useAppDispatch();
   const router = useRouter();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<LoginFormInputs>({
     resolver: zodResolver(loginSchema),
   });
@@ -55,23 +57,38 @@ export default function LoginForm() {
           res.data.data.accessToken
         ) as TDecodedData;
 
-        console.log(decodedUser);
-
         const userData = {
           id: decodedUser.id,
           email: decodedUser.email,
           role: decodedUser.role,
         };
 
+        // Dispatch credentials to Redux
         dispatch(
           setCredentials({ user: userData, token: res.data.data.accessToken })
         );
-        router.push("/");
+        router.push("/news-feed/posts");
+        // Set token in cookies
         Cookies.set("accessToken", res?.data?.data?.accessToken);
-        toast.success("Login successful");
-      }
 
-      console.log(res);
+        // Show success toast
+        toast.success("Login successful");
+
+        reset();
+      }
+      const error = res?.error;
+
+      if (error) {
+        if ("data" in (error as FetchBaseQueryError)) {
+          const fetchError = error as FetchBaseQueryError;
+          const errorMessage = (fetchError.data as { message?: string })
+            ?.message;
+
+          toast.error(errorMessage || "An unknown error occurred");
+        } else if ((error as SerializedError).message) {
+          toast.error((error as SerializedError).message!);
+        }
+      }
     } catch (error) {
       console.log(error);
     }
@@ -79,7 +96,7 @@ export default function LoginForm() {
 
   return (
     <div className="w-full md:min-h-screen flex items-center justify-center max-w-7xl">
-      {LoginIsLoading && <GlassLoader />}
+      {LoginIsLoading && !isSuccess && <GlassLoader />}
       <div className="flex flex-col-reverse md:flex-row bg-default-100 rounded-lg shadow-lg w-full overflow-hidden my-5">
         {/* Left side - Form Section */}
         <div className="w-full md:w-[500px] xl:w-[530px] flex flex-col justify-center">
@@ -139,7 +156,7 @@ export default function LoginForm() {
                   }
                   isInvalid={!!errors.password}
                   label="Password"
-                  placeholder="Must be at least 8 characters"
+                  placeholder="Must be at least 6 characters"
                   type={isVisible ? "text" : "password"}
                   validationState={errors.password ? "invalid" : undefined}
                   variant="underlined"
@@ -150,13 +167,16 @@ export default function LoginForm() {
                   </p>
                 )}
               </div>
+              <div className="flex my-1 items-center justify-end text-xs">
+                <Link
+                  className="text-blue-500 hover:underline"
+                  href={"/forgot-password"}
+                >
+                  Forgot password
+                </Link>
+              </div>
               <div className="w-full mt-5">
-                <CButton
-                  bgColor={secondaryColor}
-                  link="#"
-                  text="Login"
-                  type="submit"
-                />
+                <CButton bgColor={secondaryColor} text="Login" type="submit" />
               </div>
             </form>
 

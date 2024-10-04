@@ -14,9 +14,23 @@ import {
 import { baseApi } from "./api/baseApi";
 import authReducer from "./features/auth/authSlice";
 
+// Fallback storage if localStorage is not available
+const createNoopStorage = () => ({
+  getItem(_key: string) {
+    return Promise.resolve(null);
+  },
+  setItem(_key: string, _value: any) {
+    return Promise.resolve();
+  },
+  removeItem(_key: string) {
+    return Promise.resolve();
+  },
+});
+
+// Use localStorage in the browser or noopStorage in non-browser environments
 const persistAuthConfig = {
   key: "auth",
-  storage,
+  storage: typeof window !== "undefined" ? storage : createNoopStorage(),
 };
 
 const persistedAuthReducer = persistReducer(persistAuthConfig, authReducer);

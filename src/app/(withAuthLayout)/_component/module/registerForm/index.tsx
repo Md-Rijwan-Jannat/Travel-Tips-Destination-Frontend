@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@nextui-org/input";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
 import RegisterRightContent from "./registerRightContent";
@@ -19,12 +19,22 @@ import { useAppDispatch } from "@/src/redux/hook";
 import { setCredentials } from "@/src/redux/features/auth/authSlice";
 import GlassLoader from "@/src/components/shared/glassLoader";
 import Cookies from "js-cookie";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { useState } from "react";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { SerializedError } from "@reduxjs/toolkit";
 
 type RegisterFormInputs = z.infer<typeof registerSchema>;
 
 export default function RegisterForm() {
-  const [registerUser, { isLoading: RegisterLoading }] = useRegisterMutation();
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleVisibility = () => setIsVisible(!isVisible);
+  const [registerUser, { isLoading: RegisterLoading, isSuccess }] =
+    useRegisterMutation();
   const dispatch = useAppDispatch();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
   const router = useRouter();
   const {
     register,
@@ -49,9 +59,32 @@ export default function RegisterForm() {
         dispatch(
           setCredentials({ user: userData, token: res.data.data.accessToken })
         );
-        router.push("/");
+
+        router.push(redirect ? redirect : "/");
+
         Cookies.set("accessToken", res?.data?.data?.accessToken);
         toast.success("Register successful");
+      } else {
+        const error = res?.error;
+
+        if (error) {
+          // Check if error is of type FetchBaseQueryError
+          if ("data" in (error as FetchBaseQueryError)) {
+            const fetchError = error as FetchBaseQueryError;
+            const errorMessage = (fetchError.data as { message?: string })
+              ?.message;
+
+            if (errorMessage) {
+              toast.error(errorMessage);
+            } else {
+              toast.error("An unknown error occurred");
+            }
+          } else if ((error as SerializedError).message) {
+            toast.error((error as SerializedError).message!);
+          } else {
+            toast.error("An unknown error occurred");
+          }
+        }
       }
       console.log(res);
     } catch (error) {
@@ -121,10 +154,24 @@ export default function RegisterForm() {
                 <Input
                   {...register("password")}
                   className="font-semibold"
+                  endContent={
+                    <button
+                      aria-label="toggle password visibility"
+                      className="focus:outline-none"
+                      type="button"
+                      onClick={toggleVisibility}
+                    >
+                      {isVisible ? (
+                        <IoEyeOffOutline className="text-2xl text-default-400 pointer-events-none" />
+                      ) : (
+                        <IoEyeOutline className="text-2xl text-default-400 pointer-events-none" />
+                      )}
+                    </button>
+                  }
                   isInvalid={!!errors.password}
                   label="Password"
                   placeholder="Must be at least 8 characters"
-                  type="password"
+                  type={isVisible ? "text" : "password"}
                   validationState={errors.password ? "invalid" : undefined}
                   variant="underlined"
                 />

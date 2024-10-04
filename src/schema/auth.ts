@@ -5,7 +5,7 @@ export const registerSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z
     .string()
-    .min(8, "Password must be at least 8 characters long")
+    .min(6, "Password must be at least 6 characters long")
     .max(16, "Password must not exceed 16 characters"),
 });
 
@@ -13,6 +13,16 @@ export const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z
     .string()
-    .min(8, "Password must be at least 8 characters long")
+    .min(6, "Password must be at least 6 characters long")
+    .max(16, "Password must not exceed 16 characters"),
+});
+
+export const forgotPassword = z.object({
+  email: z.string().email("Invalid email address"),
+});
+export const resetPasswordSchema = z.object({
+  password: z
+    .string()
+    .min(6, "Password must be at least 6 characters long")
     .max(16, "Password must not exceed 16 characters"),
 });

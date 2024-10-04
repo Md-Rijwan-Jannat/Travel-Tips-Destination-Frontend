@@ -51,15 +51,28 @@ const NavDropdown: FC<TNavDropdownProps> = () => {
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="User Actions">
-            <DropdownItem onClick={() => handleNavigation("/profile")}>
+            <DropdownItem
+              className={`${userInfo?.role === "USER" ? "block" : "hidden"}`}
+              onClick={() => handleNavigation("/profile")}
+            >
               Profile
             </DropdownItem>
             <DropdownItem
+              className={`${userInfo?.role === "USER" ? "block" : "hidden"}`}
               onClick={() => handleNavigation("/profile/dashboard")}
             >
               Dashboard
             </DropdownItem>
-            <DropdownItem onClick={() => handleNavigation("/profile/setting")}>
+
+            <DropdownItem
+              className={`${userInfo?.role === "ADMIN" ? "block" : "hidden"}`}
+              onClick={() => handleNavigation("/admin-dashboard")}
+            >
+              Admin Profile
+            </DropdownItem>
+            <DropdownItem
+              onClick={() => handleNavigation("/admin-dashboard/setting")}
+            >
               Setting
             </DropdownItem>
             <DropdownItem onClick={handleLogout}>Logout</DropdownItem>

@@ -15,6 +15,7 @@ import Empty from "@/src/components/ui/empty";
 import { useGetAllPremiumPostsQuery } from "@/src/redux/features/premiumPost/premiumPostApi";
 import { PiCrownSimpleDuotone } from "react-icons/pi";
 import { useUser } from "@/src/hooks/useUser";
+import Dashboard from "../adminDashboard";
 
 export default function UserProfileTabs() {
   const [page, setPage] = useState(1);
@@ -33,6 +34,8 @@ export default function UserProfileTabs() {
 
   const { userInfo } = useUser();
 
+  console.log(myPosts);
+
   // Function to load more posts when scrolled to bottom
   const loadMorePosts = async () => {
     if (!isFetchingMore) {
@@ -49,7 +52,18 @@ export default function UserProfileTabs() {
       animate={{ opacity: 1 }}
       transition={{ delay: 0.4, duration: 0.4 }}
     >
-      <Tabs aria-label="Options" className="w-full md:w-[500px] xl:w-[600px]">
+      <Tabs
+        aria-label="Options"
+        className={`w-full md:w-[500px] xl:w-[600px] ${userInfo?.role === "USER" && "hidden"}`}
+      >
+        <Tab key="dashboard" className="w-full" title="Dashboard">
+          <InfiniteScrollContainer onBottomReached={loadMorePosts}>
+            <motion.div className="grid grid-cols-1 gap-5">
+              {/* <Dashboard /> */}
+              <Empty message="There are no content available" />
+            </motion.div>
+          </InfiniteScrollContainer>
+        </Tab>
         <Tab key="posts" className="w-full" title="Posts">
           <InfiniteScrollContainer onBottomReached={loadMorePosts}>
             {myPosts?.length === 0 && (

@@ -28,8 +28,37 @@ const authApi = baseApi.injectEndpoints({
       }),
       providesTags: ["users"],
     }),
+    forgotPassword: builder.mutation({
+      query: (credentials) => {
+        console.log("credentials===>", credentials);
+
+        return {
+          url: "/auth/forget-password",
+          method: "POST",
+          body: credentials,
+        };
+      },
+      invalidatesTags: ["users"],
+    }),
+    resetPassword: builder.mutation({
+      query: (credentials) => ({
+        url: "/auth/reset-password",
+        method: "POST",
+        body: credentials,
+        headers: {
+          Authorization: `${credentials.token}`,
+        },
+      }),
+      invalidatesTags: ["users"],
+    }),
   }),
 });
 
 // Exporting the hooks to use in components
-export const { useLoginMutation, useRegisterMutation, useGetMeQuery } = authApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useGetMeQuery,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
+} = authApi;
