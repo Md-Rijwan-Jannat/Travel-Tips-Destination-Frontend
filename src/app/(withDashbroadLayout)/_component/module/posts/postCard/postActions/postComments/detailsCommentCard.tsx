@@ -14,6 +14,7 @@ import { Avatar } from "@nextui-org/avatar";
 import { GoVerified } from "react-icons/go";
 import CommentDropdown from "./commentDropdown";
 import { useUser } from "@/src/hooks/useUser";
+import Link from "next/link";
 
 // Component Props
 interface DetailsCommentCardProps {
@@ -82,6 +83,7 @@ const DetailsCommentCard: React.FC<DetailsCommentCardProps> = ({ postId }) => {
   const handleNewCommentSubmit = async () => {
     try {
       const commentData = { post: postId, text: newComment };
+
       await addComment(commentData);
       setNewComment("");
     } catch (error) {
@@ -98,6 +100,7 @@ const DetailsCommentCard: React.FC<DetailsCommentCardProps> = ({ postId }) => {
         commentId: replyingTo,
         data: { post: postId, text: replyCommentText },
       };
+
       await replyComment(replyData);
       setReplyCommentText("");
       setReplyingTo(null);
@@ -120,19 +123,25 @@ const DetailsCommentCard: React.FC<DetailsCommentCardProps> = ({ postId }) => {
           <div className="flex items-start justify-between space-x-3">
             <div className="flex items-start space-x-3">
               <Avatar
+                as={Link}
+                href={`/profile/${comment?.userId}`}
                 src={comment.avatarUrl}
                 name={comment.fullName.charAt(0).toUpperCase()}
                 alt={`${comment.fullName}'s avatar`}
                 size="sm"
+                className="cursor-pointer"
               />
               <div>
-                <div className="font-semibold text-sm flex items-center gap-1">
+                <Link
+                  href={`/profile/${comment?.userId}`}
+                  className="font-semibold text-sm flex items-center gap-1 text-default-700"
+                >
                   {comment.fullName}
                   {comment?.verified! && (
                     <GoVerified className="text-primaryColor" />
                   )}{" "}
-                </div>
-                <div className="text-sm">{comment.text}</div>
+                </Link>
+                <div className="text-xs">{comment.text}</div>
 
                 {replyingTo === comment.comId ? (
                   <ReplyCommentInput
@@ -167,19 +176,24 @@ const DetailsCommentCard: React.FC<DetailsCommentCardProps> = ({ postId }) => {
                 >
                   <div className="flex items-start space-x-3">
                     <Avatar
+                      as={Link}
+                      href={`/profile/${reply?.userId}`}
                       src={reply.avatarUrl}
                       name={reply.fullName.charAt(0).toUpperCase()}
                       alt={`${reply.fullName}'s avatar`}
                       size="sm"
                     />
                     <div>
-                      <div className="font-semibold text-sm flex items-center gap-1">
+                      <Link
+                        href={`/profile/${comment?.userId}`}
+                        className="font-semibold text-sm flex items-center gap-1 text-default-700"
+                      >
                         {reply.fullName}{" "}
                         {reply?.verified! && (
                           <GoVerified className="text-primaryColor" />
                         )}
-                      </div>
-                      <div className="text-sm">{reply.text}</div>
+                      </Link>
+                      <div className="text-xs">{reply.text}</div>
                     </div>
                   </div>
                   {/* Dropdown for replies as well */}

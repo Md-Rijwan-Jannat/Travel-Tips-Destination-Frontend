@@ -13,14 +13,18 @@ import { useForm, Controller } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { Select, SelectItem } from "@nextui-org/select";
 import { toast } from "sonner";
-import { Button } from "@nextui-org/button";
 
 import { useUpdatePostMutation } from "@/src/redux/features/post/postApi";
 import { TUser, TPost } from "@/src/types";
 import GlassLoader from "@/src/components/shared/glassLoader";
-import { Editor } from "@tinymce/tinymce-react";
 import CButton from "@/src/components/ui/CButton/CButton";
 import { primaryColor } from "@/src/styles/button";
+import dynamic from "next/dynamic";
+
+// Dynamically import the ReactQuill component to prevent SSR issues
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+
+import "react-quill/dist/quill.snow.css";
 
 interface TUpdatePostModalProps {
   userInfo: TUser | undefined;
@@ -44,12 +48,25 @@ const UpdatePostModal = ({
 
   const { handleSubmit, control, reset, watch } = useForm<TPost>({
     defaultValues: {
-      title: postData?.title,
-      description: postData?.description,
-      status: postData?.status || "FREE",
-      reportCount: postData?.reportCount || 0,
+      title: "",
+      description: "",
+      status: "FREE",
+      reportCount: 0,
     },
   });
+
+  useEffect(() => {
+    if (postData) {
+      // Reset the form with new postData values when postData changes
+      reset({
+        title: postData?.title,
+        description: postData?.description,
+        status: postData?.status || "FREE",
+        reportCount: postData?.reportCount || 0,
+      });
+      setEditorContent(postData?.description || "");
+    }
+  }, [postData, reset]);
 
   const title = watch("title");
 
@@ -87,14 +104,19 @@ const UpdatePostModal = ({
   return (
     <>
       {isLoading && <GlassLoader />}
-      <Modal placement="center" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        size="lg"
+        placement="center"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      >
         <ModalContent className="m-2">
           <ModalHeader>
             <div className="flex items-center gap-2">
               <Avatar
                 alt="User Avatar"
                 className="text-xl"
-                name={userInfo?.name.charAt(0).toUpperCase()}
+                name={userInfo?.name?.charAt(0)?.toUpperCase()}
                 size="md"
                 src={userInfo?.image || undefined}
               />
@@ -126,23 +148,11 @@ const UpdatePostModal = ({
               />
 
               <div className="my-4">
-                <Editor
-                  apiKey="64e5lcmocwpj39ir0p4qoisls2ieanvm3swq9dmxmc2k4upn"
-                  init={{
-                    plugins:
-                      "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount",
-                    toolbar:
-                      "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat",
-                    height: 250,
-                    emoticons_append: {
-                      custom_mind_blown: {
-                        keywords: ["mind", "blown"],
-                        char: "🤯",
-                      },
-                    },
-                  }}
+                <ReactQuill
                   value={editorContent}
-                  onEditorChange={(content) => setEditorContent(content)}
+                  onChange={setEditorContent}
+                  theme="snow"
+                  style={{ height: "250px" }}
                 />
               </div>
 

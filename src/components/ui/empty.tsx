@@ -14,7 +14,7 @@ export default function Empty({ message }: TEmptyProps) {
   const containerWidth =
     userInfo?.role === "ADMIN"
       ? "w-full h-[500px]"
-      : "md:[500px] xl:w-[600px] h-[70vh]";
+      : "lg:[500px] xl:w-[600px] h-[70vh]";
 
   return (
     <div

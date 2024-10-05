@@ -20,6 +20,7 @@ import { PiCrownSimpleDuotone } from "react-icons/pi";
 import DeletePostModal from "../../posts/modal/deletePostModal";
 import { useDisclosure } from "@nextui-org/modal";
 import GlassLoader from "@/src/components/shared/glassLoader";
+import TableSkeleton from "@/src/components/ui/skeleton/tableSkeleton";
 
 type ContentTableProps = {
   posts: TPost[];
@@ -74,7 +75,9 @@ const ContentTable: React.FC<ContentTableProps> = ({ posts }) => {
                   href={`/news-feed/posts/${post._id}`}
                   className="whitespace-nowrap hover:underline"
                 >
-                  {post.title.slice(0, 20) + "..."}
+                  {post.title?.length > 15
+                    ? post.title.slice(0, 15) + "..."
+                    : post.title}
                 </Link>
               </TableCell>
               <TableCell>

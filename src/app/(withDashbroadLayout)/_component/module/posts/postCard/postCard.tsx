@@ -34,9 +34,7 @@ export default function PostCard({ post }: TPostCardProps) {
         <PostContent post={post} />
 
         {/* Post Image */}
-        {post?.images.length > 0 && (
-          <PostImage altText={post.title} images={post.images} />
-        )}
+        {post?.images.length > 0 && <PostImage post={post} />}
 
         {post.status === "PREMIUM" && (
           <Chip

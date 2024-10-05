@@ -1,11 +1,13 @@
-import React, { Suspense } from "react";
-import AllUsers from "../../_component/module/adminDashboard/manageUser";
-import TableSkeleton from "@/src/components/ui/skeleton/tableSkeleton";
+"use client";
 
-export default function UserManagement() {
+import React, { Suspense } from "react";
+import TableSkeleton from "@/src/components/ui/skeleton/tableSkeleton";
+import Followers from "../../_component/module/userProfile/followers";
+
+export default function FollowersPage() {
   return (
     <Suspense fallback={<TableSkeleton />}>
-      <AllUsers />
+      <Followers />
     </Suspense>
   );
 }

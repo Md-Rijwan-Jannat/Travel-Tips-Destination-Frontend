@@ -1,10 +1,11 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ManagePayments from "../../_component/module/adminDashboard/payment";
+import TableSkeleton from "@/src/components/ui/skeleton/tableSkeleton";
 
 export default function Payment() {
   return (
-    <div>
+    <Suspense fallback={<TableSkeleton />}>
       <ManagePayments />
-    </div>
+    </Suspense>
   );
 }

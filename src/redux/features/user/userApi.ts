@@ -2,6 +2,7 @@ import { baseApi } from "../../api/baseApi";
 
 export const UserApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    // get all users
     getAllUsers: builder.query({
       query: () => ({
         url: "/users",
@@ -10,6 +11,7 @@ export const UserApi = baseApi.injectEndpoints({
       providesTags: ["users", "posts"],
     }),
 
+    // get single users
     getSingleUser: builder.query({
       query: (id) => {
         return {
@@ -20,6 +22,7 @@ export const UserApi = baseApi.injectEndpoints({
       providesTags: ["users", "posts"],
     }),
 
+    // get single users posts
     getSingleUserPosts: builder.query({
       query: (id) => {
         return {
@@ -30,6 +33,7 @@ export const UserApi = baseApi.injectEndpoints({
       providesTags: ["users"],
     }),
 
+    // update ny profile
     updateMyProfile: builder.mutation({
       query: (args) => {
         return {
@@ -41,23 +45,48 @@ export const UserApi = baseApi.injectEndpoints({
       invalidatesTags: ["users", "posts"],
     }),
 
+    // follow user
     follow: builder.mutation({
       query: (userId) => {
         return {
           url: `/users/follow/${userId}`,
-          method: "POST",
+          method: "PATCH",
         };
       },
       invalidatesTags: ["users", "posts"],
     }),
+
+    // un follow user
     unFollow: builder.mutation({
       query: (userId) => {
         return {
           url: `/users/un-follow/${userId}`,
-          method: "POST",
+          method: "PATCH",
         };
       },
       invalidatesTags: ["users", "posts"],
+    }),
+
+    // followers
+    followers: builder.query({
+      query: () => {
+        return {
+          url: `/profile/followers`,
+          method: "GET",
+        };
+      },
+      providesTags: ["users", "posts"],
+    }),
+
+    // following
+    following: builder.query({
+      query: () => {
+        return {
+          url: `/profile/following`,
+          method: "GET",
+        };
+      },
+      providesTags: ["users", "posts"],
     }),
   }),
 });
@@ -69,4 +98,6 @@ export const {
   useGetSingleUserPostsQuery,
   useFollowMutation,
   useUnFollowMutation,
+  useFollowersQuery,
+  useFollowingQuery,
 } = UserApi;

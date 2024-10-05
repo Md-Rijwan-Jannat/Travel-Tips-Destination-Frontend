@@ -10,7 +10,7 @@ interface PostHeaderProps {
 
 export default function PostDetailsHeader({ post }: PostHeaderProps) {
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center mb-3">
       <div className="flex items-center gap-3">
         <Link href={`/profile/${post?.user?._id}`}>
           <Avatar
@@ -28,7 +28,7 @@ export default function PostDetailsHeader({ post }: PostHeaderProps) {
           </Link>
           <Link
             suppressHydrationWarning
-            className="block text-sm text-default-500 hover:underline"
+            className="block text-xs text-default-500 hover:underline"
             href={`/news-feed/posts/${post?._id}`}
           >
             {new Date(post?.createdAt).toLocaleDateString()}

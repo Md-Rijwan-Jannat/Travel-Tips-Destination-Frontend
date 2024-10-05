@@ -33,6 +33,7 @@ import {
   FaRegNewspaper,
 } from "react-icons/fa";
 import { useGetAllPaymentsDatForAnalyticsQuery } from "@/src/redux/features/adminManagement/payment";
+import TableSkeleton from "@/src/components/ui/skeleton/tableSkeleton";
 
 ChartJS.register(
   CategoryScale,
@@ -86,8 +87,8 @@ export default function SocialMediaAnalytics() {
         allUsers: allUsersData?.data?.length || 0,
         likes: likesData?.data?.length || 0,
         dislikes: dislikesData?.data?.length || 0,
-        premiumPosts: premiumPostsData?.data?.length || 0,
-        normalPosts: normalPostsData?.data?.length || 0,
+        premiumPosts: premiumPostsData?.meta?.total || 0,
+        normalPosts: normalPostsData?.meta?.total || 0,
       };
 
   // Chart Data
@@ -126,55 +127,53 @@ export default function SocialMediaAnalytics() {
     ],
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="bg-default-50 p-3 rounded-lg mt-5">
-      <h3 className="text-xl font-bold mb-4 text-pink-400">
+      <h3 className="text-xl font-bold mb-4 text-pink-500/80">
         Social Media Analytics
       </h3>
 
+      {loading && <TableSkeleton />}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Payments */}
-        <div className="bg-gradient-to-br from-green-400 to-green-200 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+        <div className="bg-gradient-to-br from-green-500/80 to-green-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
           <FaMoneyBillWave className="text-3xl mr-3" />
           <div>Total Badge Selling: {analyticsData.payments}</div>
         </div>
 
         {/* Premium Users */}
-        <div className="bg-gradient-to-br from-blue-400 to-blue-200 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+        <div className="bg-gradient-to-br from-blue-500/80 to-blue-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
           <FaUserShield className="text-3xl mr-3" />
           <div>Total Premium Users: {analyticsData.premiumUsers}</div>
         </div>
 
         {/* Total Users */}
-        <div className="bg-gradient-to-br from-yellow-400 to-yellow-200 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+        <div className="bg-gradient-to-br from-yellow-500/80 to-yellow-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
           <FaUsers className="text-3xl mr-3" />
           <div>Total Users: {analyticsData.allUsers}</div>
         </div>
 
         {/* Likes */}
-        <div className="bg-gradient-to-br from-pink-400 to-pink-200 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+        <div className="bg-gradient-to-br from-pink-500/80 to-pink-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
           <FaThumbsUp className="text-3xl mr-3" />
           <div>Total Likes: {analyticsData.likes}</div>
         </div>
 
         {/* Dislikes */}
-        <div className="bg-gradient-to-br from-red-400 to-red-200 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+        <div className="bg-gradient-to-br from-red-500/80 to-red-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
           <FaThumbsDown className="text-3xl mr-3" />
           <div>Total Dislikes: {analyticsData.dislikes}</div>
         </div>
 
         {/* Premium Posts */}
-        <div className="bg-gradient-to-br from-purple-400 to-purple-200 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+        <div className="bg-gradient-to-br from-purple-500/80 to-purple-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
           <FaCrown className="text-3xl mr-3" />
           <div>Total Premium Posts: {analyticsData.premiumPosts}</div>
         </div>
 
         {/* Normal Posts */}
-        <div className="bg-gradient-to-br from-gray-400 to-gray-200 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+        <div className="bg-gradient-to-br from-gray-500/80 to-gray-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
           <FaRegNewspaper className="text-3xl mr-3" />
           <div>Total Normal Posts: {analyticsData.normalPosts}</div>
         </div>

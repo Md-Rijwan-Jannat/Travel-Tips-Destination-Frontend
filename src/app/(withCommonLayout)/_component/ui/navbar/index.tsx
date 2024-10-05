@@ -10,7 +10,6 @@ import {
 import NextLink from "next/link";
 
 import NavLinks from "./navLinks";
-import SearchInput from "./searchInput";
 import NavDropdown from "./navDropdown";
 
 import { ThemeSwitch } from "@/src/components/ui/theme-switch";
@@ -18,7 +17,11 @@ import BrandLogo from "@/src/components/shared/logo";
 
 export default function NavBar() {
   return (
-    <NextUINavbar maxWidth="xl" position="sticky">
+    <NextUINavbar
+      className="border-b border-default-100 shadow-md"
+      maxWidth="xl"
+      position="sticky"
+    >
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">

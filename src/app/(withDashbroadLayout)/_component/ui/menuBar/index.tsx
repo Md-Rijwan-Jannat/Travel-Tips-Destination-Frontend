@@ -2,14 +2,14 @@
 "use client";
 
 import React from "react";
-import { FaUsers } from "react-icons/fa";
+import { FaBell, FaUsers } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa6";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { TbArrowAutofitContentFilled } from "react-icons/tb";
 import { RiSecurePaymentFill } from "react-icons/ri";
 import { FaFacebookMessenger } from "react-icons/fa6";
 import { IoNotificationsOutline } from "react-icons/io5";
-import { MdAnalytics } from "react-icons/md";
+import { MdAnalytics, MdDynamicFeed } from "react-icons/md";
 import { GoHome } from "react-icons/go";
 import { useAppSelector } from "@/src/redux/hook";
 import { useRouter } from "next/navigation";
@@ -41,22 +41,22 @@ export default function MenuBar({ className }: TMenuBarProps) {
           <MenubarButton
             href="/news-feed/posts"
             title="News Feed"
-            icon={<GoHome className="text-[20px]" />}
+            icon={<MdDynamicFeed className="text-[20px]" />}
           />
           <MenubarButton
-            href="/friends"
-            title="Friends"
+            href="/followers"
+            title="Followers"
             icon={<FaUsers className="text-[20px]" />}
           />
           <MenubarButton
-            href="/flowing"
+            href="/following"
             title="Flowing"
             icon={<IoIosCheckmarkCircle className="text-[20px]" />}
           />
           <MenubarButton
             href="/#"
             title="Notifications"
-            icon={<IoNotificationsOutline className="text-[20px]" />}
+            icon={<FaBell className="text-[20px]" />}
           />
           <MenubarButton
             href="/#"
@@ -77,7 +77,7 @@ export default function MenuBar({ className }: TMenuBarProps) {
           <MenubarButton
             href="/news-feed/posts"
             title="News Feed"
-            icon={<GoHome className="text-[20px]" />}
+            icon={<MdDynamicFeed className="text-[20px]" />}
           />
           <MenubarButton
             href="/admin-dashboard/manage-users"
@@ -102,7 +102,7 @@ export default function MenuBar({ className }: TMenuBarProps) {
           <MenubarButton
             href="/#"
             title="Notifications"
-            icon={<IoNotificationsOutline className="text-[20px]" />}
+            icon={<FaBell className="text-[20px]" />}
           />
           <MenubarButton
             href="/#"

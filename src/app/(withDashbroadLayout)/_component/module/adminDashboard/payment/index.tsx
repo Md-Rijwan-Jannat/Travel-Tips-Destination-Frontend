@@ -45,7 +45,7 @@ export default function ManagePayments() {
 
           {/* Pagination for Payments */}
 
-          {meta?.total > limit && (
+          {meta?.total > meta?.limit && (
             <>
               {" "}
               <div className="mt-10 flex justify-center items-start">

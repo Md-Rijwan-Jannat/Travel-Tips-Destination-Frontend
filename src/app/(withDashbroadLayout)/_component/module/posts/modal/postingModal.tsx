@@ -18,19 +18,19 @@ import Image from "next/image";
 import { FaX } from "react-icons/fa6";
 import { toast } from "sonner";
 import { Button } from "@nextui-org/button";
-
 import { useCreatePostMutation } from "@/src/redux/features/post/postApi";
 import { TUser } from "@/src/types";
 import GlassLoader from "@/src/components/shared/glassLoader";
-import { Editor } from "@tinymce/tinymce-react";
 import CButton from "@/src/components/ui/CButton/CButton";
 import { primaryColor } from "@/src/styles/button";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // Import Quill's styles
 import { GoVerified } from "react-icons/go";
 
 interface PostData {
   images: string[];
   title: string;
-  description: string;
+  description: string; // Description will now be the HTML content from Quill
   status: string;
   reportCount: number;
   category: string;
@@ -61,15 +61,9 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [isError, setIsError] = useState<string>("");
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
+  const [description, setDescription] = useState<string>("");
 
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    reset,
-    watch,
-    formState: {},
-  } = useForm<PostData>({
+  const { handleSubmit, control, setValue, reset, watch } = useForm<PostData>({
     defaultValues: {
       images: [],
       title: "",
@@ -82,18 +76,14 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
 
   const images = watch("images");
   const title = watch("title");
-  const description = watch("description");
-
-  // Watch TinyMCE content manually
-  const [editorContent, setEditorContent] = useState("");
 
   useEffect(() => {
-    if (title || editorContent || images.length > 0) {
+    if (title || description || images.length > 0) {
       setIsFormValid(true);
     } else {
       setIsFormValid(false);
     }
-  }, [title, editorContent, images]);
+  }, [title, description, images]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -103,14 +93,11 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
       previews.push(URL.createObjectURL(file));
     });
 
-    // Limit to single image upload
-    const limitedPreviews = previews.slice(0, 1);
-
-    setImagePreviews(limitedPreviews);
+    setImagePreviews(previews);
 
     try {
       const uploadedImages = await Promise.all(
-        files.slice(0, 1).map(async (file) => {
+        files.map(async (file) => {
           const formData = new FormData();
 
           formData.append("file", file);
@@ -127,7 +114,6 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
           });
 
           const data = await res.json();
-
           return data.secure_url;
         })
       );
@@ -138,15 +124,19 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
     }
   };
 
-  const removeImagePreview = () => {
-    setImagePreviews([]);
-    setValue("images", []);
+  const removeImagePreview = (index: number) => {
+    const updatedPreviews = [...imagePreviews];
+    updatedPreviews.splice(index, 1);
+    setImagePreviews(updatedPreviews);
+
+    const updatedImages = [...images];
+    updatedImages.splice(index, 1);
+    setValue("images", updatedImages);
   };
 
   const onSubmit = async (data: PostData) => {
-    const postData = { ...data, description: editorContent };
+    const postData = { ...data, description };
 
-    console.log("postData=>", postData);
     try {
       const res = await createPostFn(postData);
 
@@ -197,7 +187,12 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
         />
       </div>
 
-      <Modal placement="center" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        size="lg"
+        placement="center"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      >
         <ModalContent className="m-2">
           <ModalHeader>
             <div className="flex items-center gap-2">
@@ -241,23 +236,19 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
               />
 
               <div className="my-4">
-                <Editor
-                  apiKey="64e5lcmocwpj39ir0p4qoisls2ieanvm3swq9dmxmc2k4upn"
-                  init={{
-                    plugins:
-                      "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount",
-                    toolbar:
-                      "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat",
-                    height: 250,
-                    emoticons_append: {
-                      custom_mind_blown: {
-                        keywords: ["mind", "blown"],
-                        char: "🤯",
-                      },
-                    },
+                <ReactQuill
+                  value={description}
+                  onChange={setDescription}
+                  placeholder="Write your post..."
+                  modules={{
+                    toolbar: [
+                      [{ header: "1" }, { header: "2" }, { font: [] }],
+                      [{ list: "ordered" }, { list: "bullet" }],
+                      ["bold", "italic", "underline"],
+                      ["image", "link"],
+                      ["clean"], // remove formatting button
+                    ],
                   }}
-                  value={editorContent}
-                  onEditorChange={(content) => setEditorContent(content)}
                 />
               </div>
 
@@ -298,41 +289,40 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
                 )}
               />
 
-              {imagePreviews.length > 0 && (
-                <div className="mt-4 flex flex-wrap w-full gap-4">
-                  {imagePreviews.map((preview, idx) => (
-                    <div key={idx} className="relative">
+              {/* Image Upload */}
+              <div className="my-4">
+                <label className="mt-4 cursor-pointer text-xs text-pink-400 my-5 flex gap-2 items-center ">
+                  <IoIosImages className="text-2xl" />
+                  <p>Upload Images</p>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                </label>
+                <div className="flex flex-wrap mt-2">
+                  {imagePreviews.map((preview, index) => (
+                    <div key={index} className="relative mr-2 mb-2">
                       <Image
-                        alt="Preview Image"
-                        className="rounded-md"
-                        height={200}
                         src={preview}
-                        width={200}
+                        alt="Image Preview"
+                        width={100}
+                        height={100}
+                        className="rounded w-[100px] h-[80px] object-cover"
                       />
-                      <FaX
-                        className="absolute top-1 right-1 p-1 rounded-full bg-default-100 cursor-pointer"
-                        onClick={removeImagePreview}
-                      />
+                      <button
+                        className="absolute top-1 right-1 bg-pink-500 text-white rounded-full p-1 text-[8px]"
+                        onClick={() => removeImagePreview(index)}
+                      >
+                        <FaX />
+                      </button>
                     </div>
                   ))}
                 </div>
-              )}
-
-              <label htmlFor="file-upload">
-                <input
-                  accept="image/*"
-                  className="hidden"
-                  id="file-upload"
-                  onChange={handleFileChange}
-                  type="file"
-                />
-                <div className="my-4 flex items-center gap-2 cursor-pointer">
-                  <IoIosImages className="text-xl" />
-                  <span className="text-sm">Upload a photo</span>
-                </div>
-              </label>
+              </div>
             </ModalBody>
-
             <ModalFooter>
               <CButton bgColor={primaryColor} type="submit" text="Post" />
             </ModalFooter>

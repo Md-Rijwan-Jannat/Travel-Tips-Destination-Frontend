@@ -4,8 +4,8 @@ export const CommentApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Get comments
     getCommentsForPosts: builder.query({
-      query: () => ({
-        url: `/comments/all-comments`,
+      query: (postId) => ({
+        url: `/comments/${postId}`,
         method: "GET",
       }),
       providesTags: ["comments", "posts", "users"],
@@ -13,8 +13,8 @@ export const CommentApi = baseApi.injectEndpoints({
 
     // Get comments
     getAllComments: builder.query({
-      query: (postId) => ({
-        url: `/comments/${postId}`,
+      query: () => ({
+        url: `/comments/all-comments`,
         method: "GET",
       }),
       providesTags: ["comments", "posts", "users"],

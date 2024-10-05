@@ -15,6 +15,7 @@ import {
 import { useGetAllPaymentsDatForAnalyticsQuery } from "@/src/redux/features/adminManagement/payment";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { TPayment } from "@/src/types";
+import TableSkeleton from "@/src/components/ui/skeleton/tableSkeleton";
 
 ChartJS.register(
   CategoryScale,
@@ -70,21 +71,18 @@ export default function MarketingAnalytics() {
     [paymentsData]
   );
 
-  if (loadingPayments) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="bg-default-50 p-3 rounded-lg mt-5">
       <h3 className="text-xl font-bold mb-4 text-pink-400">
         Marketing Analytics
       </h3>
+      {loadingPayments && <TableSkeleton />}
       <div className="flex items-center space-x-4">
-        <div className="bg-gradient-to-br from-green-400 to-green-200 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+        <div className="bg-gradient-to-br from-green-500/80 to-green-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
           <FaMoneyBillWave className="inline mr-1" />
           Total Sales: {totalSales}
         </div>
-        <div className="bg-gradient-to-br from-pink-400 to-pink-200 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+        <div className="bg-gradient-to-br from-pink-500/80 to-pink-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
           <FaMoneyBillWave className="inline mr-1" />
           Total Profit: {totalProfit}
         </div>

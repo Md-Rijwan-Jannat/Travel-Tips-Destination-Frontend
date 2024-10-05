@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineDislike, AiOutlineLike } from "react-icons/ai";
-import { FaRegComment, FaShare } from "react-icons/fa";
+import {
+  FaRegComment,
+  FaShare,
+  FaThumbsDown,
+  FaThumbsUp,
+} from "react-icons/fa";
 import { MdOutlineContentCopy } from "react-icons/md"; // Copy icon
 import {
   useLikeMutation,
@@ -13,6 +18,7 @@ import { TPost } from "@/src/types";
 import { motion } from "framer-motion";
 import Comment from "./postComments/comment";
 import { copyToClipboard } from "@/src/utils/copyToClipboard";
+import { RiShareForwardLine } from "react-icons/ri";
 
 interface PostActionsProps {
   post: TPost;
@@ -29,8 +35,11 @@ export default function PostActions({ post }: PostActionsProps) {
   const [disLikeFn] = useDisLikeMutation();
   const [unDislikeFn] = useUnDislikeMutation();
 
-  const likeExists = likes?.includes(userId);
-  const dislikeExists = dislikes?.includes(userId);
+  const [localLikes, setLocalLikes] = useState(likes || []);
+  const [localDislikes, setLocalDislikes] = useState(dislikes || []);
+
+  const likeExists = localLikes.includes(userId);
+  const dislikeExists = localDislikes.includes(userId);
 
   // Copy handler
   const handleCopyLink = () => {
@@ -38,16 +47,22 @@ export default function PostActions({ post }: PostActionsProps) {
 
     copyToClipboard(postUrl);
   };
+
   // Handle Like Action
   const handleLike = async () => {
     try {
       if (likeExists) {
         // User already liked the post, so unlike it
+        setLocalLikes((prevLikes) => prevLikes.filter((id) => id !== userId));
         await unLikeFn(_id);
       } else {
         // User hasn't liked the post, like it and remove dislike if necessary
+        setLocalLikes((prevLikes) => [...prevLikes, userId]);
         await likeFn(_id);
         if (dislikeExists) {
+          setLocalDislikes((prevDislikes) =>
+            prevDislikes.filter((id) => id !== userId)
+          );
           await unDislikeFn(_id); // Remove dislike if user had disliked the post
         }
       }
@@ -60,13 +75,16 @@ export default function PostActions({ post }: PostActionsProps) {
   const handleDislike = async () => {
     try {
       if (dislikeExists) {
-        // User already disliked the post, so undislike it
+        setLocalDislikes((prevDislikes) =>
+          prevDislikes.filter((id) => id !== userId)
+        );
         await unDislikeFn(_id);
       } else {
-        // User hasn't disliked the post, dislike it and remove like if necessary
+        setLocalDislikes((prevDislikes) => [...prevDislikes, userId]);
         await disLikeFn(_id);
         if (likeExists) {
-          await unLikeFn(_id); // Remove like if user had liked the post
+          setLocalLikes((prevLikes) => prevLikes.filter((id) => id !== userId));
+          await unLikeFn(_id);
         }
       }
     } catch (error) {
@@ -78,28 +96,26 @@ export default function PostActions({ post }: PostActionsProps) {
     <div className="flex flex-col items-start">
       <div className="flex justify-between border-t border-b border-default-200 py-2 w-full mt-5">
         <div className="text-xs flex items-center gap-1">
-          <AiOutlineLike
-            className={` ${
-              likes?.length > 0 ? "text-blue-500" : "text-default-600"
-            }`}
-            size={16}
-          />{" "}
-          {likes?.length}
+          {localLikes.length > 0 ? (
+            <FaThumbsUp className={`text-blue-500`} size={16} />
+          ) : (
+            <AiOutlineLike className={`text-default-500`} size={16} />
+          )}
+          {localLikes.length}
         </div>
         <div className="text-xs flex items-center gap-1">
-          <AiOutlineDislike
-            className={` ${
-              dislikes?.length > 0 ? "text-red-500" : "text-default-600"
-            }`}
-            size={16}
-          />{" "}
-          {dislikes?.length}
+          {localDislikes.length > 0 ? (
+            <FaThumbsDown className={`text-red-500`} size={16} />
+          ) : (
+            <AiOutlineDislike className={`text-default-500`} size={16} />
+          )}
+          {localDislikes.length}
         </div>
-        <div className="text-xs flex items-center gap-1">
+        <div className="text-xs flex items-center gap-1 text-default-500 ">
           <FaRegComment size={16} /> {comments?.length}
         </div>
-        <div className="text-xs flex items-center gap-1">
-          <FaShare size={16} /> {0}
+        <div className="text-xs flex items-center gap-1 text-default-500 ">
+          <RiShareForwardLine size={18} /> {0}
         </div>
       </div>
 
@@ -154,7 +170,7 @@ export default function PostActions({ post }: PostActionsProps) {
           whileTap={{ scale: 0.95 }}
           className="flex items-center text-xs md:text-sm text-default-600 hover:text-blue-500 gap-1 rounded py-1"
         >
-          <FaShare size={16} />
+          <RiShareForwardLine size={18} />
           Share
         </motion.button>
       </div>

@@ -41,7 +41,7 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({
           }
         >
           <DropdownItem key="all">All Posts</DropdownItem>
-          <DropdownItem key="popular">For You</DropdownItem>
+          <DropdownItem key="popular">Popular Posts</DropdownItem>
           <DropdownItem key="poor">Poor Posts</DropdownItem>
         </DropdownMenu>
       </Dropdown>

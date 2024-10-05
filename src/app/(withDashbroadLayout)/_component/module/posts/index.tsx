@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PostCard from "./postCard/postCard";
 import PostModal from "./modal/postingModal";
 import { useGetAllPostsQuery } from "@/src/redux/features/post/postApi";
@@ -25,20 +25,30 @@ export default function Post() {
   const token = useAppSelector((state) => state.auth.token);
   const router = useRouter();
 
-  const { data: postsData, isFetching } = useGetAllPostsQuery({
+  const {
+    data: postsData,
+    isFetching,
+    isSuccess,
+  } = useGetAllPostsQuery({
     searchTerm: selectedCategory || "",
+    page,
   });
 
   const posts = postsData?.data as TPost[];
   const { userInfo } = useUser();
 
   const loadMorePosts = async () => {
-    if (!isFetchingMore) {
+    if (!isFetchingMore && isSuccess && postsData?.hasMore) {
       setIsFetchingMore(true);
       setPage((prevPage) => prevPage + 1);
-      setIsFetchingMore(false);
     }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      setIsFetchingMore(false);
+    }
+  }, [isSuccess]);
 
   // Filter posts based on selected filter option and tab
   const filteredPosts = () => {
@@ -63,7 +73,8 @@ export default function Post() {
   };
 
   if (!token) {
-    router.push("/login");
+    router.push("/");
+
     return null;
   }
 

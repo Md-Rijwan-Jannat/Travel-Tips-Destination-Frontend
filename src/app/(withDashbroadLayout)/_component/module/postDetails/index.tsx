@@ -7,8 +7,8 @@ import PostActions from "../posts/postCard/postActions/postActions";
 import { useGetSinglePostQuery } from "@/src/redux/features/post/postApi";
 import PostDetailsHeader from "./postDetailsHeader";
 import PostDetailsContent from "./postDetailsContent";
-import CommentInput from "../posts/postCard/postActions/postComments/commentInput";
 import DetailsCommentCard from "../posts/postCard/postActions/postComments/detailsCommentCard";
+import PostImages from "./postImages";
 
 interface TPostDetailsProps {
   postId: string;
@@ -33,9 +33,7 @@ export default function PostDetails({ postId }: TPostDetailsProps) {
       <PostDetailsContent post={post} />
 
       {/* Post Images */}
-      {post?.images.length > 0 && (
-        <PostImage altText={post?.title} images={post?.images} />
-      )}
+      {post?.images.length > 0 && <PostImages post={post} />}
 
       {/* Post Actions */}
       <PostActions post={post} />

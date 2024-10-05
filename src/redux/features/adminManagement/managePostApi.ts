@@ -44,10 +44,19 @@ const manageUserApi = baseApi.injectEndpoints({
 
     // Get all normal users query
     getAllPostsNormalForAnalytics: builder.query({
-      query: () => {
+      query: (args) => {
+        const params = new URLSearchParams();
+
+        if (args) {
+          Object.entries(args).forEach(([name, value]) => {
+            params.append(name, value as string);
+          });
+        }
+
         return {
           url: `/posts/normal-posts-analytics`,
           method: "GET",
+          params,
         };
       },
       providesTags: ["posts"],
@@ -55,7 +64,15 @@ const manageUserApi = baseApi.injectEndpoints({
 
     // Get all premium users query
     getAllPostsPremiumForAnalytics: builder.query({
-      query: () => {
+      query: (args) => {
+        const params = new URLSearchParams();
+
+        if (args) {
+          Object.entries(args).forEach(([name, value]) => {
+            params.append(name, value as string);
+          });
+        }
+
         return {
           url: `/posts/premium-posts-analytics`,
           method: "GET",

@@ -14,28 +14,31 @@ import UserTable from "./userTable";
 import Empty from "@/src/components/ui/empty";
 
 export default function AllUsers() {
-  const [page, setPage] = useState(1);
+  // Separate page states for both tabs
+  const [pageAll, setPageAll] = useState(1);
+  const [pagePremium, setPagePremium] = useState(1);
   const limit = 10; // Limit for pagination
-
-  const queryParams = {
-    sort: "-createdAt",
-    limit: limit.toString(),
-    page: page.toString(),
-  };
 
   // Fetch all users with pagination
   const {
     data: allUsersData,
     isLoading: isLoadingAllUsers,
     isError: isErrorAllUsers,
-  } = useGetAllUsersQuery(queryParams);
+  } = useGetAllUsersQuery({
+    sort: "-createdAt",
+    limit: limit.toString(),
+    page: pageAll.toString(),
+  });
 
-  // Fetch premium users
+  // Fetch premium users with pagination
   const {
     data: premiumUsersData,
     isLoading: isLoadingPremiumUsers,
     isError: isErrorPremiumUsers,
-  } = useGetAllPremiumUsersQuery({ page, limit });
+  } = useGetAllPremiumUsersQuery({
+    page: pagePremium,
+    limit,
+  });
 
   const [updateUserStatus] = useUpdateUserStatusMutation();
   const [updateUserRole] = useUpdateUserRoleMutation();
@@ -43,7 +46,8 @@ export default function AllUsers() {
   // Destructure user data
   const allUsers: TUser[] = allUsersData?.data || [];
   const premiumUsers: TUser[] = premiumUsersData?.data || [];
-  const meta = allUsersData?.meta;
+  const metaAll = allUsersData?.meta;
+  const metaPremium = premiumUsersData?.meta;
 
   // Feedback states
   const [feedbackMessage, setFeedbackMessage] = useState("");
@@ -55,8 +59,6 @@ export default function AllUsers() {
         userId,
         status: newStatus,
       }).unwrap();
-
-      console.log("ststus ==>", res);
 
       if (res?.data?.success) {
         setFeedbackMessage("User status updated successfully!");
@@ -82,8 +84,12 @@ export default function AllUsers() {
     }
   };
 
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage); // Update page state
+  const handlePageChangeAll = (newPage: number) => {
+    setPageAll(newPage); // Update page state for all users
+  };
+
+  const handlePageChangePremium = (newPage: number) => {
+    setPagePremium(newPage); // Update page state for premium users
   };
 
   return (
@@ -101,6 +107,20 @@ export default function AllUsers() {
                 handleRoleUpdate={handleRoleUpdate}
                 isLoading={isLoadingPremiumUsers}
               />
+              {/* Pagination for Premium Users */}
+              {metaPremium?.total > metaPremium?.limit && (
+                <div className="mt-10 flex justify-center items-start">
+                  <Pagination
+                    color="default"
+                    variant="flat"
+                    showControls
+                    total={metaPremium?.totalPage || 1}
+                    page={pagePremium}
+                    className="mb-5 px-5 py-1 mx-3 border-none shadow-none rounded-full bg-default-50"
+                    onChange={handlePageChangePremium}
+                  />
+                </div>
+              )}
             </Tab>
 
             {/* All Users Tab */}
@@ -111,26 +131,22 @@ export default function AllUsers() {
                 handleRoleUpdate={handleRoleUpdate}
                 isLoading={isLoadingAllUsers}
               />
+              {/* Pagination for All Users */}
+              {metaAll?.total > metaAll?.limit && (
+                <div className="mt-10 flex justify-center items-start">
+                  <Pagination
+                    color="default"
+                    variant="flat"
+                    showControls
+                    total={metaAll?.totalPage || 1}
+                    page={pageAll}
+                    className="mb-5 px-5 py-1 mx-3 border-none shadow-none rounded-full bg-default-50"
+                    onChange={handlePageChangeAll}
+                  />
+                </div>
+              )}
             </Tab>
           </Tabs>
-
-          {/* Pagination for All Users */}
-          {meta?.total > limit && (
-            <>
-              {" "}
-              <div className="mt-10 flex justify-center items-start">
-                <Pagination
-                  color="default"
-                  variant="flat"
-                  showControls
-                  total={meta?.totalPage || 1}
-                  page={page}
-                  className="mb-5 px-5 py-1 mx-3 border-none shadow-none rounded-full bg-default-50]"
-                  onChange={handlePageChange}
-                />
-              </div>
-            </>
-          )}
         </>
       )}
     </div>

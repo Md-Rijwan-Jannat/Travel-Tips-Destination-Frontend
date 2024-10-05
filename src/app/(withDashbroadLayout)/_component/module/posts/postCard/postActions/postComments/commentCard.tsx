@@ -127,15 +127,19 @@ const CommentCard: React.FC<TCommentCardProps> = ({ postId }) => {
                 name={comment.fullName.charAt(0).toUpperCase()}
                 alt={`${comment.fullName}'s avatar`}
                 size="sm"
+                className="cursor-pointer"
               />
               <div>
-                <div className="font-semibold text-sm flex items-center gap-1">
+                <Link
+                  href={`/profile/${comment?.userId}`}
+                  className="font-semibold text-sm flex items-center gap-1 text-default-700"
+                >
                   {comment.fullName}
                   {comment?.verified! && (
                     <GoVerified className="text-primaryColor" />
                   )}{" "}
-                </div>
-                <div className="text-sm">{comment.text}</div>
+                </Link>
+                <div className="text-xs">{comment.text}</div>
 
                 {replyingTo === comment.comId ? (
                   <ReplyCommentInput
@@ -178,13 +182,16 @@ const CommentCard: React.FC<TCommentCardProps> = ({ postId }) => {
                       size="sm"
                     />
                     <div>
-                      <div className="font-semibold text-sm flex items-center gap-1">
+                      <Link
+                        href={`/profile/${comment?.userId}`}
+                        className="font-semibold text-sm flex items-center gap-1 text-default-700"
+                      >
                         {reply.fullName}{" "}
                         {reply?.verified! && (
                           <GoVerified className="text-primaryColor" />
                         )}
-                      </div>
-                      <div className="text-sm">{reply.text}</div>
+                      </Link>
+                      <div className="text-xs">{reply.text}</div>
                     </div>
                   </div>
                   {/* Dropdown for replies as well */}
