@@ -2,7 +2,7 @@ import { baseApi } from "../../api/baseApi";
 
 const paymentApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // Get all users query
+    // Get all payments sata
     getAllPaymentsDetails: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
@@ -21,7 +21,21 @@ const paymentApi = baseApi.injectEndpoints({
       },
       providesTags: ["payment"],
     }),
+
+    // Get all payments data
+    getAllPaymentsDatForAnalytics: builder.query({
+      query: () => {
+        return {
+          url: `/payment/analytics`,
+          method: "GET",
+        };
+      },
+      providesTags: ["payment"],
+    }),
   }),
 });
 
-export const { useGetAllPaymentsDetailsQuery } = paymentApi;
+export const {
+  useGetAllPaymentsDetailsQuery,
+  useGetAllPaymentsDatForAnalyticsQuery,
+} = paymentApi;

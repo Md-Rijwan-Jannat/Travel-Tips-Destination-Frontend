@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { FaBell, FaEnvelope, FaUsers } from "react-icons/fa";
+import { FaUsers } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa6";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { TbArrowAutofitContentFilled } from "react-icons/tb";
@@ -83,25 +83,21 @@ export default function MenuBar({ className }: TMenuBarProps) {
             href="/admin-dashboard/manage-users"
             title="Manage Users"
             icon={<FaUsers className="text-[20px]" />}
-            delay={0.6}
           />
           <MenubarButton
             href="/admin-dashboard/manage-content"
             title="Manage Content"
             icon={<TbArrowAutofitContentFilled className="text-[20px]" />}
-            delay={0.7}
           />
           <MenubarButton
             href="/admin-dashboard/payments"
             title="Payments"
             icon={<RiSecurePaymentFill className="text-[20px]" />}
-            delay={0.8}
           />
           <MenubarButton
             href="/admin-dashboard/analytics"
             title="View Analytics"
             icon={<MdAnalytics className="text-[20px]" />}
-            delay={0.9}
           />
           <MenubarButton
             href="/#"

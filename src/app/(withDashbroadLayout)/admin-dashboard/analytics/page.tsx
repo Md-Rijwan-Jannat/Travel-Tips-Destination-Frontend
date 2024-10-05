@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Suspense } from "react";
+import Analytics from "../../_component/module/adminDashboard/analytics";
 
-export default function Aanalytics() {
+export default function AnalyticsPage() {
   return (
-    <div>
-      <h3>analytics</h3>
-    </div>
+    <Suspense fallback={<p>loading...</p>}>
+      <Analytics />
+    </Suspense>
   );
 }

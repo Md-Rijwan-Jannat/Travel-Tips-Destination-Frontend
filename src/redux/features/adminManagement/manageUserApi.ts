@@ -3,6 +3,27 @@ import { baseApi } from "../../api/baseApi";
 const manageUserApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Get all users query
+    getAllUserForAnalytics: builder.query({
+      query: () => {
+        return {
+          url: `/users/normal-users-analytics`,
+          method: "GET",
+        };
+      },
+      providesTags: ["users"],
+    }),
+
+    // Get all premium users query
+    getAlPremiumUserForAnalytics: builder.query({
+      query: () => {
+        return {
+          url: `/users/premium-users-analytics`,
+          method: "GET",
+        };
+      },
+      providesTags: ["users"],
+    }),
+    // Get all users query
     getAllUsers: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
@@ -64,6 +85,8 @@ const manageUserApi = baseApi.injectEndpoints({
 });
 
 export const {
+  useGetAllUserForAnalyticsQuery,
+  useGetAlPremiumUserForAnalyticsQuery,
   useGetAllUsersQuery,
   useGetAllPremiumUsersQuery,
   useUpdateUserStatusMutation,

@@ -38,7 +38,7 @@ const MenubarButton: React.FC<MenubarButtonProps> = ({
       <Link
         className={`flex items-center justify-start gap-3 border border-default-200 rounded-full p-2 transition-colors-opacity duration-300 cursor-pointer ${
           isActive
-            ? "bg-pink-500 text-white border-pink-500"
+            ? "bg-gradient-to-br from-pink-500 to-pink-300 text-white border-pink-500"
             : "bg-default-50 hover:bg-default-200" // Default styles
         }`}
         href={href}

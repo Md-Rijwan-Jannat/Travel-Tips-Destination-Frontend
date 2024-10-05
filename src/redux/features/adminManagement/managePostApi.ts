@@ -41,8 +41,34 @@ const manageUserApi = baseApi.injectEndpoints({
       },
       providesTags: ["posts"],
     }),
+
+    // Get all normal users query
+    getAllPostsNormalForAnalytics: builder.query({
+      query: () => {
+        return {
+          url: `/posts/normal-posts-analytics`,
+          method: "GET",
+        };
+      },
+      providesTags: ["posts"],
+    }),
+
+    // Get all premium users query
+    getAllPostsPremiumForAnalytics: builder.query({
+      query: () => {
+        return {
+          url: `/posts/premium-posts-analytics`,
+          method: "GET",
+        };
+      },
+      providesTags: ["posts"],
+    }),
   }),
 });
 
-export const { useGetAllManagePostsQuery, useGetAllPremiumManagePostsQuery } =
-  manageUserApi;
+export const {
+  useGetAllManagePostsQuery,
+  useGetAllPremiumManagePostsQuery,
+  useGetAllPostsNormalForAnalyticsQuery,
+  useGetAllPostsPremiumForAnalyticsQuery,
+} = manageUserApi;

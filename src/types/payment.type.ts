@@ -11,6 +11,7 @@ export interface TPaymentData {
 }
 
 export interface TPayment {
+  profit: number;
   _id: string;
   transitionId: string;
   user: TUser;

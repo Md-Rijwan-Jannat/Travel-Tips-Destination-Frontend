@@ -55,7 +55,7 @@ export default function ManagePayments() {
                   showControls
                   total={meta?.totalPage || 1}
                   page={page}
-                  className="mb-5 px-5 py-1 mx-3 border-none shadow-none rounded-full bg-[#F4F4F5]"
+                  className="mb-5 px-5 py-1 mx-3 border-none shadow-none rounded-full bg-default-50"
                   onChange={handlePageChange}
                 />
               </div>

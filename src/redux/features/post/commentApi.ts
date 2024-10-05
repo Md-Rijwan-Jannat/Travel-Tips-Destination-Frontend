@@ -4,12 +4,22 @@ export const CommentApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Get comments
     getCommentsForPosts: builder.query({
+      query: () => ({
+        url: `/comments/all-comments`,
+        method: "GET",
+      }),
+      providesTags: ["comments", "posts", "users"],
+    }),
+
+    // Get comments
+    getAllComments: builder.query({
       query: (postId) => ({
         url: `/comments/${postId}`,
         method: "GET",
       }),
       providesTags: ["comments", "posts", "users"],
     }),
+
     // Add comment
     addCommentsForPosts: builder.mutation({
       query: (data) => ({
@@ -19,6 +29,7 @@ export const CommentApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["comments", "posts", "users"],
     }),
+
     // Add comment
     updateCommentsForPosts: builder.mutation({
       query: (args) => ({
@@ -28,6 +39,7 @@ export const CommentApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["comments", "posts", "users"],
     }),
+
     // Add comment
     deleteCommentsForPosts: builder.mutation({
       query: (commentId) => ({
@@ -36,6 +48,7 @@ export const CommentApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["comments", "posts", "users"],
     }),
+
     // Replay comment
     replayCommentsForPosts: builder.mutation({
       query: (args) => ({
@@ -50,6 +63,7 @@ export const CommentApi = baseApi.injectEndpoints({
 
 export const {
   useGetCommentsForPostsQuery,
+  useGetAllCommentsQuery,
   useAddCommentsForPostsMutation,
   useUpdateCommentsForPostsMutation,
   useDeleteCommentsForPostsMutation,
