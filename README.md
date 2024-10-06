@@ -110,30 +110,46 @@ Tips-Destination-Frontend/
 
 ## Scripts
 
-### Run the development server.
+### Run the Development Server
 
+To run the development server, use the following command:
+
+```bash
 npm run dev
+```
 
-# or
+or
 
+```bash
 bun dev
+```
 
-### Build the production app.
+### Build the Production App
 
+To build the production app, use the command:
+
+```bash
 npm run build
+```
 
-### Start the production server.
+### Start the Production Server
 
+To start the production server, run:
+
+```bash
 npm run start
+```
 
-# or
+or
 
+```bash
 bun start
+```
 
 ## Additional Features
 
-# Rich Text Editing: Using Quill for creating rich posts with image support.
-
-# Cloudinary Image Upload: Upload travel images to Cloudinary via an API request.
-
-# Payment Integration: Stripe for handling premium content payments.
+- **Rich Text Editing**: Using Quill for creating rich posts with image support.
+- **Cloudinary Image Upload**: Upload travel images to Cloudinary via an API request.
+- **Payment Integration**: Stripe for handling premium content payments.
+- **PDF Generation**: Enable users to download PDF versions of travel guides or posts for offline reading.
+- **Search with Debouncing**: Optimize search functionality with a debouncing mechanism to prevent excessive server requests.
