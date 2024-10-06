@@ -38,9 +38,6 @@ export default function NavBar() {
         className="hidden md:flex basis-1/5 sm:basis-full items-center"
         justify="end"
       >
-        <NavbarItem className="hidden md:flex gap-2">
-          <ThemeSwitch />
-        </NavbarItem>
         <NavbarItem className="hidden md:flex gap-4">
           <NavDropdown />
         </NavbarItem>
@@ -50,7 +47,6 @@ export default function NavBar() {
         className="flex items-center  md:hidden gap-4"
         justify="end"
       >
-        <ThemeSwitch />
         <NavbarMenuToggle />
         <NavDropdown />
       </NavbarContent>

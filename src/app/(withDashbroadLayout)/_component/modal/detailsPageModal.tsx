@@ -4,10 +4,10 @@ import { TPost } from "@/src/types";
 import { useUser } from "@/src/hooks/useUser";
 import { Chip } from "@nextui-org/chip";
 import { PiCrownSimpleDuotone } from "react-icons/pi";
-import PostHeader from "../postCard/postHeader";
-import PostContent from "../postCard/postContent";
-import PostImage from "../postCard/postImages";
-import PostActions from "../postCard/postActions/postActions";
+import PostHeader from "../module/posts/postCard/postHeader";
+import PostContent from "../module/posts/postCard/postContent";
+import PostImage from "../module/posts/postCard/postImages";
+import PostActions from "../module/posts/postActions/postActions";
 
 interface TDetailsPageModalProps {
   post: TPost;
@@ -34,9 +34,7 @@ export default function DetailsPageModal({
             <PostContent post={post} />
 
             {/* Post Images */}
-            {post?.images.length > 0 && (
-              <PostImage altText={post.title} images={post.images} />
-            )}
+            {post?.images.length > 0 && <PostImage post={post} />}
 
             {/* Premium Chip */}
             {post.status === "PREMIUM" && (

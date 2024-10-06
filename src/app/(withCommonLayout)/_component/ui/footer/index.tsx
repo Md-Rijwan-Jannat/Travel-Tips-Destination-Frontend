@@ -11,7 +11,7 @@ export default function Footer() {
         title="nextui.org homepage"
       >
         <span className="text-default-600">Powered by</span>
-        <p className="text-primary">Rijwan</p>
+        <p className="text-primary">TT&DG</p>
       </Link>
     </footer>
   );

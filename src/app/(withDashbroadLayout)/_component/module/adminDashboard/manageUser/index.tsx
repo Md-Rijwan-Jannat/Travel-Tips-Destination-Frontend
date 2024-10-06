@@ -12,6 +12,7 @@ import {
 import { TUser } from "@/src/types";
 import UserTable from "./userTable";
 import Empty from "@/src/components/ui/empty";
+import TableSkeleton from "@/src/components/ui/skeleton/tableSkeleton";
 
 export default function AllUsers() {
   // Separate page states for both tabs
@@ -49,6 +50,8 @@ export default function AllUsers() {
   const metaAll = allUsersData?.meta;
   const metaPremium = premiumUsersData?.meta;
 
+  console.log(allUsers);
+
   // Feedback states
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
@@ -85,44 +88,20 @@ export default function AllUsers() {
   };
 
   const handlePageChangeAll = (newPage: number) => {
-    setPageAll(newPage); // Update page state for all users
+    setPageAll(newPage);
   };
 
   const handlePageChangePremium = (newPage: number) => {
-    setPagePremium(newPage); // Update page state for premium users
+    setPagePremium(newPage);
   };
 
   return (
     <div className="flex w-full flex-col">
-      {isErrorAllUsers || isErrorPremiumUsers ? (
-        <Empty />
+      {isLoadingPremiumUsers || isLoadingAllUsers ? (
+        <TableSkeleton />
       ) : (
         <>
           <Tabs aria-label="User Categories">
-            {/* Premium Users Tab */}
-            <Tab key="premium" title="Premium Users">
-              <UserTable
-                users={premiumUsers}
-                handleStatusUpdate={handleStatusUpdate}
-                handleRoleUpdate={handleRoleUpdate}
-                isLoading={isLoadingPremiumUsers}
-              />
-              {/* Pagination for Premium Users */}
-              {metaPremium?.total > metaPremium?.limit && (
-                <div className="mt-10 flex justify-center items-start">
-                  <Pagination
-                    color="default"
-                    variant="flat"
-                    showControls
-                    total={metaPremium?.totalPage || 1}
-                    page={pagePremium}
-                    className="mb-5 px-5 py-1 mx-3 border-none shadow-none rounded-full bg-default-50"
-                    onChange={handlePageChangePremium}
-                  />
-                </div>
-              )}
-            </Tab>
-
             {/* All Users Tab */}
             <Tab key="normal" title="Normal Users">
               <UserTable
@@ -142,6 +121,29 @@ export default function AllUsers() {
                     page={pageAll}
                     className="mb-5 px-5 py-1 mx-3 border-none shadow-none rounded-full bg-default-50"
                     onChange={handlePageChangeAll}
+                  />
+                </div>
+              )}
+            </Tab>
+            {/* Premium Users Tab */}
+            <Tab key="premium" title="Premium Users">
+              <UserTable
+                users={premiumUsers}
+                handleStatusUpdate={handleStatusUpdate}
+                handleRoleUpdate={handleRoleUpdate}
+                isLoading={isLoadingPremiumUsers}
+              />
+              {/* Pagination for Premium Users */}
+              {metaPremium?.total > metaPremium?.limit && (
+                <div className="mt-10 flex justify-center items-start">
+                  <Pagination
+                    color="default"
+                    variant="flat"
+                    showControls
+                    total={metaPremium?.totalPage || 1}
+                    page={pagePremium}
+                    className="mb-5 px-5 py-1 mx-3 border-none shadow-none rounded-full bg-default-50"
+                    onChange={handlePageChangePremium}
                   />
                 </div>
               )}

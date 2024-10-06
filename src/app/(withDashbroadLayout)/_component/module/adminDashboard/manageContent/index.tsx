@@ -10,6 +10,7 @@ import {
 } from "@/src/redux/features/adminManagement/managePostApi";
 import ContentTable from "./contentTable";
 import Empty from "@/src/components/ui/empty";
+import TableSkeleton from "@/src/components/ui/skeleton/tableSkeleton";
 
 export default function ManageContent() {
   // Separate state for page for each tab
@@ -55,11 +56,32 @@ export default function ManageContent() {
 
   return (
     <div className="flex w-full flex-col">
-      {isErrorAllPosts || isErrorPremiumPosts ? (
-        <Empty />
+      {isLoadingAllPosts || isLoadingPremiumPosts ? (
+        <TableSkeleton />
       ) : (
         <>
           <Tabs aria-label="Post Categories">
+            <Tab key="normal" title="All Posts">
+              <ContentTable posts={allPosts} isLoading={isLoadingAllPosts} />
+              {/* Pagination for All Posts */}
+
+              {metaAll?.total > metaAll?.limit && (
+                <>
+                  {" "}
+                  <div className="mt-10 flex justify-center items-start">
+                    <Pagination
+                      color="default"
+                      variant="flat"
+                      showControls
+                      total={metaAll?.totalPage || 1}
+                      page={pageAll}
+                      className="mb-5 px-5 py-1 mx-3 border-none shadow-none rounded-full bg-default-50"
+                      onChange={handlePageChangeAll}
+                    />
+                  </div>
+                </>
+              )}
+            </Tab>
             <Tab key="premium" title="Premium Posts">
               <ContentTable
                 posts={premiumPosts}
@@ -77,27 +99,6 @@ export default function ManageContent() {
                       page={pagePremium}
                       className="mb-5 px-5 py-1 mx-3 border-none shadow-none rounded-full bg-default-50"
                       onChange={handlePageChangePremium}
-                    />
-                  </div>
-                </>
-              )}
-            </Tab>
-            <Tab key="normal" title="All Posts">
-              <ContentTable posts={allPosts} isLoading={isLoadingAllPosts} />
-              {/* Pagination for All Posts */}
-
-              {metaAll?.total > metaAll?.limit && (
-                <>
-                  {" "}
-                  <div className="mt-10 flex justify-center items-start">
-                    <Pagination
-                      color="default"
-                      variant="flat"
-                      showControls
-                      total={metaAll?.totalPage || 1}
-                      page={pageAll}
-                      className="mb-5 px-5 py-1 mx-3 border-none shadow-none rounded-full bg-default-50"
-                      onChange={handlePageChangeAll}
                     />
                   </div>
                 </>

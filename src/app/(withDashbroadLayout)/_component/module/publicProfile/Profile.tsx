@@ -6,7 +6,7 @@ import { GoVerified } from "react-icons/go";
 import { Avatar } from "@nextui-org/avatar";
 import { Divider } from "@nextui-org/divider";
 import { motion } from "framer-motion";
-import UpdateNameImageModal from "../posts/modal/updateUserModal";
+import UpdateNameImageModal from "../../modal/updateUserModal";
 import UserProfileTabs from "./userProfileTabs";
 import { useUser } from "@/src/hooks/useUser";
 import Follow from "./follow";

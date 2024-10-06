@@ -3,11 +3,11 @@
 import React from "react";
 import PostContent from "../posts/postCard/postContent";
 import PostImage from "../posts/postCard/postImages";
-import PostActions from "../posts/postCard/postActions/postActions";
+import PostActions from "../posts/postActions/postActions";
 import { useGetSinglePostQuery } from "@/src/redux/features/post/postApi";
 import PostDetailsHeader from "./postDetailsHeader";
 import PostDetailsContent from "./postDetailsContent";
-import DetailsCommentCard from "../posts/postCard/postActions/postComments/detailsCommentCard";
+import DetailsCommentCard from "../posts/postActions/postComments/detailsCommentCard";
 import PostImages from "./postImages";
 
 interface TPostDetailsProps {

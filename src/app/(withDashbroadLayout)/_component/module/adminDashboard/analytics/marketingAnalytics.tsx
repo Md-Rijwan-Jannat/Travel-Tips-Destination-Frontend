@@ -77,14 +77,14 @@ export default function MarketingAnalytics() {
         Marketing Analytics
       </h3>
       {loadingPayments && <TableSkeleton />}
-      <div className="flex items-center space-x-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:5 mb-5">
         <div className="bg-gradient-to-br from-green-500/80 to-green-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
-          <FaMoneyBillWave className="inline mr-1" />
-          Total Sales: {totalSales}
+          <FaMoneyBillWave className="text-lg md:text-3xl mr-1" />
+          <p className="text-sm md:text-lg">Total Sales: {totalSales}</p>
         </div>
         <div className="bg-gradient-to-br from-pink-500/80 to-pink-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
-          <FaMoneyBillWave className="inline mr-1" />
-          Total Profit: {totalProfit}
+          <FaMoneyBillWave className="text-lg md:text-3xl mr-1" />
+          <p className="text-sm md:text-lg"> Total Profit: {totalProfit}</p>
         </div>
       </div>
       <div className="chart-container mt-4">

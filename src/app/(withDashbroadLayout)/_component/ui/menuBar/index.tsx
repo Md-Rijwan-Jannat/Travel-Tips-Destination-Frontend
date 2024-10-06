@@ -54,17 +54,17 @@ export default function MenuBar({ className }: TMenuBarProps) {
             icon={<IoIosCheckmarkCircle className="text-[20px]" />}
           />
           <MenubarButton
-            href="/#"
+            href="/notifications"
             title="Notifications"
             icon={<FaBell className="text-[20px]" />}
           />
           <MenubarButton
-            href="/#"
+            href="/messages"
             title="Messages"
             icon={<FaFacebookMessenger className="text-[20px]" />}
           />
           <MenubarButton
-            href="/bookmarks"
+            href="/bookmark-post"
             title="Bookmarks"
             icon={<FaBookmark className="text-[20px]" />}
           />
@@ -100,12 +100,12 @@ export default function MenuBar({ className }: TMenuBarProps) {
             icon={<MdAnalytics className="text-[20px]" />}
           />
           <MenubarButton
-            href="/#"
+            href="/notifications"
             title="Notifications"
             icon={<FaBell className="text-[20px]" />}
           />
           <MenubarButton
-            href="/#"
+            href="/messages"
             title="Messages"
             icon={<FaFacebookMessenger className="text-[20px]" />}
           />

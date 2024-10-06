@@ -60,7 +60,7 @@ export default function RegisterForm() {
           setCredentials({ user: userData, token: res.data.data.accessToken })
         );
 
-        router.push(redirect ? redirect : "/");
+        router.push(redirect ? redirect : "/news-feed/posts");
 
         Cookies.set("accessToken", res?.data?.data?.accessToken);
         toast.success("Register successful");

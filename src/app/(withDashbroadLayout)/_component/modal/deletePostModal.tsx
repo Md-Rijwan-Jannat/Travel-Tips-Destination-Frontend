@@ -46,7 +46,12 @@ const DeletePostModal = ({
 
   return (
     <>
-      <Modal placement="center" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        size="md"
+        placement="center"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      >
         {isLoading && <GlassLoader />}
         <ModalContent className="m-2">
           <ModalHeader>Confirm Delete</ModalHeader>

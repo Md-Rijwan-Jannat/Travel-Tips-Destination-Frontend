@@ -12,7 +12,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import GlassLoader from "@/src/components/shared/glassLoader";
 import { useUpdateCommentsForPostsMutation } from "@/src/redux/features/post/commentApi";
-import { TRenderedComment } from "../postCard/postActions/postComments/commentCard";
+import { TRenderedComment } from "../module/posts/postActions/postComments/commentCard";
 import CButton from "@/src/components/ui/CButton/CButton";
 import { primaryColor } from "@/src/styles/button";
 
@@ -51,7 +51,12 @@ export default function CommentEditModal({
   };
 
   return (
-    <Modal placement="center" isOpen={isOpen} onOpenChange={onOpenChange}>
+    <Modal
+      size="md"
+      placement="center"
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+    >
       {isLoading && <GlassLoader />}
       <ModalContent className="m-2">
         <ModalHeader>Edit Comment</ModalHeader>

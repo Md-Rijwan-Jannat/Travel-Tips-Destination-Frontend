@@ -10,8 +10,8 @@ import { Button } from "@nextui-org/button";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useDisclosure } from "@nextui-org/modal";
 import { useUser } from "@/src/hooks/useUser";
-import CommentEditModal from "../../../modal/commentEditModal";
-import CommentDeleteModal from "../../../modal/commentDeleteModal";
+import CommentEditModal from "../../../../modal/commentEditModal";
+import CommentDeleteModal from "../../../../modal/commentDeleteModal";
 import { TRenderedComment } from "./commentCard";
 
 interface CommentDropdownProps {

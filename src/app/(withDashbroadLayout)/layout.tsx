@@ -1,11 +1,9 @@
 import React from "react";
-
 import FeedNavbar from "./_component/ui/navbar";
 import MenuBar from "./_component/ui/menuBar";
 import PremiumPosts from "./_component/module/premiumPost";
-
 import Container from "@/src/components/shared/container";
-import { useServerUser } from "@/src/hooks/useServerUser";
+import { currentUser } from "@/src/service/currentUser";
 
 type TUserProps = {
   id: string;
@@ -20,9 +18,7 @@ export default async function WithDashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = (await useServerUser()) as unknown as TUserProps;
-
-  console.log("user details=====>>>>>>", user);
+  const user = (await currentUser()) as TUserProps;
 
   return (
     <div className="flex min-h-screen bg-background">

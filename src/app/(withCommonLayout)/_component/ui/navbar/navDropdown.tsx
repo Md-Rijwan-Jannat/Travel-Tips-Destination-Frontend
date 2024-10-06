@@ -7,41 +7,46 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/dropdown";
-import { usePathname, useRouter } from "next/navigation";
-import { FC, useEffect } from "react";
-
+import { useRouter } from "next/navigation";
+import { FC } from "react";
 import { useAppDispatch, useAppSelector } from "@/src/redux/hook";
 import { clearCredentials, getUser } from "@/src/redux/features/auth/authSlice";
 import CButton from "@/src/components/ui/CButton/CButton";
 import { useUser } from "@/src/hooks/useUser";
-import Cookies from "js-cookie";
 import { toast } from "sonner";
+import { Logout } from "@/src/service/logout";
+import { useDisclosure } from "@nextui-org/modal";
+import ThemeModal from "@/src/components/modal/themeModal";
+import { ThemeSwitch } from "@/src/components/ui/theme-switch";
 
-type TNavDropdownProps = object;
-
-const NavDropdown: FC<TNavDropdownProps> = () => {
+const NavDropdown: FC = () => {
   const dispatch = useAppDispatch();
   const userExists = useAppSelector(getUser);
   const router = useRouter();
-  const pathname = usePathname();
 
   const { userInfo } = useUser();
 
   const handleNavigation = (pathname: string) => {
     router.push(`${pathname}`);
   };
-
-  const handleLogout = () => {
+  const handleLogout = async () => {
     dispatch(clearCredentials());
-    Cookies.remove("accessToken");
+    await Logout();
     router.push("/");
     toast.success("Logout successful");
   };
 
+  const {
+    isOpen: isThemeOpen,
+    onOpen: onThemeOpen,
+    onOpenChange,
+  } = useDisclosure();
+
   return (
     <>
+      {!userExists?.email && <ThemeSwitch />}
       {userExists?.email ? (
-        <Dropdown className="">
+        <Dropdown>
           <DropdownTrigger>
             <Avatar
               className={`cursor-pointer text-[24px] font-bold`}
@@ -57,12 +62,6 @@ const NavDropdown: FC<TNavDropdownProps> = () => {
             >
               Profile
             </DropdownItem>
-            <DropdownItem
-              className={`${userInfo?.role === "USER" ? "block" : "hidden"}`}
-              onClick={() => handleNavigation("/profile/dashboard")}
-            >
-              Dashboard
-            </DropdownItem>
 
             <DropdownItem
               className={`${userInfo?.role === "ADMIN" ? "block" : "hidden"}`}
@@ -70,17 +69,21 @@ const NavDropdown: FC<TNavDropdownProps> = () => {
             >
               Admin Profile
             </DropdownItem>
-            <DropdownItem
-              onClick={() => handleNavigation("/admin-dashboard/setting")}
-            >
-              Setting
-            </DropdownItem>
+            <DropdownItem onClick={onThemeOpen}>Theme</DropdownItem>
             <DropdownItem onClick={handleLogout}>Logout</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       ) : (
-        <CButton size="sm" bgColor="#ff1f71" link="/register" text="Register" />
+        <div className="flex justify-end">
+          <CButton
+            size="sm"
+            bgColor="#ff1f71"
+            link="/register"
+            text="Register"
+          />
+        </div>
       )}
+      <ThemeModal isOpen={isThemeOpen} onOpenChange={onOpenChange} />
     </>
   );
 };

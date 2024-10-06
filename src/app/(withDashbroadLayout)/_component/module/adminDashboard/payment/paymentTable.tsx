@@ -35,7 +35,9 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, isLoading }) => {
         <TableBody>
           {payments.map((payment) => (
             <TableRow key={payment._id}>
-              <TableCell>{payment.transitionId}</TableCell>
+              <TableCell>
+                <p className="whitespace-nowrap">{payment.transitionId}</p>
+              </TableCell>
               <TableCell>
                 <div className="flex items-center gap-1">
                   <Tooltip content={payment?.user?.role}>

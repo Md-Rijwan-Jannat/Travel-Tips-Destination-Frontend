@@ -20,7 +20,7 @@ const PostImages: FC<TPostImagesProps> = ({ post }) => {
         elementClassNames={`grid gap-2 ${
           images.length === 1
             ? "grid-cols-1"
-            : images.length === 3
+            : images.length === 2
               ? "grid-cols-2"
               : "grid-cols-3"
         } mt-2`}
@@ -35,7 +35,7 @@ const PostImages: FC<TPostImagesProps> = ({ post }) => {
                 images.length === 1
                   ? "h-[300px] w-full"
                   : images.length === 2
-                    ? "h-[250px] w-full"
+                    ? "h-[350px] w-full"
                     : "h-[250px]"
               }`}
               height={images.length === 1 ? 300 : 250}

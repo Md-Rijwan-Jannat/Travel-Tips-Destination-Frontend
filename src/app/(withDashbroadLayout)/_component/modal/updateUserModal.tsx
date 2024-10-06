@@ -66,9 +66,6 @@ export default function UpdateUserModal({
     },
   });
 
-  // Watch for image file changes to display preview
-  const imageFile = watch("imageFile");
-
   // Use effect to set default values when modal opens
   useEffect(() => {
     if (isOpen) {
@@ -167,6 +164,7 @@ export default function UpdateUserModal({
         onPress={onOpen}
       />
       <Modal
+        size="md"
         placement="center"
         className="m-2"
         isOpen={isOpen}

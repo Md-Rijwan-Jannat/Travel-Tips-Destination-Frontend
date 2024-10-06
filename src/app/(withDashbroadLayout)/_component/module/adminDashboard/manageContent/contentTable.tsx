@@ -17,7 +17,7 @@ import { Tooltip } from "@nextui-org/tooltip";
 import { Button } from "@nextui-org/button";
 import { BsTrash } from "react-icons/bs";
 import { PiCrownSimpleDuotone } from "react-icons/pi";
-import DeletePostModal from "../../posts/modal/deletePostModal";
+import DeletePostModal from "../../../modal/deletePostModal";
 import { useDisclosure } from "@nextui-org/modal";
 import GlassLoader from "@/src/components/shared/glassLoader";
 import TableSkeleton from "@/src/components/ui/skeleton/tableSkeleton";

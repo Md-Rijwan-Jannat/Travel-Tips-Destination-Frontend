@@ -41,11 +41,11 @@ export default function CButton({
         onClick={onClick} // Ensure onClick is used for buttons
       >
         {link && type !== "submit" ? (
-          <Link className="text-default-700 font-semibold link" href={link}>
+          <Link className="text-default-900 font-semibold link" href={link}>
             {text}
           </Link>
         ) : (
-          <p className="link">{text}</p>
+          <p className="link text-default-900">{text}</p>
         )}
       </motion.button>
     </div>

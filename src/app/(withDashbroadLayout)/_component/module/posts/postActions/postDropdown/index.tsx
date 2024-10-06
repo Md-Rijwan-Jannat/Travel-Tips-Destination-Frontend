@@ -7,15 +7,16 @@ import {
 } from "@nextui-org/dropdown";
 import React from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import UpdatePostModal from "../../../modal/updatepostModal";
-import DeletePostModal from "../../../modal/deletePostModal";
+import UpdatePostModal from "../../../../modal/updatepostModal";
+import DeletePostModal from "../../../../modal/deletePostModal";
 import { TPost, TUser } from "@/src/types";
 import { useDisclosure } from "@nextui-org/modal";
 import { useUser } from "@/src/hooks/useUser";
 import { toast } from "sonner";
 import { copyToClipboard } from "@/src/utils/copyToClipboard";
-import ReportModal from "../../../modal/reportModal";
+import ReportModal from "../../../../modal/reportModal";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface TPostDropdownProps {
   userInfo: TUser;
@@ -51,6 +52,10 @@ export default function PostDropdown({
     copyToClipboard(postUrl);
   };
 
+  const pathname = usePathname();
+
+  console.log(pathname);
+
   return (
     <>
       <Dropdown>
@@ -68,6 +73,7 @@ export default function PostDropdown({
             Copy link
           </DropdownItem>
           <DropdownItem
+            className={`${pathname === `/news-feed/posts/${postData?._id}` && "hidden"}`}
             key="copy-link"
             as={Link}
             href={`/news-feed/posts/${postData?._id}`}

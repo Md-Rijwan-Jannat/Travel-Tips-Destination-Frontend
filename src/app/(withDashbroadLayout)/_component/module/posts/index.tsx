@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import PostCard from "./postCard/postCard";
-import PostModal from "./modal/postingModal";
+import PostModal from "../../modal/postingModal";
 import { useGetAllPostsQuery } from "@/src/redux/features/post/postApi";
 import { TPost, TUser } from "@/src/types";
 import InfiniteScrollContainer from "@/src/components/ui/infiniteScrollerContainer";
@@ -11,10 +11,10 @@ import Spinner from "@/src/components/ui/spinner";
 import Empty from "@/src/components/ui/empty";
 import PremiumPostsMarquee from "../premiumPost/premiumPostsMarquee";
 import { MdLockReset } from "react-icons/md";
-import DropdownFilter from "./postCard/postFilter/dropdownFilter";
 import { categoriesList } from "@/src/constants";
 import { useAppSelector } from "@/src/redux/hook";
 import { useRouter } from "next/navigation";
+import DropdownFilter from "./postFilter/dropdownFilter";
 
 export default function Post() {
   const [page, setPage] = useState(1);
@@ -40,13 +40,16 @@ export default function Post() {
   const loadMorePosts = async () => {
     if (!isFetchingMore && isSuccess && postsData?.hasMore) {
       setIsFetchingMore(true);
-      setPage((prevPage) => prevPage + 1);
+      setTimeout(() => {
+        setPage((prevPage) => prevPage + 1); // Fetch new page of data
+        setIsFetchingMore(false); // Turn off spinner
+      }, 1000); // Simulate 1-second loading
     }
   };
 
   useEffect(() => {
     if (isSuccess) {
-      setIsFetchingMore(false);
+      setIsFetchingMore(false); // Reset spinner when new data arrives
     }
   }, [isSuccess]);
 
@@ -82,6 +85,7 @@ export default function Post() {
     <InfiniteScrollContainer
       className="w-full md:w-[500px] xl:w-[600px] mx-auto"
       onBottomReached={loadMorePosts}
+      isFetchingMore={isFetchingMore} // Pass fetching status to the container
     >
       {/* Post Modal */}
       <div>

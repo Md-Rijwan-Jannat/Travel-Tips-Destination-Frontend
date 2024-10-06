@@ -6,11 +6,11 @@ import PostImage from "./postImages";
 
 import { TPost } from "@/src/types";
 import { motion } from "framer-motion";
-import PostActions from "./postActions/postActions";
+import PostActions from "../postActions/postActions";
 import { Chip } from "@nextui-org/chip";
 import { PiCrownSimpleDuotone } from "react-icons/pi";
 import { useUser } from "@/src/hooks/useUser";
-import CommentCard from "./postActions/postComments/commentCard";
+import CommentCard from "../postActions/postComments/commentCard";
 
 interface TPostCardProps {
   post: TPost;

@@ -21,7 +21,7 @@ import GlassLoader from "@/src/components/shared/glassLoader";
 import Cookies from "js-cookie";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 interface TDecodedData {
@@ -37,6 +37,8 @@ export default function LoginForm() {
   const [loginUser, { isLoading: LoginIsLoading, isSuccess }] =
     useLoginMutation();
   const dispatch = useAppDispatch();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
   const router = useRouter();
 
   const {
@@ -67,10 +69,10 @@ export default function LoginForm() {
         dispatch(
           setCredentials({ user: userData, token: res.data.data.accessToken })
         );
-        router.push("/news-feed/posts");
         // Set token in cookies
         Cookies.set("accessToken", res?.data?.data?.accessToken);
 
+        router.push(redirect ? redirect : "/news-feed/posts");
         // Show success toast
         toast.success("Login successful");
 

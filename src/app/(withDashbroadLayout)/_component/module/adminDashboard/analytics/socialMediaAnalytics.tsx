@@ -115,13 +115,13 @@ export default function SocialMediaAnalytics() {
           analyticsData.normalPosts,
         ],
         backgroundColor: [
-          "#68D391", // Green gradient for Payments
-          "#63B3ED", // Blue gradient for Premium Users
-          "#F6E05E", // Yellow gradient for Total Users
-          "#F687B3", // Pink gradient for Likes
-          "#FC8181", // Red gradient for Dislikes
-          "#B794F4", // Purple gradient for Premium Posts
-          "#A0AEC0", // Gray gradient for Normal Posts
+          "#68D391",
+          "#63B3ED",
+          "#F6E05E",
+          "#F687B3",
+          "#FC8181",
+          "#B794F4",
+          "#A0AEC0",
         ],
       },
     ],
@@ -135,47 +135,61 @@ export default function SocialMediaAnalytics() {
 
       {loading && <TableSkeleton />}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:5 mb-5">
         {/* Payments */}
         <div className="bg-gradient-to-br from-green-500/80 to-green-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
-          <FaMoneyBillWave className="text-3xl mr-3" />
-          <div>Total Badge Selling: {analyticsData.payments}</div>
+          <FaMoneyBillWave className="text-lg md:text-3xl mr-3" />
+          <div className="text-sm md:text-lg">
+            Total Badge Selling: {analyticsData.payments}
+          </div>
         </div>
 
         {/* Premium Users */}
         <div className="bg-gradient-to-br from-blue-500/80 to-blue-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
-          <FaUserShield className="text-3xl mr-3" />
-          <div>Total Premium Users: {analyticsData.premiumUsers}</div>
+          <FaUserShield className="text-lg md:text-3xl mr-3" />
+          <div className="text-sm md:text-lg">
+            Total Premium Users: {analyticsData.premiumUsers}
+          </div>
         </div>
 
         {/* Total Users */}
         <div className="bg-gradient-to-br from-yellow-500/80 to-yellow-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
-          <FaUsers className="text-3xl mr-3" />
-          <div>Total Users: {analyticsData.allUsers}</div>
+          <FaUsers className="text-lg md:text-3xl mr-3" />
+          <div className="text-sm md:text-lg">
+            Total Users: {analyticsData.allUsers}
+          </div>
         </div>
 
         {/* Likes */}
         <div className="bg-gradient-to-br from-pink-500/80 to-pink-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
-          <FaThumbsUp className="text-3xl mr-3" />
-          <div>Total Likes: {analyticsData.likes}</div>
+          <FaThumbsUp className="text-lg md:text-3xl mr-3" />
+          <div className="text-sm md:text-lg">
+            Total Likes: {analyticsData.likes}
+          </div>
         </div>
 
         {/* Dislikes */}
         <div className="bg-gradient-to-br from-red-500/80 to-red-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
-          <FaThumbsDown className="text-3xl mr-3" />
-          <div>Total Dislikes: {analyticsData.dislikes}</div>
+          <FaThumbsDown className="text-lg md:text-3xl mr-3" />
+          <div className="text-sm md:text-lg">
+            Total Dislikes: {analyticsData.dislikes}
+          </div>
         </div>
 
         {/* Premium Posts */}
         <div className="bg-gradient-to-br from-purple-500/80 to-purple-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
-          <FaCrown className="text-3xl mr-3" />
-          <div>Total Premium Posts: {analyticsData.premiumPosts}</div>
+          <FaCrown className="text-lg md:text-3xl mr-3" />
+          <div className="text-sm md:text-lg">
+            Total Premium Posts: {analyticsData.premiumPosts}
+          </div>
         </div>
 
         {/* Normal Posts */}
         <div className="bg-gradient-to-br from-gray-500/80 to-gray-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
-          <FaRegNewspaper className="text-3xl mr-3" />
-          <div>Total Normal Posts: {analyticsData.normalPosts}</div>
+          <FaRegNewspaper className="text-lg md:text-3xl mr-3" />
+          <div className="text-sm md:text-lg">
+            Total Normal Posts: {analyticsData.normalPosts}
+          </div>
         </div>
       </div>
 

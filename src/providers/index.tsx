@@ -24,7 +24,13 @@ export function Providers({ children, themeProps }: ProvidersProps) {
       <Provider store={store}>
         <Toaster />
         <PersistGate loading={null} persistor={persistor}>
-          <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+          <NextThemesProvider
+            {...themeProps}
+            attribute="class"
+            defaultTheme="system"
+          >
+            {children}
+          </NextThemesProvider>
         </PersistGate>
       </Provider>
     </NextUIProvider>

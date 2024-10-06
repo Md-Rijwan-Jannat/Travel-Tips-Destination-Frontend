@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@nextui-org/modal";
-import { Button } from "@nextui-org/button";
+import { Modal, ModalContent, ModalHeader, ModalBody } from "@nextui-org/modal";
 import { toast } from "sonner";
 import GlassLoader from "@/src/components/shared/glassLoader";
 import { useState } from "react";
@@ -42,7 +35,12 @@ export default function CommentDeleteModal({
   };
 
   return (
-    <Modal placement="center" isOpen={isOpen} onOpenChange={onOpenChange}>
+    <Modal
+      size="md"
+      placement="center"
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+    >
       {isLoading && <GlassLoader />}
       <ModalContent className="m-2">
         <ModalHeader>Confirm Delete</ModalHeader>

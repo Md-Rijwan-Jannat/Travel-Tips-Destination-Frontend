@@ -44,7 +44,12 @@ export default function ReportModal({
   };
 
   return (
-    <Modal placement="center" isOpen={isOpen} onOpenChange={onOpenChange}>
+    <Modal
+      size="lg"
+      placement="center"
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+    >
       {isLoading && <GlassLoader />}
       <ModalContent className="m-2">
         <ModalHeader>

@@ -6,6 +6,7 @@ import { Pagination } from "@nextui-org/pagination";
 import { useGetAllPaymentsDetailsQuery } from "@/src/redux/features/adminManagement/payment";
 import PaymentTable from "./paymentTable";
 import Empty from "@/src/components/ui/empty";
+import TableSkeleton from "@/src/components/ui/skeleton/tableSkeleton";
 
 export default function ManagePayments() {
   const [page, setPage] = useState(1);
@@ -33,8 +34,8 @@ export default function ManagePayments() {
 
   return (
     <div className="flex w-full flex-col">
-      {isError ? (
-        <Empty />
+      {isLoading ? (
+        <TableSkeleton />
       ) : (
         <>
           <Tabs aria-label="Payment Categories">
