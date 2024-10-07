@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import {
   useGetMyPostsQuery,
@@ -19,21 +17,20 @@ import { useUser } from "@/src/hooks/useUser";
 export default function UserProfileTabs() {
   const [page, setPage] = useState(1);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
+
   const { data: myPostsData, isFetching: isFetchingMyPosts } =
-    useGetMyPostsQuery(undefined);
+    useGetMyPostsQuery({ page });
   const myPosts = myPostsData?.data as TPost[];
 
   const { data: myPremiumPostsData, isFetching: isFetchingMyPremiumPosts } =
-    useGetMyPremiumPostsQuery(undefined);
+    useGetMyPremiumPostsQuery({ page });
   const myPremiumPosts = myPremiumPostsData?.data as TPost[];
 
   const { data: allPremiumPostsData, isFetching: isFetchingAllPremiumPosts } =
-    useGetAllPremiumPostsQuery(undefined);
+    useGetAllPremiumPostsQuery({ page });
   const allPremiumPosts = allPremiumPostsData?.data as TPost[];
 
   const { userInfo } = useUser();
-
-  console.log(myPosts);
 
   const loadMorePosts = async () => {
     if (!isFetchingMore) {
@@ -50,19 +47,14 @@ export default function UserProfileTabs() {
       animate={{ opacity: 1 }}
       transition={{ delay: 0.4, duration: 0.4 }}
     >
-      <Tabs aria-label="Options" className={`w-full md:w-[500px] xl:w-[600px]`}>
-        <Tab key="dashboard" className="w-full" title="Dashboard">
-          <InfiniteScrollContainer onBottomReached={loadMorePosts}>
-            <motion.div className="grid grid-cols-1 gap-5">
-              {/* <Dashboard /> */}
-              <Empty message="There are no content available" />
-            </motion.div>
-          </InfiniteScrollContainer>
-        </Tab>
+      <Tabs aria-label="Options" className="w-full md:w-[500px] xl:w-[600px]">
         <Tab key="posts" className="w-full" title="Posts">
-          <InfiniteScrollContainer onBottomReached={loadMorePosts}>
+          <InfiniteScrollContainer
+            onBottomReached={loadMorePosts}
+            isFetchingMore={isFetchingMore}
+          >
             {myPosts?.length === 0 && (
-              <Empty message="There are no post available" />
+              <Empty message="There are no posts available" />
             )}
             <motion.div className="grid grid-cols-1 gap-5">
               {isFetchingMyPosts && isFetchingMore ? (
@@ -75,11 +67,13 @@ export default function UserProfileTabs() {
             </motion.div>
           </InfiniteScrollContainer>
         </Tab>
-
         <Tab key="my-premium-posts" className="w-full" title="Premium Posts">
-          <InfiniteScrollContainer onBottomReached={loadMorePosts}>
+          <InfiniteScrollContainer
+            onBottomReached={loadMorePosts}
+            isFetchingMore={isFetchingMore}
+          >
             {myPremiumPosts?.length === 0 && (
-              <Empty message="There are no premium post available" />
+              <Empty message="There are no premium posts available" />
             )}
             <motion.div className="grid grid-cols-1 gap-5">
               {isFetchingMyPremiumPosts && isFetchingMore ? (
@@ -94,20 +88,22 @@ export default function UserProfileTabs() {
             </motion.div>
           </InfiniteScrollContainer>
         </Tab>
-
         <Tab
           key="my-subscribed-posts"
           className="w-full"
           title={
             <div className="flex items-center gap-1">
               Subscribed{" "}
-              <PiCrownSimpleDuotone className="text-yellow-500" size={14} />{" "}
+              <PiCrownSimpleDuotone className="text-yellow-500" size={14} />
             </div>
           }
         >
-          <InfiniteScrollContainer onBottomReached={loadMorePosts}>
+          <InfiniteScrollContainer
+            onBottomReached={loadMorePosts}
+            isFetchingMore={isFetchingMore}
+          >
             {allPremiumPosts?.length === 0 && (
-              <Empty message="There are not subscribed post available" />
+              <Empty message="There are no subscribed posts available" />
             )}
             {userInfo?.verified ? (
               <motion.div className="grid grid-cols-1 gap-5">
@@ -122,8 +118,20 @@ export default function UserProfileTabs() {
                 )}
               </motion.div>
             ) : (
-              <Empty message="Get like and verify your account" />
+              <Empty message="Get likes and verify your account" />
             )}
+          </InfiniteScrollContainer>
+        </Tab>
+        {/* Dashboard */}
+        <Tab key="dashboard" className="w-full" title="Dashboard">
+          <InfiniteScrollContainer
+            onBottomReached={loadMorePosts}
+            isFetchingMore={isFetchingMore}
+          >
+            <motion.div className="grid grid-cols-1 gap-5">
+              {/* Add Dashboard content */}
+              <Empty message="There is no content available" />
+            </motion.div>
           </InfiniteScrollContainer>
         </Tab>
       </Tabs>

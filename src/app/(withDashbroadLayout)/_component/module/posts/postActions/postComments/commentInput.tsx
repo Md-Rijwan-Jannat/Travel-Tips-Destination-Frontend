@@ -3,6 +3,7 @@ import { Avatar } from "@nextui-org/avatar";
 import { IoSend } from "react-icons/io5";
 import { useUser } from "@/src/hooks/useUser";
 import { Button } from "@nextui-org/button";
+import { motion } from "framer-motion";
 
 interface CommentInputProps {
   value: string;
@@ -39,15 +40,20 @@ export default function CommentInput({
           className="flex-grow bg-default-50 px-2 py-1 text-xs rounded-full border border-default-200 focus:outline-none focus:ring-1 focus:ring-default-300 w-full"
         />
       </div>
-      {/* Send Icon */}
-      <Button
-        className="bg-default-100"
-        isIconOnly
-        size="sm"
-        radius="full"
-        onPress={onSubmit}
-        startContent={<IoSend className="text-primaryColor" size={18} />}
-      />
+      {/* Send Icon with Framer Motion Animation */}
+      <motion.div
+        whileHover={{ scale: 1.1 }} // Scale animation on hover
+        whileTap={{ scale: 0.9 }} // Scale down slightly on tap/click
+      >
+        <Button
+          className="bg-default-50"
+          isIconOnly
+          size="sm"
+          radius="full"
+          onPress={onSubmit}
+          startContent={<IoSend className="text-primaryColor" size={18} />}
+        />
+      </motion.div>
     </div>
   );
 }

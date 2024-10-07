@@ -1,9 +1,9 @@
-import { title } from "@/src/components/ui/primitives";
+import Documentations from "../_component/module/docs";
 
 export default function DocsPage() {
   return (
     <div>
-      <h1 className={title()}>Docs</h1>
+      <Documentations />
     </div>
   );
 }

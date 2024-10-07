@@ -15,6 +15,7 @@ import { GoVerified } from "react-icons/go";
 import CommentDropdown from "./commentDropdown";
 import { useUser } from "@/src/hooks/useUser";
 import Link from "next/link";
+import { toast } from "sonner";
 
 // Component Props
 interface TCommentCardProps {
@@ -83,7 +84,9 @@ const CommentCard: React.FC<TCommentCardProps> = ({ postId }) => {
   const handleNewCommentSubmit = async () => {
     try {
       const commentData = { post: postId, text: newComment };
+
       await addComment(commentData);
+      toast.success("Comment added view details pae!");
       setNewComment("");
     } catch (error) {
       console.error("Error submitting new comment:", error);
@@ -99,7 +102,9 @@ const CommentCard: React.FC<TCommentCardProps> = ({ postId }) => {
         commentId: replyingTo,
         data: { post: postId, text: replyCommentText },
       };
+
       await replyComment(replyData);
+
       setReplyCommentText("");
       setReplyingTo(null);
     } catch (error) {

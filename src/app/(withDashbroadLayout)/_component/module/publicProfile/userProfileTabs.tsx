@@ -22,7 +22,6 @@ export default function UserProfileTabs({ userId }: TUserProfileTabsProps) {
 
   console.log(myPosts);
 
-  // Function to load more posts when scrolled to bottom
   const loadMorePosts = async () => {
     if (!isFetchingMore) {
       setIsFetchingMore(true);
@@ -40,7 +39,10 @@ export default function UserProfileTabs({ userId }: TUserProfileTabsProps) {
     >
       <Tabs aria-label="Options" className="w-full md:w-[520px] xl:w-[600px]">
         <Tab key="posts" className="w-full" title="Posts">
-          <InfiniteScrollContainer onBottomReached={loadMorePosts}>
+          <InfiniteScrollContainer
+            isFetchingMore={isFetchingMore}
+            onBottomReached={loadMorePosts}
+          >
             {isFetchingMore ? (
               <div className="flex justify-center">
                 <Spinner />
@@ -58,25 +60,11 @@ export default function UserProfileTabs({ userId }: TUserProfileTabsProps) {
           </InfiniteScrollContainer>
         </Tab>
 
-        {/* <Tab key="my-premium-posts" className="w-full" title="My Premium Posts">
+        <Tab key="my-subscribed-posts" className="w-full" title="About">
           <motion.div className="grid grid-cols-1 gap-5 p-2 bg-default-50">
-            {myPremiumPosts?.map((post) => (
-              <PostCard key={post._id} post={post} />
-            ))}
+            <Empty message="Development running" />
           </motion.div>
         </Tab>
-
-        <Tab
-          key="my-subscribed-posts"
-          className="w-full"
-          title="My Subscribed Posts"
-        >
-          <motion.div className="grid grid-cols-1 gap-5 p-2 bg-default-50">
-            {myPremiumPosts?.map((post) => (
-              <PostCard key={post._id} post={post} />
-            ))}
-          </motion.div>
-        </Tab> */}
       </Tabs>
     </motion.div>
   );

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import PostCard from "./postCard/postCard";
-import PostModal from "../../modal/postingModal";
 import { useGetAllPostsQuery } from "@/src/redux/features/post/postApi";
 import { TPost, TUser } from "@/src/types";
 import InfiniteScrollContainer from "@/src/components/ui/infiniteScrollerContainer";
@@ -15,6 +14,7 @@ import { categoriesList } from "@/src/constants";
 import { useAppSelector } from "@/src/redux/hook";
 import { useRouter } from "next/navigation";
 import DropdownFilter from "./postFilter/dropdownFilter";
+import PostModal from "../../modal/postingModal";
 
 export default function Post() {
   const [page, setPage] = useState(1);

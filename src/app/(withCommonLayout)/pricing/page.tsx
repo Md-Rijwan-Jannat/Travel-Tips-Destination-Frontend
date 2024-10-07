@@ -1,9 +1,9 @@
-import { title } from "@/src/components/ui/primitives";
+import Pricing from "../_component/module/pricing";
 
 export default function PricingPage() {
   return (
     <div>
-      <h1 className={title()}>Pricing</h1>
+      <Pricing />
     </div>
   );
 }

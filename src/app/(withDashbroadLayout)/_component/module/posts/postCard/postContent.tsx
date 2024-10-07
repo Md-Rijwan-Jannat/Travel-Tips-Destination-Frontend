@@ -1,25 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { TPost } from "@/src/types";
+import { FaFilePdf } from "react-icons/fa6";
+import { Button } from "@nextui-org/button";
+import { generatePDF } from "@/src/utils/generatePDF";
 
 interface PostContentProps {
   post: TPost;
 }
 
 export default function PostContent({ post }: PostContentProps) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // Simulate fetching post content
   useEffect(() => {
     if (!post) {
-      setError("Failed to load post.");
-      setIsLoading(false);
       return;
     }
-    setIsLoading(false);
   }, [post]);
 
   // Function to safely render HTML content
@@ -31,7 +27,7 @@ export default function PostContent({ post }: PostContentProps) {
   const styleLinksInDescription = (html: string) => {
     return html.replace(
       /<a\s+(href="[^"]*")/g,
-      `<a class="text-blue-500 hover:underline" $1`
+      `<a class="text-pink-500 hover:underline" $1`
     );
   };
 
@@ -45,6 +41,11 @@ export default function PostContent({ post }: PostContentProps) {
   };
 
   const { truncated, isTruncated } = truncateDescription(post?.description, 60);
+
+  // Title, description pdf creations
+  const downloadPDF = async () => {
+    generatePDF(post);
+  };
 
   return (
     <div>
@@ -69,6 +70,18 @@ export default function PostContent({ post }: PostContentProps) {
             Read More
           </Link>
         )}
+      </div>
+
+      {/* Button to download the description and images as a PDF */}
+      <div className="flex w-full items-end justify-end">
+        <Button
+          className="mt-3 text-pink-500"
+          startContent={<FaFilePdf size={18} />}
+          size="sm"
+          onClick={downloadPDF}
+        >
+          Download
+        </Button>
       </div>
     </div>
   );

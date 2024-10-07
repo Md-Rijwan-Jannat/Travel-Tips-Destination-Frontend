@@ -140,19 +140,18 @@ const UpdatePostModal = ({
                   <Input
                     {...field}
                     fullWidth
-                    className="mb-4"
                     placeholder="Title"
                     variant="underlined"
                   />
                 )}
               />
 
-              <div className="my-4">
+              <div className="bg-default-50 text-default-100 rounded-lg p-2 border border-default-300">
                 <ReactQuill
+                  className="bg-default-50 text-default-700 placeholder:text-default-700"
                   value={editorContent}
                   onChange={setEditorContent}
                   theme="snow"
-                  style={{ height: "250px" }}
                 />
               </div>
 
@@ -162,7 +161,7 @@ const UpdatePostModal = ({
                 render={({ field }) => (
                   <Select
                     {...field}
-                    className="w-full mt-4"
+                    className="w-full"
                     label="Select post type"
                     variant="underlined"
                   >

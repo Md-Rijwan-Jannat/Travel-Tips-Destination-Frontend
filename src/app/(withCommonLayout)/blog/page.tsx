@@ -1,9 +1,9 @@
-import { title } from "@/src/components/ui/primitives";
+import Blog from "../_component/module/blogs";
 
 export default function BlogPage() {
   return (
     <div>
-      <h1 className={title()}>Blog</h1>
+      <Blog />
     </div>
   );
 }

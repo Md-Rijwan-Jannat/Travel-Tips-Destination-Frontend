@@ -228,15 +228,15 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
                   <Input
                     {...field}
                     fullWidth
-                    className="mb-4"
                     placeholder="Title"
                     variant="underlined"
                   />
                 )}
               />
 
-              <div className="my-4">
+              <div className="bg-default-50 text-default-100 rounded-lg p-2 border border-default-300">
                 <ReactQuill
+                  className="bg-default-50 text-default-700 placeholder:text-default-700"
                   value={description}
                   onChange={setDescription}
                   placeholder="Write your post..."
@@ -249,6 +249,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
                       ["clean"], // remove formatting button
                     ],
                   }}
+                  theme="snow"
                 />
               </div>
 
@@ -258,7 +259,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
                 render={({ field }) => (
                   <Select
                     {...field}
-                    className="w-full mt-4"
+                    className="w-full"
                     label="Select post type"
                     variant="underlined"
                   >
@@ -275,7 +276,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
                 render={({ field }) => (
                   <Select
                     {...field}
-                    className="w-full mt-4"
+                    className="w-full"
                     label="Select categories"
                     variant="underlined"
                     multiple
@@ -290,7 +291,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
               />
 
               {/* Image Upload */}
-              <div className="my-4">
+              <div className="">
                 <label className="mt-4 cursor-pointer text-xs text-pink-400 my-5 flex gap-2 items-center ">
                   <IoIosImages className="text-2xl" />
                   <p>Upload Images</p>
