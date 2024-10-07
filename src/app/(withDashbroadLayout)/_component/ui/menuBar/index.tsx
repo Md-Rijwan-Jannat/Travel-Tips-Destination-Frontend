@@ -27,8 +27,6 @@ export default function MenuBar({ className }: TMenuBarProps) {
 
   if (!token) {
     router.push("/login");
-
-    return null;
   }
 
   return (

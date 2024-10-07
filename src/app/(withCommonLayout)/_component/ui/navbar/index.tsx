@@ -15,7 +15,7 @@ import BrandLogo from "@/src/components/shared/logo";
 export default function NavBar() {
   return (
     <NextUINavbar
-      className="border-b border-default-50 shadow"
+      className="border-b border-default-50 bg-opacity-10 shadow"
       maxWidth="xl"
       position="sticky"
     >
