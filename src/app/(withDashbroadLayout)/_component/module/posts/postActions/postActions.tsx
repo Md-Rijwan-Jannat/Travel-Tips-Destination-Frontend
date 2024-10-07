@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { AiOutlineDislike, AiOutlineLike } from "react-icons/ai";
 import {

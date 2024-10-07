@@ -7,9 +7,9 @@ import Link from "next/link";
 
 export default function Pricing() {
   return (
-    <div className="p-5 min-h-screen ">
+    <div className="p-5 min-h-screen mt-10">
       <motion.h1
-        className="text-4xl font-bold text-center text-default-700 mb-10"
+        className="text-3xl font-bold text-center text-default-700 mb-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -18,7 +18,7 @@ export default function Pricing() {
       </motion.h1>
 
       <motion.p
-        className="text-lg text-center text-default-700 mb-10"
+        className="text-lg text-center text-default-700 mb-8 max-w-2xl mx-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.7 }}
@@ -28,9 +28,9 @@ export default function Pricing() {
         and it enhances your credibility within the community!
       </motion.p>
 
-      <div className="grid gap-10 sm:grid-cols-2">
+      <div className="grid gap-10 sm:grid-cols-2 justify-center">
         <motion.div
-          className="bg-default-50 border border-default-100 rounded-lg p-5"
+          className="border border-default-50 rounded-lg p-5"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -50,7 +50,7 @@ export default function Pricing() {
         </motion.div>
 
         <motion.div
-          className="bg-default-50 border border-default-100 rounded-lg p-5"
+          className="border border-default-50 rounded-lg p-5"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -81,7 +81,7 @@ export default function Pricing() {
       </div>
 
       <motion.div
-        className="bg-default-50 border border-default-100 rounded-lg p-5 mt-10"
+        className="border border-default-50 rounded-lg p-5 mt-10"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}

@@ -96,7 +96,7 @@ export default function RegisterForm() {
     <div className="w-full mt-5 md:mt-0 md:min-h-screen flex items-center justify-center max-w-7xl">
       {/* Conditionally render the GlassLoader */}
       {RegisterLoading && <GlassLoader />}
-      <div className="relative flex flex-col-reverse md:flex-row bg-default-100 rounded-lg shadow-lg w-full overflow-hidden my-5">
+      <div className="flex flex-col-reverse md:flex-row bg-default-100 rounded-lg shadow-lg w-full overflow-hidden my-5">
         {/* Left side - Form Section */}
         <div className="w-full md:w-[500px] xl:w-[530px] flex flex-col justify-center">
           <div className="flex flex-col gap-6 p-2 py-10 md:px-12">
@@ -192,7 +192,7 @@ export default function RegisterForm() {
               </div>
             </form>
 
-            <p className="text-center text-default-500 text-xs">
+            <p className="text-center text-default-500 text-xs relative">
               Already have an account?{" "}
               <Link className="text-blue-500 text-xs" href="/login">
                 Log in

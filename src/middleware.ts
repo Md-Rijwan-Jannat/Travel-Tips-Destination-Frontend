@@ -13,17 +13,29 @@ type TDecodeUser = {
 type TRoleProps = keyof typeof RoleBasedRoutes;
 
 const RoleBasedRoutes = {
-  USER: [/^\/profile/],
+  USER: [/^\/profile\/[a-zA-Z0-9]+$/, /^\/profile$/],
   ADMIN: [/^\/admin-dashboard/],
 };
 
 const AuthPathname = ["/login", "/register"];
 
+// Public routes for both USER and ADMIN
+const PublicRoutes = [
+  /^\/news-feed\/posts\/[a-zA-Z0-9]+$/,
+  /^\/profile\/[a-zA-Z0-9]+$/, // Dynamic profile routes
+  "/news-feed/posts",
+];
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const user = (await currentUser()) as TDecodeUser | undefined;
+  const user = currentUser() as TDecodeUser | undefined;
 
-  // Handle authentication protected route
+  // Allow access to public routes for both roles
+  if (PublicRoutes.some((route) => pathname.match(route))) {
+    return NextResponse.next();
+  }
+
+  // Handle authentication-protected routes
   if (!user) {
     const isAuthPage = AuthPathname.includes(pathname);
 
@@ -54,6 +66,8 @@ export const config = {
     "/profile",
     "/admin-dashboard",
     "/admin-dashboard/:page*",
+    "/news-feed/posts/:postId*",
+    "/profile/:profileId*",
     "/login",
     "/register",
   ],

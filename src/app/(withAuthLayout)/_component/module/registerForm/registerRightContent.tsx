@@ -9,10 +9,7 @@ export default function RegisterRightContent() {
   const users = usersData?.data as TUser[];
 
   return (
-    <div className="w-full md:w-[500px] xl:w-[530px] p-8 flex flex-col justify-center items-center rounded-r-lg relative overflow-hidden bg-default-50">
-      {/* Rainbow Blur Background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-green-400 to-pink-500 opacity-50 blur-2xl" />
-
+    <div className="w-full md:w-[500px] xl:w-[530px] p-8 flex flex-col justify-center items-center rounded-r-lg relative overflow-hidden">
       {/* Foreground Content */}
       <div className="relative text-center z-10">
         <h3 className="text-3xl font-bold text-default-900 flex flex-wrap items-center justify-center">

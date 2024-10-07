@@ -7,9 +7,9 @@ import Link from "next/link";
 
 export default function Documentations() {
   return (
-    <div className="p-2 min-h-screen mt-18">
+    <div className="p-2 min-h-screen mt-10">
       <motion.h1
-        className="text-4xl font-bold text-center text-default-700"
+        className="text-3xl font-bold text-center text-default-700 mb-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -18,7 +18,7 @@ export default function Documentations() {
       </motion.h1>
 
       <motion.p
-        className="text-lg text-center text-default-700 mb-10"
+        className="text-lg text-center text-default-700 mb-8 max-w-2xl mx-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.7 }}
@@ -30,7 +30,7 @@ export default function Documentations() {
 
       <div className="grid gap-10 sm:grid-cols-2">
         <motion.div
-          className="bg-default-50 border border-default-100 rounded-lg p-5"
+          className="border border-default-50 rounded-lg p-5"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -56,7 +56,7 @@ export default function Documentations() {
         </motion.div>
 
         <motion.div
-          className="bg-default-50 border border-default-100 rounded-lg p-5"
+          className="border border-default-50 rounded-lg p-5"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -87,7 +87,7 @@ export default function Documentations() {
       </div>
 
       <motion.div
-        className="bg-default-50 border border-default-100 rounded-lg p-5 mt-10"
+        className="border border-default-50 rounded-lg p-5 mt-10"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}

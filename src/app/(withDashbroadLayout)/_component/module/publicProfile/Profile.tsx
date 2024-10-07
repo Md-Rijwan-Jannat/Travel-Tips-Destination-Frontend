@@ -10,6 +10,7 @@ import UpdateNameImageModal from "../../modal/updateUserModal";
 import UserProfileTabs from "./userProfileTabs";
 import { useUser } from "@/src/hooks/useUser";
 import Follow from "./follow";
+import VerifiedForPayment from "../userProfile/VerifiedForPayment.tsx";
 
 interface TUserProps {
   user: TUser | undefined;
@@ -70,20 +71,7 @@ export default function Profile({ user }: TUserProps) {
         <h2 className="text-lg font-bold mt-2 flex items-center gap-2">
           {name} {verified && <GoVerified className="text-primaryColor" />}
         </h2>
-
-        {currentUser?.email === email && (
-          <>
-            {!verified && (
-              <motion.span
-                whileHover={{ scale: 1.05 }}
-                className="text-xs text-default-500 font-semibold flex items-center justify-center gap-1 border border-dashed border-primaryColor px-2 py-1 rounded-full cursor-pointer mt-1"
-              >
-                <GoVerified className="text-primaryColor" size={16} />
-                Verify Now
-              </motion.span>
-            )}
-          </>
-        )}
+        {!verified && <VerifiedForPayment user={user} />}
 
         {/* Follower and Following Count */}
         <motion.div

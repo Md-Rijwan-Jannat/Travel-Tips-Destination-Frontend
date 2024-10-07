@@ -31,17 +31,6 @@ export default function PostContent({ post }: PostContentProps) {
     );
   };
 
-  // Function to truncate description to a specified length
-  const truncateDescription = (html: string, maxLength: number) => {
-    const plainText = html.replace(/<[^>]+>/g, ""); // Remove HTML tags
-
-    return plainText.length > maxLength
-      ? { truncated: `${plainText.slice(0, maxLength)}...`, isTruncated: true }
-      : { truncated: plainText, isTruncated: false };
-  };
-
-  const { truncated, isTruncated } = truncateDescription(post?.description, 60);
-
   // Title, description pdf creations
   const downloadPDF = async () => {
     generatePDF(post);
@@ -57,25 +46,17 @@ export default function PostContent({ post }: PostContentProps) {
       </Link>
       <div className="flex items-center gap-1">
         <div
-          className="text-xs md:text-sm text-default-600 mt-2 line-clamp-3 flex gap-1"
+          className="text-xs md:text-sm text-default-800 mt-2"
           dangerouslySetInnerHTML={createMarkup(
-            styleLinksInDescription(isTruncated ? truncated : post?.description)
+            styleLinksInDescription(post?.description)
           )}
         />
-        {isTruncated && (
-          <Link
-            href={`/news-feed/posts/${post?._id}`}
-            className="text-pink-500 hover:underline mt-2 inline-block text-xs md:text-sm whitespace-nowrap"
-          >
-            Read More
-          </Link>
-        )}
       </div>
 
       {/* Button to download the description and images as a PDF */}
       <div className="flex w-full items-end justify-end">
         <Button
-          className="mt-3 text-pink-500"
+          className="mt-3 h-8 text-pink-500"
           startContent={<FaFilePdf size={18} />}
           size="sm"
           onClick={downloadPDF}

@@ -20,6 +20,8 @@ export default async function WithDashboardLayout({
 }) {
   const user = (await currentUser()) as TUserProps;
 
+  console.log("layout user", user);
+
   return (
     <div className="flex min-h-screen bg-background">
       <FeedNavbar />
@@ -41,7 +43,7 @@ export default async function WithDashboardLayout({
           </main>
 
           {/* Premium Posts Section (hidden for ADMIN) */}
-          {user?.role !== "ADMIN" && (
+          {user?.email && user?.role === "USER" && (
             <aside className="hidden lg:block lg:sticky lg:top-20 mt-20 h-screen w-1/4">
               <PremiumPosts />
             </aside>

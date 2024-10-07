@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { Code } from "@nextui-org/code";
 import { Snippet } from "@nextui-org/snippet";
+import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
 
 import { subtitle, title } from "../../../../../components/ui/primitives";
-
 import CButton from "@/src/components/ui/CButton/CButton";
 import { primaryColor, secondaryColor } from "@/src/styles/button";
 
@@ -11,9 +11,9 @@ type TLandingBannerProps = object;
 
 const LandingBanner: FC<TLandingBannerProps> = () => {
   return (
-    <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10 relative overflow-hidden h-[500px] md:h-screen">
-      <div className="absolute inset-0" />
-      <div className="inline-block max-w-xl text-center justify-center z-10">
+    <section className="relative flex flex-col items-center justify-center gap-4 py-8 md:py-10 overflow-hidden h-[400px] md:h-[90vh]">
+      {/* Main Content */}
+      <div className="inline-block max-w-xl text-center justify-center z-10 animate-fade-in">
         <span className={title()}>Discover&nbsp;</span>
         <span className={title({ color: "violet" })}>Unforgettable&nbsp;</span>
         <br />
@@ -25,7 +25,8 @@ const LandingBanner: FC<TLandingBannerProps> = () => {
         </div>
       </div>
 
-      <div className="flex gap-3 z-10">
+      {/* Buttons */}
+      <div className="flex gap-3 z-10 animate-fade-in-up">
         <CButton
           bgColor={primaryColor}
           link="/news-feed/posts"
@@ -34,7 +35,24 @@ const LandingBanner: FC<TLandingBannerProps> = () => {
         <CButton bgColor={secondaryColor} link="/docs" text="Learn More" />
       </div>
 
-      <div className="mt-8 z-10">
+      {/* Social Media Icons */}
+      <div className="flex gap-6 mt-6 z-10">
+        <FaFacebook
+          className="text-blue-600 hover:scale-110 transition-transform"
+          size={28}
+        />
+        <FaInstagram
+          className="text-pink-500 hover:scale-110 transition-transform"
+          size={28}
+        />
+        <FaTwitter
+          className="text-blue-400 hover:scale-110 transition-transform"
+          size={28}
+        />
+      </div>
+
+      {/* Snippet */}
+      <div className="mt-8 z-10 animate-fade-in-up">
         <Snippet hideCopyButton hideSymbol variant="bordered">
           <span>
             Get started with <Code color="primary">TT&DG Community</Code>

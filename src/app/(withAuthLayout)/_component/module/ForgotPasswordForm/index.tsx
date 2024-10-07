@@ -11,7 +11,6 @@ import GlassLoader from "@/src/components/shared/glassLoader";
 import CButton from "@/src/components/ui/CButton/CButton";
 import { secondaryColor } from "@/src/styles/button";
 import { useForgotPasswordMutation } from "@/src/redux/features/auth/authApi";
-import { forgotPassword } from "@/src/schema/auth";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
 
@@ -70,7 +69,7 @@ export default function ForgotPasswordForm() {
   };
 
   return (
-    <div className="w-full md:min-h-screen flex items-center justify-center max-w-7xl">
+    <div className=" w-full md:min-h-screen flex items-center justify-center max-w-7xl">
       {forgotPasswordIsLoading && <GlassLoader />}
       <div className="flex flex-col-reverse md:flex-row bg-default-100 rounded-lg shadow-lg w-full overflow-hidden my-5">
         <div className="w-full md:w-[500px] xl:w-[530px] flex flex-col justify-center">
@@ -115,7 +114,7 @@ export default function ForgotPasswordForm() {
               </div>
             </form>
 
-            <p className="text-center text-default-500 text-xs">
+            <p className="text-center text-default-500 text-xs relative">
               Remembered your password?{" "}
               <Link className="text-blue-500 text-xs" href="/login">
                 Login here

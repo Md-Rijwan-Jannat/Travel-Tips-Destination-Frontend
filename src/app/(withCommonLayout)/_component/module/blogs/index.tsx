@@ -30,9 +30,9 @@ const blogPosts = [
 
 export default function Blog() {
   return (
-    <div className="p-5 min-h-screen">
+    <div className="p-5 min-h-screen mt-10">
       <motion.h1
-        className="text-4xl font-bold text-center text-default-700 mb-10"
+        className="text-3xl font-bold text-center text-default-700 mb-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -44,7 +44,7 @@ export default function Blog() {
         {blogPosts.map((post) => (
           <motion.div
             key={post.id}
-            className="bg-default-50 border border-default-100 rounded-lg overflow-hidden"
+            className="border border-default-50 rounded-lg overflow-hidden"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -58,9 +58,9 @@ export default function Blog() {
               <h2 className="text-xl font-semibold text-pink-600 mb-2">
                 {post.title}
               </h2>
-              <p className="text-gray-700 mb-3">{post.description}</p>
+              <p className="text-default-700 mb-3">{post.description}</p>
               <Link
-                className="text-blue-500 hover:underline"
+                className="text-pink-500 hover:underline"
                 href={`/blog/${post.id}`}
               >
                 Read More

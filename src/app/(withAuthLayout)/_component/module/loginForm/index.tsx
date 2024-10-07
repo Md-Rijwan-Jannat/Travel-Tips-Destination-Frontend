@@ -169,7 +169,7 @@ export default function LoginForm() {
                   </p>
                 )}
               </div>
-              <div className="flex my-1 items-center justify-end text-xs">
+              <div className="flex my-1 items-center justify-end text-xs relative">
                 <Link
                   className="text-blue-500 hover:underline"
                   href={"/forgot-password"}
@@ -182,7 +182,7 @@ export default function LoginForm() {
               </div>
             </form>
 
-            <p className="text-center text-default-500 text-xs">
+            <p className="text-center text-default-500 text-xs relative">
               New here?{" "}
               <Link className="text-blue-500 text-xs" href="/register">
                 Create an account

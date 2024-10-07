@@ -22,7 +22,7 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({
 }) => {
   return (
     <div className="mb-6 -mx-3 flex items-center justify-end w-full">
-      <Dropdown>
+      <Dropdown size="sm">
         <DropdownTrigger>
           <Button variant="bordered" className="capitalize">
             {filterOption === "popular"

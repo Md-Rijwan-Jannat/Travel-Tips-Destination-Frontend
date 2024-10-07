@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import {
   useAddCommentsForPostsMutation,
@@ -17,12 +15,10 @@ import { useUser } from "@/src/hooks/useUser";
 import Link from "next/link";
 import { toast } from "sonner";
 
-// Component Props
 interface TCommentCardProps {
   postId: string;
 }
 
-// Comment Data Interface for rendering purposes
 export interface TRenderedComment {
   [x: string]: any;
   userId: string;
@@ -34,27 +30,21 @@ export interface TRenderedComment {
 }
 
 const CommentCard: React.FC<TCommentCardProps> = ({ postId }) => {
-  // Fetching comments data using hook query
   const { data: commentsData } = useGetCommentsForPostsQuery(postId);
   const comments = commentsData?.data as TComment[] | undefined;
 
-  // Current user
   const { userInfo: currentUser } = useUser();
 
-  // Extract replies' _id from comments
   const repliesId =
     comments?.flatMap((comment) =>
       comment?.replies?.map((reply) => reply._id)
     ) ?? [];
 
-  // Filter out comments whose _id matches any replies' _id
   const filteredComments =
     comments?.filter((comment) => !repliesId.includes(comment._id)) ?? [];
 
-  // Transform comments for rendering
-  const transformedComments: TRenderedComment[] = filteredComments
-    .slice(0, 2)
-    .map((comment) => ({
+  const transformedComments: TRenderedComment[] = filteredComments.map(
+    (comment) => ({
       userId: comment.user._id,
       verified: comment?.user?.verified,
       comId: comment._id,
@@ -69,31 +59,32 @@ const CommentCard: React.FC<TCommentCardProps> = ({ postId }) => {
         avatarUrl: reply.user?.image || undefined,
         text: reply.text,
       })),
-    }));
+    })
+  );
 
-  // Comment hook mutations
   const [addComment] = useAddCommentsForPostsMutation();
   const [replyComment] = useReplayCommentsForPostsMutation();
 
-  // State management
   const [newComment, setNewComment] = useState<string>("");
   const [replyCommentText, setReplyCommentText] = useState<string>("");
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
 
-  // New Comment Submission Handler
+  const [visibleComments, setVisibleComments] = useState<number>(2);
+  const [isAllCommentsVisible, setIsAllCommentsVisible] =
+    useState<boolean>(false);
+
   const handleNewCommentSubmit = async () => {
     try {
       const commentData = { post: postId, text: newComment };
 
       await addComment(commentData);
-      toast.success("Comment added view details pae!");
+      toast.success("Comment added successfully!");
       setNewComment("");
     } catch (error) {
       console.error("Error submitting new comment:", error);
     }
   };
 
-  // Reply Comment Submission Handler
   const handleReplySubmit = async () => {
     if (!replyingTo) return;
 
@@ -112,16 +103,27 @@ const CommentCard: React.FC<TCommentCardProps> = ({ postId }) => {
     }
   };
 
-  // Handle canceling reply action
   const handleReplyCancel = () => {
     setReplyCommentText("");
     setReplyingTo(null);
   };
 
+  // Show all comments when "Load More" is clicked
+  const handleLoadMore = () => {
+    setVisibleComments(transformedComments.length);
+    setIsAllCommentsVisible(true);
+  };
+
+  // Show fewer comments when "Show Less" is clicked
+  const handleShowLess = () => {
+    setVisibleComments(2);
+    setIsAllCommentsVisible(false);
+  };
+
   return (
     <div className="space-y-4">
       <h2 className="text-xs font-semibold">Comments</h2>
-      {transformedComments.map((comment) => (
+      {transformedComments.slice(0, visibleComments).map((comment) => (
         <div key={comment.comId} className="space-y-2">
           <div className="flex items-start justify-between space-x-3">
             <div className="flex items-start space-x-3">
@@ -142,7 +144,7 @@ const CommentCard: React.FC<TCommentCardProps> = ({ postId }) => {
                   {comment.fullName}
                   {comment?.verified! && (
                     <GoVerified className="text-primaryColor" />
-                  )}{" "}
+                  )}
                 </Link>
                 <div className="text-xs">{comment.text}</div>
 
@@ -163,13 +165,11 @@ const CommentCard: React.FC<TCommentCardProps> = ({ postId }) => {
                 )}
               </div>
             </div>
-            {/* Dropdown for Edit/Delete options */}
             {comment.userId === currentUser?._id && (
               <CommentDropdown comment={comment} />
             )}
           </div>
 
-          {/* Render replies */}
           {comment?.replies?.length! > 0 && (
             <div className="mt-4 space-y-2 pl-8 border-l-2 border-default-200">
               {comment?.replies?.map((reply) => (
@@ -199,7 +199,6 @@ const CommentCard: React.FC<TCommentCardProps> = ({ postId }) => {
                       <div className="text-xs">{reply.text}</div>
                     </div>
                   </div>
-                  {/* Dropdown for replies as well */}
                   {reply.userId === currentUser?._id && (
                     <CommentDropdown comment={reply} />
                   )}
@@ -209,6 +208,26 @@ const CommentCard: React.FC<TCommentCardProps> = ({ postId }) => {
           )}
         </div>
       ))}
+      {/* Load More and Show Less buttons */}
+      {transformedComments.length > 2 && (
+        <div className="text-start ml-3">
+          {!isAllCommentsVisible ? (
+            <button
+              className="text-pink-500 text-xs hover:underline"
+              onClick={handleLoadMore}
+            >
+              More comments
+            </button>
+          ) : (
+            <button
+              className="text-pink-500 text-xs hover:underline"
+              onClick={handleShowLess}
+            >
+              Less comments
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Comment Input for new comments */}
       <CommentInput

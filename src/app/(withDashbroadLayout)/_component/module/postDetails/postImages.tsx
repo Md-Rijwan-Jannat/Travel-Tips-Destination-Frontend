@@ -35,7 +35,7 @@ const PostImages: FC<TPostImagesProps> = ({ post }) => {
                 images.length === 1
                   ? "h-[300px] w-full"
                   : images.length === 2
-                    ? "h-[350px] w-full"
+                    ? "h-[300px] w-full"
                     : "h-[250px]"
               }`}
               height={images.length === 1 ? 300 : 250}
