@@ -9,6 +9,7 @@ import { useGetSingleUserPostsQuery } from "@/src/redux/features/user/userApi";
 import Empty from "@/src/components/ui/empty";
 import InfiniteScrollContainer from "@/src/components/ui/infiniteScrollerContainer";
 import Spinner from "@/src/components/ui/spinner";
+import TableSkeleton from "@/src/components/ui/skeleton/tableSkeleton";
 
 interface TUserProfileTabsProps {
   userId: string;
@@ -17,7 +18,8 @@ interface TUserProfileTabsProps {
 export default function UserProfileTabs({ userId }: TUserProfileTabsProps) {
   const [page, setPage] = useState(1);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
-  const { data: myPostsData } = useGetSingleUserPostsQuery(userId);
+  const { data: myPostsData, isLoading: myPostLoading } =
+    useGetSingleUserPostsQuery(userId);
   const myPosts = myPostsData?.data as TPost[];
 
   console.log(myPosts);
@@ -43,9 +45,9 @@ export default function UserProfileTabs({ userId }: TUserProfileTabsProps) {
             isFetchingMore={isFetchingMore}
             onBottomReached={loadMorePosts}
           >
-            {isFetchingMore ? (
+            {isFetchingMore || myPostLoading ? (
               <div className="flex justify-center">
-                <Spinner />
+                <TableSkeleton />
               </div>
             ) : (
               <motion.div className="grid grid-cols-1 gap-5">

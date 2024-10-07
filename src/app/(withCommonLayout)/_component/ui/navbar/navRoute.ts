@@ -16,7 +16,11 @@ export const NavRoutes = [
     href: "/blog",
   },
   {
-    label: "About",
+    label: "About-Us",
     href: "/about",
+  },
+  {
+    label: "Contact-Us",
+    href: "/contact",
   },
 ];

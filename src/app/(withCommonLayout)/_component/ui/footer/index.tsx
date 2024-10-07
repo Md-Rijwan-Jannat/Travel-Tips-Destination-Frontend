@@ -2,17 +2,25 @@ import React from "react";
 import { Link } from "@nextui-org/link";
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear(); // Dynamically get the current year
+
   return (
-    <footer className="w-full flex items-center justify-center py-3">
-      <Link
-        isExternal
-        className="flex items-center gap-1 text-current"
-        href="https://nextui-docs-v2.vercel.app?utm_source=next-app-template"
-        title="nextui.org homepage"
-      >
-        <span className="text-default-600">Powered by</span>
-        <p className="text-primary">TT&DG</p>
-      </Link>
+    <footer className="w-full bg-default-50 bg-opacity-15  py-6 px-4 flex flex-col items-center justify-center">
+      <div className="flex items-center space-x-2 mb-4">
+        <Link
+          isExternal
+          href="/"
+          title="NextUI homepage"
+          className="flex items-center gap-2 text-default-400 hover:text-primary transition-colors"
+        >
+          <span>Powered by</span>
+          <p className="font-bold text-primary text-lg">TT&DG</p>
+        </Link>
+      </div>
+
+      <div className="text-sm text-default-400 text-center">
+        <p>&copy; {currentYear} All rights reserved.</p>
+      </div>
     </footer>
   );
 }

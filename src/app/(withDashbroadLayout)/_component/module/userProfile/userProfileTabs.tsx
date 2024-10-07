@@ -13,21 +13,31 @@ import Empty from "@/src/components/ui/empty";
 import { useGetAllPremiumPostsQuery } from "@/src/redux/features/premiumPost/premiumPostApi";
 import { PiCrownSimpleDuotone } from "react-icons/pi";
 import { useUser } from "@/src/hooks/useUser";
+import TableSkeleton from "@/src/components/ui/skeleton/tableSkeleton";
 
 export default function UserProfileTabs() {
   const [page, setPage] = useState(1);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
 
-  const { data: myPostsData, isFetching: isFetchingMyPosts } =
-    useGetMyPostsQuery({ page });
+  const {
+    data: myPostsData,
+    isFetching: isFetchingMyPosts,
+    isLoading: myPostLoading,
+  } = useGetMyPostsQuery({ page });
   const myPosts = myPostsData?.data as TPost[];
 
-  const { data: myPremiumPostsData, isFetching: isFetchingMyPremiumPosts } =
-    useGetMyPremiumPostsQuery({ page });
+  const {
+    data: myPremiumPostsData,
+    isFetching: isFetchingMyPremiumPosts,
+    isLoading: myPremiumPostLoading,
+  } = useGetMyPremiumPostsQuery({ page });
   const myPremiumPosts = myPremiumPostsData?.data as TPost[];
 
-  const { data: allPremiumPostsData, isFetching: isFetchingAllPremiumPosts } =
-    useGetAllPremiumPostsQuery({ page });
+  const {
+    data: allPremiumPostsData,
+    isFetching: isFetchingAllPremiumPosts,
+    isLoading: allPremiumPostLoading,
+  } = useGetAllPremiumPostsQuery({ page });
   const allPremiumPosts = allPremiumPostsData?.data as TPost[];
 
   const { userInfo } = useUser();
@@ -57,9 +67,9 @@ export default function UserProfileTabs() {
               <Empty message="There are no posts available" />
             )}
             <motion.div className="grid grid-cols-1 gap-5">
-              {isFetchingMyPosts && isFetchingMore ? (
+              {isFetchingMyPosts || myPostLoading || isFetchingMore ? (
                 <div className="flex justify-center">
-                  <Spinner />
+                  <TableSkeleton />
                 </div>
               ) : (
                 myPosts?.map((post) => <PostCard key={post._id} post={post} />)
@@ -76,9 +86,11 @@ export default function UserProfileTabs() {
               <Empty message="There are no premium posts available" />
             )}
             <motion.div className="grid grid-cols-1 gap-5">
-              {isFetchingMyPremiumPosts && isFetchingMore ? (
+              {isFetchingMyPremiumPosts ||
+              myPremiumPostLoading ||
+              isFetchingMore ? (
                 <div className="flex justify-center">
-                  <Spinner />
+                  <TableSkeleton />
                 </div>
               ) : (
                 myPremiumPosts?.map((post) => (
@@ -107,9 +119,11 @@ export default function UserProfileTabs() {
             )}
             {userInfo?.verified ? (
               <motion.div className="grid grid-cols-1 gap-5">
-                {isFetchingAllPremiumPosts && isFetchingMore ? (
+                {isFetchingAllPremiumPosts ||
+                allPremiumPostLoading ||
+                isFetchingMore ? (
                   <div className="flex justify-center">
-                    <Spinner />
+                    <TableSkeleton />
                   </div>
                 ) : (
                   allPremiumPosts?.map((post) => (

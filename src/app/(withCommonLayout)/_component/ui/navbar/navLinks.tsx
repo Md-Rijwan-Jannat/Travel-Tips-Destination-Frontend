@@ -12,7 +12,7 @@ export default function NavLinks() {
   const pathname = usePathname();
 
   return (
-    <ul className="flex flex-col md:flex-row gap-8 justify-start ml-10">
+    <ul className="flex flex-col md:flex-row gap-8 justify-start lg:ml-10">
       {NavRoutes.map((item) => {
         const isActive = pathname === item.href;
 

@@ -15,10 +15,10 @@ export default function ProfileSkeleton() {
       {/* Skeleton Profile Section */}
       <div className="flex flex-col items-center relative">
         {/* Skeleton Avatar */}
-        <Skeleton className="rounded-full w-24 h-24 mb-4" />
+        <Skeleton className="rounded-full w-16 h-16 mb-4" />
 
         {/* Skeleton Name */}
-        <Skeleton className="w-32 h-6 rounded-full mb-2" />
+        <Skeleton className="w-32 h-4 rounded-full mb-2" />
 
         {/* Skeleton Verify Badge */}
         <Skeleton className="w-20 h-4 rounded-full mb-4" />

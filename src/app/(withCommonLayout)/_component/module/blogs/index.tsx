@@ -44,7 +44,7 @@ export default function Blog() {
         {blogPosts.map((post) => (
           <motion.div
             key={post.id}
-            className="border border-default-50 rounded-lg overflow-hidden"
+            className="bg-default-50 bg-opacity-15 rounded-lg overflow-hidden"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5 }}

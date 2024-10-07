@@ -30,7 +30,7 @@ export default function Pricing() {
 
       <div className="grid gap-10 sm:grid-cols-2 justify-center">
         <motion.div
-          className="border border-default-50 rounded-lg p-5"
+          className="bg-default-50 bg-opacity-15 rounded-lg p-5"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -50,7 +50,7 @@ export default function Pricing() {
         </motion.div>
 
         <motion.div
-          className="border border-default-50 rounded-lg p-5"
+          className="bg-default-50 bg-opacity-15 rounded-lg p-5"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -81,7 +81,7 @@ export default function Pricing() {
       </div>
 
       <motion.div
-        className="border border-default-50 rounded-lg p-5 mt-10"
+        className="bg-default-50 bg-opacity-15 rounded-lg p-5 mt-10"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}

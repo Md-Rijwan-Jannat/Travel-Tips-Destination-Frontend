@@ -11,7 +11,7 @@ import { Button } from "@nextui-org/button";
 import { useUser } from "@/src/hooks/useUser";
 
 interface TFollowProps {
-  userId: string;
+  userId: string | undefined;
 }
 
 export default function Follow({ userId }: TFollowProps) {
@@ -21,7 +21,7 @@ export default function Follow({ userId }: TFollowProps) {
   const user = userData?.data;
   const { userInfo: currentUser } = useUser();
   const currentUserId = currentUser?._id;
-  const exists = user.follower.includes(currentUserId);
+  const exists = user?.follower?.includes(currentUserId);
 
   const followHandler = async () => {
     try {

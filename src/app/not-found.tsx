@@ -1,11 +1,10 @@
 import React from "react";
-
-import { title } from "../components/ui/primitives";
+import NotFound from "../components/ui/not-found";
 
 export default function NotFoundPage() {
   return (
     <div>
-      <h2 className={title()}>Not Found 404</h2>
+      <NotFound />
     </div>
   );
 }

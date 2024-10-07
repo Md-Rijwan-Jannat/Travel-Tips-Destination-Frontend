@@ -29,7 +29,7 @@ export default function About() {
 
       <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         <motion.div
-          className=" border border-default-50 shadow rounded-lg p-5"
+          className="bg-default-50 bg-opacity-15 shadow rounded-lg p-5"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -45,7 +45,7 @@ export default function About() {
         </motion.div>
 
         <motion.div
-          className=" border border-default-50 shadow rounded-lg p-5"
+          className="bg-default-50 bg-opacity-15 shadow rounded-lg p-5"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -61,7 +61,7 @@ export default function About() {
         </motion.div>
 
         <motion.div
-          className=" border border-default-50 shadow rounded-lg p-5"
+          className="bg-default-50 bg-opacity-15 shadow rounded-lg p-5"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
