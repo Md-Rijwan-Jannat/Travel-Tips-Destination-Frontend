@@ -1,8 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import CButton from "./CButton/CButton";
+import { primaryColor, secondaryColor } from "@/src/styles/button";
 
 export default function NotFound() {
   const router = useRouter();
@@ -25,9 +27,15 @@ export default function NotFound() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-pink-500 to-blue-500 text-white">
+    <div className="flex flex-col items-center justify-center h-screen text-default-600">
+      {/* Blurred Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="w-[200px] md:w-[300px] h-[300px] bg-pink-400 opacity-70 blur-[100px] absolute top-10 left-20" />
+        <div className="w-[200px] md:w-[300px] h-[300px] bg-blue-400 opacity-70 blur-[100px] absolute bottom-10 right-20 " />
+      </div>
+
       <motion.h1
-        className="text-5xl font-bold mb-4"
+        className="text-2xl md:text-5xl text-pink-500 mb-4"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -48,18 +56,12 @@ export default function NotFound() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.5 }}
       >
-        <button
-          id="backButton"
-          className="px-6 py-3 bg-white text-pink-500 font-semibold rounded-lg shadow-lg hover:bg-pink-100 transition duration-300"
-        >
-          Go Back
-        </button>
-        <button
+        <CButton text="Go Back" bgColor={primaryColor} />
+        <CButton
           onClick={() => router.push("/")}
-          className="px-6 py-3 bg-white text-blue-500 font-semibold rounded-lg shadow-lg hover:bg-blue-100 transition duration-300"
-        >
-          Go Home
-        </button>
+          text="Home"
+          bgColor={secondaryColor}
+        />
       </motion.div>
     </div>
   );

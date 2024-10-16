@@ -4,10 +4,41 @@ export const UserApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // get all users
     getAllUsers: builder.query({
-      query: () => ({
-        url: "/users/normal-users",
-        method: "GET",
-      }),
+      query: (args) => {
+        const params = new URLSearchParams();
+
+        if (args) {
+          Object.entries(args).forEach(([name, value]) => {
+            params.append(name, value as string);
+          });
+        }
+
+        return {
+          url: "/users/normal-users",
+          method: "GET",
+          params,
+        };
+      },
+      providesTags: ["users", "posts"],
+    }),
+
+    // get all users
+    getAllNormalForAnalyticsUsers: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+
+        if (args) {
+          Object.entries(args).forEach(([name, value]) => {
+            params.append(name, value as string);
+          });
+        }
+
+        return {
+          url: "/users/normal-users-analytics",
+          method: "GET",
+          params,
+        };
+      },
       providesTags: ["users", "posts"],
     }),
 
@@ -93,6 +124,7 @@ export const UserApi = baseApi.injectEndpoints({
 
 export const {
   useGetAllUsersQuery,
+  useGetAllNormalForAnalyticsUsersQuery,
   useUpdateMyProfileMutation,
   useGetSingleUserQuery,
   useGetSingleUserPostsQuery,

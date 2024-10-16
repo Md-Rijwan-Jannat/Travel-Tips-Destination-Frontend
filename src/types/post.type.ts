@@ -1,6 +1,7 @@
 import { TUser } from "./user.type";
 
 export interface TPost {
+  [x: string]: any;
   _id: string;
   user: TUser;
   images: string[];

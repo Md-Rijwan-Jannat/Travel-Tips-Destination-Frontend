@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-
 import { useGetMeQuery } from "../redux/features/auth/authApi";
 import { TUser } from "../types";
 

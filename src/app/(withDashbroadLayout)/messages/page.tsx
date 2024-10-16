@@ -1,10 +1,16 @@
-import Empty from "@/src/components/ui/empty";
+"use client";
+
 import React from "react";
+import Chat from "../_component/module/messages";
+import { useUser } from "@/src/hooks/useUser";
+import MessageCardList from "../_component/module/messages";
 
 export default function MessagePage() {
+  const { userInfo } = useUser();
+
   return (
-    <div>
-      <Empty message="Development processing" />
+    <div className="scrollbar-hide">
+      <MessageCardList />
     </div>
   );
 }

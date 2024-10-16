@@ -32,7 +32,7 @@ const PostImages: FC<TPostImagesProps> = ({ post }) => {
         speed={500}
       >
         {images.slice(0, 3).map((image, index) => (
-          <Link key={index} href={image} data-lg-size="1600-2400">
+          <Link key={index} href={image}>
             <Image
               alt={`image${index}`}
               className={`object-cover object-center ${

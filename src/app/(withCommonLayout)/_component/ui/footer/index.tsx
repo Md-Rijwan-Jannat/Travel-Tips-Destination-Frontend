@@ -5,12 +5,12 @@ export default function Footer() {
   const currentYear = new Date().getFullYear(); // Dynamically get the current year
 
   return (
-    <footer className="w-full bg-default-50 bg-opacity-15  py-6 px-4 flex flex-col items-center justify-center">
+    <footer className="w-full bg-default-50 bg-opacity-5  py-6 px-4 flex flex-col items-center justify-center">
       <div className="flex items-center space-x-2 mb-4">
         <Link
           isExternal
-          href="/"
-          title="NextUI homepage"
+          href="/register"
+          title="Travel Tips & Destination Home page"
           className="flex items-center gap-2 text-default-400 hover:text-primary transition-colors"
         >
           <span>Powered by</span>

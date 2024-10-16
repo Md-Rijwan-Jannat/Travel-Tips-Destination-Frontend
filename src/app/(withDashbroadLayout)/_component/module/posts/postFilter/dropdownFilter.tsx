@@ -24,7 +24,7 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({
     <div className="mb-6 -mx-3 flex items-center justify-end w-full">
       <Dropdown size="sm">
         <DropdownTrigger>
-          <Button variant="bordered" className="capitalize">
+          <Button size="sm" variant="faded" className="capitalize">
             {filterOption === "popular"
               ? "Popular Posts"
               : filterOption === "poor"

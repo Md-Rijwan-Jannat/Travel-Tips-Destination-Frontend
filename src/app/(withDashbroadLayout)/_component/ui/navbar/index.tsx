@@ -1,9 +1,11 @@
 import NextLink from "next/link";
 import React from "react";
-
 import NavDropdown from "@/src/app/(withCommonLayout)/_component/ui/navbar/navDropdown";
 import SearchInput from "@/src/app/(withCommonLayout)/_component/ui/navbar/searchInput";
 import BrandLogo from "@/src/components/shared/logo";
+import { Bell, Link, Plus } from "lucide-react";
+import { Badge } from "@nextui-org/badge";
+import NavRightContent from "./navRightContent";
 
 export default function FeedNavbar() {
   return (
@@ -18,7 +20,7 @@ export default function FeedNavbar() {
             <SearchInput />
           </div>
         </div>
-        <NavDropdown />
+        <NavRightContent />
       </div>
     </header>
   );

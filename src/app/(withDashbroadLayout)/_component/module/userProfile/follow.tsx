@@ -58,7 +58,7 @@ export default function Follow({ userId }: TFollowProps) {
         </Button>
       ) : (
         <Button
-          className="px-5 py-1 bg-pink-500 text-default-700"
+          className="px-5 py-1 bg-pink-500 text-white"
           radius="full"
           size="sm"
           onClick={followHandler}

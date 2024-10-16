@@ -1,9 +1,9 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { GoVerified } from "react-icons/go";
-import { useStartPaymentProcessMutation } from "@/src/redux/features/payment/subscriptionsApi";
-import { TPaymentData, TUser, TPost } from "@/src/types";
-import { useGetMyPostsQuery } from "@/src/redux/features/post/postApi";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { GoVerified } from 'react-icons/go';
+import { useStartPaymentProcessMutation } from '@/src/redux/features/payment/subscriptionsApi';
+import { TPaymentData, TUser, TPost } from '@/src/types';
+import { useGetMyPostsQuery } from '@/src/redux/features/post/postApi';
 
 interface TVerifiedForPaymentProps {
   user: TUser | undefined;
@@ -12,23 +12,27 @@ interface TVerifiedForPaymentProps {
 export default function VerifiedForPayment({ user }: TVerifiedForPaymentProps) {
   const [startPaymentProcess, { isLoading }] = useStartPaymentProcessMutation();
 
-  const { data: postsData } = useGetMyPostsQuery(undefined);
+  // Fetch user's posts data
+  const { data: postsData, isSuccess: postsFetched } =
+    useGetMyPostsQuery(undefined);
   const posts = postsData?.data;
 
+  // Ensure posts are fetched before checking likes
   const hasLikedPosts =
-    posts?.length > 0 && posts?.some((post: TPost) => post.likes.length > 0);
+    postsFetched && posts?.some((p: TPost) => p.likes?.length > 0);
 
+  // Handle verification click
   const handleVerifyClick = async () => {
-    if (!user || hasLikedPosts) return; // Prevent click when button is disabled
+    if (!user || user.verified) return;
 
     const paymentData: TPaymentData = {
       user: user._id!,
-      amount: 1000,
+      amount: 1000, // Subscription amount
       customerName: user.name!,
       customerEmail: user.email!,
       customerAddress: user.address!,
-      customerCountry: user.country || "N/A",
-      customerNumber: "N/A",
+      customerCountry: user.country || 'N/A',
+      customerNumber: 'N/A',
     };
 
     try {
@@ -37,28 +41,30 @@ export default function VerifiedForPayment({ user }: TVerifiedForPaymentProps) {
         paymentData,
       }).unwrap();
 
-      console.log("Payment started:", response);
+      console.log('Payment started:', response);
 
       if (response.success && response.data.paymentResponse.payment_url) {
         // Navigate to the payment URL
         window.location.href = response.data.paymentResponse.payment_url;
       }
     } catch (error) {
-      console.error("Error starting payment process:", error);
+      console.error('Error starting payment process:', error);
     }
   };
 
   return (
     <motion.button
-      whileHover={{ scale: !hasLikedPosts ? 1 : 1.05 }}
       onClick={handleVerifyClick}
-      className={`text-xs text-default-500 font-semibold flex items-center justify-center gap-1 border border-dashed border-primaryColor px-2 py-1 rounded-full mt-1 ${
-        !hasLikedPosts ? "cursor-not-allowed opacity-50" : "cursor-pointer"
-      }`}
-      disabled={!hasLikedPosts}
+      whileHover={{ scale: !hasLikedPosts && !isLoading ? 1.05 : 1 }}
+      className={`${
+        user?.verified || !hasLikedPosts || isLoading
+          ? 'cursor-not-allowed'
+          : 'cursor-pointer'
+      } flex items-center gap-1 rounded-full px-3 py-1 border border-dashed border-pink-500 hover:bg-default-100 transition-colors-opacity duration-500 ease-in-out text-xs text-default-500`}
+      disabled={user?.verified || !hasLikedPosts || isLoading}
     >
       <GoVerified className="text-primaryColor" size={16} />
-      {isLoading ? "Processing..." : "Verify Now"}
+      {isLoading ? 'Processing...' : 'Verify Now'}
     </motion.button>
   );
 }

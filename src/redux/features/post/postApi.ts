@@ -20,12 +20,24 @@ export const PostApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["posts"],
     }),
-    // postApi.ts
+
+    // Get all premium users query
     getAllPosts: builder.query({
-      query: ({ searchTerm = "", sort = "-createdAt" }) => ({
-        url: `/posts?searchTerm=${searchTerm}&sort=${sort}`,
-        method: "GET",
-      }),
+      query: (args) => {
+        const params = new URLSearchParams();
+
+        if (args) {
+          Object.entries(args).forEach(([name, value]) => {
+            params.append(name, value as string);
+          });
+        }
+
+        return {
+          url: `/posts`,
+          method: "GET",
+          params,
+        };
+      },
       providesTags: ["posts"],
     }),
 

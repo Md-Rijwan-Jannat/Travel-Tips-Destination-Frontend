@@ -45,7 +45,7 @@ export default function Contact() {
       transition={{ delay: 0.3, duration: 0.5 }}
     >
       {isSubmitting && <GlassLoader />}
-      <div className="bg-default-50 bg-opacity-15 py-8 px-4 h-[400px] flex flex-col md:flex-row items-center justify-center rounded-md">
+      <div className="bg-default-50 bg-opacity-15 py-8 px-4 h-[400px] flex flex-col md:flex-row items-center justify-center rounded-md gap-10">
         <div className="rounded-lg w-full md:w-[500px]">
           <h2 className="text-3xl font-semibold text-pink-400 mb-8 text-center">
             Contact Us

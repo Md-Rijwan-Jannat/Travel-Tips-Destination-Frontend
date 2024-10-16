@@ -6,17 +6,14 @@ import { useGetAllPremiumPostsQuery } from "@/src/redux/features/premiumPost/pre
 import { TPost } from "@/src/types";
 import { useRouter } from "next/navigation";
 import PremiumSkeleton from "@/src/components/ui/skeleton/premiumSkeleton";
+import Link from "next/link";
 
 export default function PremiumPosts() {
   const { data: premiumPostData, isLoading } =
     useGetAllPremiumPostsQuery(undefined);
   const posts = premiumPostData?.data as TPost[];
-  const [visiblePosts, setVisiblePosts] = useState(10);
+  const [visiblePosts, setVisiblePosts] = useState(7);
   const router = useRouter();
-
-  const handleLoadMore = () => {
-    router.push("/premium-posts");
-  };
 
   return (
     <div>
@@ -32,15 +29,15 @@ export default function PremiumPosts() {
             ))}
       </div>
 
-      {/* Load More button */}
+      {/* Load More Link */}
       {posts && posts.length > visiblePosts && (
-        <div className="mt-5 flex justify-center">
-          <button
-            onClick={handleLoadMore}
-            className="px-4 py-2 bg-primaryColor text-white rounded-md"
+        <div className="mt-5 flex justify-start">
+          <Link
+            href={"/news-feed/premium-posts"}
+            className="hover:underline text-pink-400 hover:text-pink-400 text-xs"
           >
             Load More
-          </button>
+          </Link>
         </div>
       )}
     </div>

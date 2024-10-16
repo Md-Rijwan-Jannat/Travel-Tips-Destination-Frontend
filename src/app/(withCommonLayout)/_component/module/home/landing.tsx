@@ -11,7 +11,7 @@ type TLandingBannerProps = object;
 
 const LandingBanner: FC<TLandingBannerProps> = () => {
   return (
-    <section className="relative flex flex-col items-center justify-center gap-4 py-8 md:py-10 overflow-hidden h-[400px] md:h-[90vh]">
+    <section className="relative flex flex-col items-center justify-center gap-4 py-8 md:py-10 overflow-hidden h-[760px] md:h-[90vh]">
       {/* Main Content */}
       <div className="flex text-pink-500">
         <GoHeart className="animate-pulse duration-500" size={35} />

@@ -10,6 +10,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { Toaster } from "sonner";
 
 import { persistor, store } from "../redux/store";
+import ChatProvider from "../context/chatContext";
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -23,15 +24,17 @@ export function Providers({ children, themeProps }: ProvidersProps) {
     <NextUIProvider navigate={router.push}>
       <Provider store={store}>
         <Toaster />
-        <PersistGate loading={null} persistor={persistor}>
-          <NextThemesProvider
-            {...themeProps}
-            attribute="class"
-            defaultTheme="system"
-          >
-            {children}
-          </NextThemesProvider>
-        </PersistGate>
+        <ChatProvider>
+          <PersistGate loading={null} persistor={persistor}>
+            <NextThemesProvider
+              {...themeProps}
+              attribute="class"
+              defaultTheme="system"
+            >
+              {children}
+            </NextThemesProvider>
+          </PersistGate>
+        </ChatProvider>
       </Provider>
     </NextUIProvider>
   );

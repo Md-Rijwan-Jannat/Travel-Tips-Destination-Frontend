@@ -26,6 +26,8 @@ import { primaryColor } from "@/src/styles/button";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import Quill's styles
 import { GoVerified } from "react-icons/go";
+import { useUser } from "@/src/hooks/useUser";
+import Link from "next/link";
 
 interface PostData {
   images: string[];
@@ -62,6 +64,8 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
   const [isError, setIsError] = useState<string>("");
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
+
+  // current user
 
   const { handleSubmit, control, setValue, reset, watch } = useForm<PostData>({
     defaultValues: {
@@ -161,6 +165,8 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
       <div className="flex items-center gap-4 w-full md:w-[490px] xl:w-[590px] mx-auto">
         <div className="flex items-center gap-2">
           <Avatar
+            as={Link}
+            href={`/profile/${userInfo?._id}`}
             alt="User Avatar"
             className="text-xl"
             name={userInfo?.name.charAt(0).toUpperCase()}
@@ -168,12 +174,14 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
             src={userInfo?.image || undefined}
           />
           <div>
-            <p className="whitespace-nowrap text-xs flex items-center gap-1 mt-0.5">
-              {userInfo?.name}{" "}
-              {userInfo?.verified! && (
-                <GoVerified className="text-primaryColor" />
-              )}
-            </p>
+            <Link href={`/profile/${userInfo?._id}`}>
+              <p className="whitespace-nowrap text-xs flex items-center gap-1 mt-0.5 hover:underline">
+                {userInfo?.name}{" "}
+                {userInfo?.verified! && (
+                  <GoVerified className="text-primaryColor" />
+                )}
+              </p>
+            </Link>
             <span className="text-xs text-default-400 whitespace-nowrap">
               Create post{" "}
             </span>
