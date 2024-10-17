@@ -9,6 +9,7 @@ import { TChat } from '@/src/types';
 import MessageCard from './messageCard';
 import Spinner from '@/src/components/ui/spinner';
 import Empty from '@/src/components/ui/empty';
+import MessageCardSkeleton from '@/src/components/ui/skeleton/messageSkeleton';
 
 const MessageCardList: React.FC = () => {
   // Fetch user chat data from API
@@ -43,9 +44,7 @@ const MessageCardList: React.FC = () => {
 
         <ScrollShadow className="h-[560px]">
           {isLoading ? (
-            <div className="flex items-center justify-center w-full h-[300px]">
-              <Spinner />
-            </div>
+            <MessageCardSkeleton />
           ) : userChats && userChats.length > 0 ? (
             // Filter userChats that have latestMessage and display them
             userChats.some((chat: TChat) => chat.latestMessage) ? (

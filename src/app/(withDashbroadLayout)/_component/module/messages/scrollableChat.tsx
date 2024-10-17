@@ -1,4 +1,6 @@
-import React, { forwardRef, useEffect, useState } from 'react';
+'use client';
+
+import React, { forwardRef, useEffect } from 'react';
 import { TChat, TMessage, TUser } from '@/src/types';
 import { Avatar } from '@nextui-org/avatar';
 import { ScrollShadow } from '@nextui-org/scroll-shadow';
@@ -6,9 +8,10 @@ import {
   format,
   isSameDay,
   isSameMinute,
-  isSameYear,
   isSameMonth,
+  isSameYear,
 } from 'date-fns';
+import TypingAnimation from './typingAnimation';
 
 interface ScrollableChatProps {
   messages: TMessage[];
@@ -16,20 +19,18 @@ interface ScrollableChatProps {
   scrollRef: React.RefObject<HTMLDivElement>;
   selectedChat: TChat;
   selectedUser: TUser | undefined;
+  isTyping: boolean | undefined;
 }
 
 const ScrollableChat = forwardRef<HTMLDivElement, ScrollableChatProps>(
-  ({ messages, currentUser, scrollRef, selectedChat, selectedUser }) => {
-    const [currentTime, setCurrentTime] = useState(new Date());
-
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setCurrentTime(new Date());
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }, []);
-
+  ({
+    messages,
+    currentUser,
+    scrollRef,
+    selectedChat,
+    selectedUser,
+    isTyping,
+  }) => {
     // Automatically scroll to the bottom when messages change
     useEffect(() => {
       const scrollElement = scrollRef?.current;
@@ -38,22 +39,39 @@ const ScrollableChat = forwardRef<HTMLDivElement, ScrollableChatProps>(
       }
     }, [messages, scrollRef]);
 
-    // Utility for date formatting, e.g., 'Today', 'Yesterday', or specific date
+    // Date format 'Today', 'Yesterday','Month', 'Year'
     const formatDate = (date: Date) => {
       const today = new Date();
+      const isThisYear = isSameYear(date, today);
+      const isThisMonth = isSameMonth(date, today);
+      const isThisWeek =
+        isSameDay(date, today) ||
+        (date > new Date(today.setDate(today.getDate() - today.getDay())) &&
+          date < today);
+
       if (isSameDay(date, today)) {
         return 'Today';
       } else if (isSameDay(date, new Date(today.getTime() - 86400000))) {
         return 'Yesterday';
+      } else if (isThisWeek) {
+        return format(date, 'EEEE');
+      } else if (isThisMonth) {
+        return format(date, 'MMMM dd');
+      } else if (isThisYear) {
+        return format(date, 'MMMM dd, yyyy');
       }
       return format(date, 'MMMM dd, yyyy');
     };
+
+    // Get the last message to determine who is typing
+    const lastMessage = messages[messages.length - 1];
+    const isTypingForCurrentUser = lastMessage?.sender._id !== currentUser?._id;
 
     return (
       <ScrollShadow
         size={50}
         ref={scrollRef}
-        className="h-[calc(100vh-190px)] flex-grow p-2 pt-5 space-y-4 overflow-auto scrollbar-hide"
+        className="h-[calc(100vh-220px)] lg:h-[calc(100vh-170px)] flex-grow p-2 pt-5 space-y-4 overflow-auto scrollbar-hide pb-8"
       >
         <div className="flex flex-col items-center justify-center gap-1">
           {!selectedChat?.isGroupChat ? (
@@ -112,7 +130,7 @@ const ScrollableChat = forwardRef<HTMLDivElement, ScrollableChatProps>(
             !isSameDay(currentMessageTime, new Date(previousMessage.createdAt));
 
           return (
-            <div key={message._id}>
+            <div key={message._id} className="mb-3">
               {/* Date Separator */}
               {shouldShowDateSeparator && (
                 <div className="text-[10px] text-center text-default-500 my-3 border-b border-default-100 w-1/3 mx-auto pb-3">
@@ -165,9 +183,13 @@ const ScrollableChat = forwardRef<HTMLDivElement, ScrollableChatProps>(
             </div>
           );
         })}
+        {/* Typing animation, show only if the typing indicator is for the other user */}
+        {isTyping && <TypingAnimation />}
       </ScrollShadow>
     );
   }
 );
+
+ScrollableChat.displayName = 'ScrollableChat';
 
 export default ScrollableChat;

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, ChangeEvent, KeyboardEvent } from 'react';
 import { Input } from '@nextui-org/input';
 import { Button } from '@nextui-org/button';
@@ -14,12 +16,12 @@ interface MessageBarProps {
     message: string,
     event: KeyboardEvent<HTMLInputElement> | undefined
   ) => void;
-  onTyping: (e: ChangeEvent<HTMLInputElement>) => void;
+  typingHandler: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function MessageBar({
   onSendMessage,
-  onTyping,
+  typingHandler,
 }: MessageBarProps) {
   const [inputMessage, setInputMessage] = useState<string>('');
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState<boolean>(false);
@@ -31,7 +33,7 @@ export default function MessageBar({
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputMessage(e.target.value);
-    onTyping(e);
+    typingHandler(e);
   };
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -47,7 +49,7 @@ export default function MessageBar({
   };
 
   return (
-    <div className="px-2 pt-2 bg-background border-t border-default-100">
+    <div className="pt-5 bg-background border-t border-default-100">
       <div className="flex items-center gap-2">
         <Button size="sm" isIconOnly radius="full" aria-label="Attach document">
           <PaperclipIcon className="h-5 w-5 text-pink-500" />
@@ -67,7 +69,7 @@ export default function MessageBar({
               <SmileIcon className="h-5 w-5 text-pink-500" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent>
+          <PopoverContent className="mb-28">
             <EmojiPicker
               theme={(theme === 'dark' ? 'dark' : 'light') as EmojiPickerTheme}
               onEmojiClick={handleEmojiClick}
