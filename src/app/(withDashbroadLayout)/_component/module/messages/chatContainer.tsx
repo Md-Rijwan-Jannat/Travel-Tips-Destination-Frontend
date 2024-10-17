@@ -1,3 +1,4 @@
+// ChatContainer.tsx
 'use client';
 
 import React, {
@@ -7,8 +8,6 @@ import React, {
   KeyboardEvent,
   ChangeEvent,
 } from 'react';
-import { Avatar } from '@nextui-org/avatar';
-import { io, Socket } from 'socket.io-client';
 import { useUser } from '@/src/hooks/useUser';
 import {
   useGetUserMessagesQuery,
@@ -20,8 +19,13 @@ import ScrollableChat from './scrollableChat';
 import { TChat, TMessage } from '@/src/types';
 import MessageBar from './messageBar';
 import TableSkeleton from '@/src/components/ui/skeleton/tableSkeleton';
-
-const endpoint = process.env.NEXT_PUBLIC_SOCKET_HOST;
+import { useAppDispatch, useAppSelector } from '@/src/redux/hook';
+import {
+  addNotification,
+  clearNotifications,
+  getNotifications,
+} from '@/src/redux/features/message/notificationSlice';
+import { useSocket } from '@/src/context/socketProvider';
 
 let selectedChatCompare: TChat;
 
@@ -29,25 +33,31 @@ export default function ChatContainer({ chatId }: { chatId: string }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<TMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const [socketConnected, setSocketConnected] = useState<boolean>(false);
   const [typing, setTyping] = useState<boolean>(false);
   const [isTyping, setIsTyping] = useState<boolean>(false);
+  const lastTypingTime = useRef<number>(0); // Use ref to store last typing time
 
-  const [socket, setSocket] = useState<Socket | null>(null);
-
-  // Current user
+  // Fetch socket from context
+  const socket = useSocket();
+  const dispatch = useAppDispatch();
   const { userInfo: user } = useUser();
 
-  // Get chat and messages
+  // Clear notifications for the current chat when the component mounts or chatId changes
+  useEffect(() => {
+    dispatch(clearNotifications(chatId));
+  }, [chatId, dispatch]);
+
   const { data: selectedChatsData } = useGetSingleChatQuery(chatId);
-  const { data: userMessagesData, isLoading } = useGetUserMessagesQuery(chatId);
+  const {
+    data: userMessagesData,
+    isLoading,
+    refetch,
+  } = useGetUserMessagesQuery(chatId);
   const selectedChat = selectedChatsData?.data;
   const userMessages = userMessagesData?.data;
 
-  // Create message mutation
   const [createMessageFn] = useCreateMessageMutation();
 
-  // Create message and save database
   const sendMessage = async (
     message: string,
     event?: KeyboardEvent<HTMLInputElement>
@@ -56,21 +66,17 @@ export default function ChatContainer({ chatId }: { chatId: string }) {
 
     if (message.trim()) {
       try {
-        const res = await createMessageFn({
-          content: message,
-          chat: chatId,
-        });
+        const res = await createMessageFn({ content: message, chat: chatId });
         if (res?.data?.success) {
           const data = res.data.data;
           setMessages((prevMessages) => [...prevMessages, data]);
+          refetch();
 
-          // Ensure socket is initialized before emitting message
           if (socket) {
             socket.emit('new message', data);
             socket.emit('stop typing', chatId);
           }
 
-          // Clear input after sending
           setNewMessage('');
         }
       } catch (error) {
@@ -79,40 +85,10 @@ export default function ChatContainer({ chatId }: { chatId: string }) {
     }
   };
 
-  // Initialize socket connection
-  useEffect(() => {
-    if (endpoint) {
-      const newSocket = io(endpoint);
-      setSocket(newSocket);
-
-      newSocket.emit('setup', user);
-
-      newSocket.on('connected', () => setSocketConnected(true));
-      newSocket.on('typing', () => setIsTyping(true));
-      newSocket.on('stop typing', () => setIsTyping(false));
-
-      // Clean up on component unmount
-      return () => {
-        newSocket.disconnect();
-      };
-    } else {
-      console.error('Socket endpoint is undefined');
-    }
-  }, [user]);
-
-  // Error Handling for Socket Connection
-  useEffect(() => {
-    if (socket) {
-      socket.on('connect_error', (error) => {
-        console.error('Socket connection error:', error);
-      });
-    }
-  }, [socket]);
-
-  // Update messages
   useEffect(() => {
     if (userMessages) {
       setMessages(userMessages);
+      refetch();
     }
 
     if (socket) {
@@ -121,45 +97,48 @@ export default function ChatContainer({ chatId }: { chatId: string }) {
     }
   }, [userMessages, selectedChat, socket]);
 
-  // Message received
   useEffect(() => {
     if (socket) {
       socket.on('message received', (newMessageReceived: TMessage) => {
         if (
           !selectedChatCompare ||
-          selectedChatCompare._id === newMessageReceived.chat._id
+          selectedChatCompare._id !== newMessageReceived.chat._id
         ) {
-          setMessages((prevMessages) => [...prevMessages, newMessageReceived]);
+          dispatch(addNotification(newMessageReceived));
+          refetch();
         } else {
-          // If it's not the selected chat, give a notification
-          // Add your notification logic here
+          setMessages((prevMessages) => [...prevMessages, newMessageReceived]);
+          refetch();
         }
       });
 
-      // Clean up the event listener when the component unmounts
+      socket.on('typing', () => setIsTyping(true));
+      socket.on('stop typing', () => setIsTyping(false));
+
       return () => {
         socket.off('message received');
+        socket.off('typing');
+        socket.off('stop typing');
       };
     }
-  }, [socket, selectedChat]);
+  }, [socket, selectedChat, dispatch]);
 
-  // On typing Handler
   const typingHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setNewMessage(e.target.value);
 
-    if (!socket || !socketConnected) return;
+    if (!socket) return;
 
     if (!typing) {
       setTyping(true);
       socket.emit('typing', chatId);
     }
 
-    let lastTypingTime = new Date().getTime();
+    lastTypingTime.current = new Date().getTime();
     const timeLength = 3000;
 
     setTimeout(() => {
       const timeNow = new Date().getTime();
-      const timeDifference = timeNow - lastTypingTime;
+      const timeDifference = timeNow - lastTypingTime.current;
 
       if (timeDifference >= timeLength && typing) {
         socket.emit('stop typing', chatId);
@@ -167,13 +146,6 @@ export default function ChatContainer({ chatId }: { chatId: string }) {
       }
     }, timeLength);
   };
-
-  // Scroll to bottom on new messages
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, [messages]);
 
   const selectedUser = getSender(selectedChat, user);
 
@@ -188,7 +160,6 @@ export default function ChatContainer({ chatId }: { chatId: string }) {
         selectedUser={selectedUser}
         isTyping={isTyping}
       />
-
       <MessageBar onSendMessage={sendMessage} typingHandler={typingHandler} />
     </div>
   );

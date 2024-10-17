@@ -9,7 +9,7 @@ export default function LoginRightContent() {
   const users = usersData?.data as TUser[];
 
   return (
-    <div className="w-full md:w-[500px] xl:w-[530px] p-8 flex flex-col justify-center items-center rounded-r-lg relative overflow-hidden shadow-lg mb-10 md:mb-0">
+    <div className="w-full md:w-[500px] xl:w-[530px] p-8 flex flex-col justify-center items-center rounded-r-lg relative overflow-hidden mb-10 md:mb-0">
       {/* Foreground Content */}
       <div className="relative text-center z-10">
         <h3 className="text-3xl font-bold text-default-900 flex flex-wrap items-center justify-center">

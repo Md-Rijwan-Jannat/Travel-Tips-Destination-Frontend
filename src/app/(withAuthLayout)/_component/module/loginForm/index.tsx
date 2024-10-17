@@ -1,27 +1,27 @@
-"use client";
+'use client';
 
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@nextui-org/input";
-import Link from "next/link";
-import { jwtDecode } from "jwt-decode";
-import { toast } from "sonner";
-import React from "react";
-import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import GoogleButton from "../registerForm/googleButton";
-import LoginRightContent from "./loginRightContent";
-import { loginSchema } from "@/src/schema/auth";
-import CButton from "@/src/components/ui/CButton/CButton";
-import { secondaryColor } from "@/src/styles/button";
-import { useLoginMutation } from "@/src/redux/features/auth/authApi";
-import { useAppDispatch } from "@/src/redux/hook";
-import { setCredentials } from "@/src/redux/features/auth/authSlice";
-import GlassLoader from "@/src/components/shared/glassLoader";
-import Cookies from "js-cookie";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { SerializedError } from "@reduxjs/toolkit";
-import { useRouter, useSearchParams } from "next/navigation";
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Input } from '@nextui-org/input';
+import Link from 'next/link';
+import { jwtDecode } from 'jwt-decode';
+import { toast } from 'sonner';
+import React from 'react';
+import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
+import GoogleButton from '../registerForm/googleButton';
+import LoginRightContent from './loginRightContent';
+import { loginSchema } from '@/src/schema/auth';
+import CButton from '@/src/components/ui/CButton/CButton';
+import { secondaryColor } from '@/src/styles/button';
+import { useLoginMutation } from '@/src/redux/features/auth/authApi';
+import { useAppDispatch } from '@/src/redux/hook';
+import { setCredentials } from '@/src/redux/features/auth/authSlice';
+import GlassLoader from '@/src/components/shared/glassLoader';
+import Cookies from 'js-cookie';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { SerializedError } from '@reduxjs/toolkit';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 interface TDecodedData {
@@ -38,7 +38,7 @@ export default function LoginForm() {
     useLoginMutation();
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect");
+  const redirect = searchParams.get('redirect');
   const router = useRouter();
 
   const {
@@ -70,23 +70,23 @@ export default function LoginForm() {
           setCredentials({ user: userData, token: res.data.data.accessToken })
         );
         // Set token in cookies
-        Cookies.set("accessToken", res?.data?.data?.accessToken);
+        Cookies.set('accessToken', res?.data?.data?.accessToken);
 
-        router.push(redirect ? redirect : "/news-feed/posts");
+        router.push(redirect ? redirect : '/news-feed/posts');
         // Show success toast
-        toast.success("Login successful");
+        toast.success('Login successful');
 
         reset();
       }
       const error = res?.error;
 
       if (error) {
-        if ("data" in (error as FetchBaseQueryError)) {
+        if ('data' in (error as FetchBaseQueryError)) {
           const fetchError = error as FetchBaseQueryError;
           const errorMessage = (fetchError.data as { message?: string })
             ?.message;
 
-          toast.error(errorMessage || "An unknown error occurred");
+          toast.error(errorMessage || 'An unknown error occurred');
         } else if ((error as SerializedError).message) {
           toast.error((error as SerializedError).message!);
         }
@@ -99,7 +99,7 @@ export default function LoginForm() {
   return (
     <div className="w-full md:min-h-screen flex items-center justify-center max-w-7xl">
       {LoginIsLoading && !isSuccess && <GlassLoader />}
-      <div className="flex flex-col-reverse md:flex-row bg-default-100 rounded-lg shadow-lg w-full overflow-hidden my-5">
+      <div className="flex flex-col-reverse md:flex-row bg-default-100 rounded-lg w-full overflow-hidden my-5">
         {/* Left side - Form Section */}
         <div className="w-full md:w-[500px] xl:w-[530px] flex flex-col justify-center">
           <div className="flex flex-col gap-6 p-2 md:p-16">
@@ -121,13 +121,13 @@ export default function LoginForm() {
               {/* Email Input */}
               <div className="h-16">
                 <Input
-                  {...register("email")}
+                  {...register('email')}
                   className="font-semibold"
                   isInvalid={!!errors.email}
                   label="Email address"
                   placeholder="you@domain.com"
                   type="email"
-                  validationState={errors.email ? "invalid" : undefined}
+                  validationState={errors.email ? 'invalid' : undefined}
                   variant="underlined"
                 />
                 {errors.email && (
@@ -140,7 +140,7 @@ export default function LoginForm() {
               {/* Password Input */}
               <div className="h-16">
                 <Input
-                  {...register("password")}
+                  {...register('password')}
                   className="font-semibold"
                   endContent={
                     <button
@@ -159,8 +159,8 @@ export default function LoginForm() {
                   isInvalid={!!errors.password}
                   label="Password"
                   placeholder="Must be at least 6 characters"
-                  type={isVisible ? "text" : "password"}
-                  validationState={errors.password ? "invalid" : undefined}
+                  type={isVisible ? 'text' : 'password'}
+                  validationState={errors.password ? 'invalid' : undefined}
                   variant="underlined"
                 />
                 {errors.password && (
@@ -172,7 +172,7 @@ export default function LoginForm() {
               <div className="flex my-1 items-center justify-end text-xs relative">
                 <Link
                   className="text-blue-500 hover:underline"
-                  href={"/forgot-password"}
+                  href={'/forgot-password'}
                 >
                   Forgot password
                 </Link>
@@ -183,7 +183,7 @@ export default function LoginForm() {
             </form>
 
             <p className="text-center text-default-500 text-xs relative">
-              New here?{" "}
+              New here?{' '}
               <Link className="text-blue-500 text-xs" href="/register">
                 Create an account
               </Link>

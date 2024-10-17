@@ -1,28 +1,43 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollShadow } from '@nextui-org/scroll-shadow';
 import AddFriendModal from '../../modal/addFriendModal';
 import { useDisclosure } from '@nextui-org/modal';
 import { Search } from 'lucide-react';
 import { Input } from '@nextui-org/input';
 import { useGetUserChatQuery } from '@/src/redux/features/message/chatApi';
-import { TChat } from '@/src/types';
+import { TChat, TMessage } from '@/src/types';
 import MessageCard from './messageCard';
-import Spinner from '@/src/components/ui/spinner';
 import Empty from '@/src/components/ui/empty';
 import MessageCardSkeleton from '@/src/components/ui/skeleton/messageSkeleton';
+import { useAppDispatch } from '@/src/redux/hook';
+import { addNotification } from '@/src/redux/features/message/notificationSlice';
+import { useSocket } from '@/src/context/socketProvider';
 
 const MessageCardList: React.FC = () => {
-  // Fetch user chat data from API
+  const [newMessage, setNewMessage] = useState<TMessage>();
   const { data: userChatsData, isLoading } = useGetUserChatQuery(undefined);
-
-  // If data exists, extract the chat array
   const userChats = userChatsData?.data || [];
+  const socket = useSocket();
+  const dispatch = useAppDispatch();
 
   const {
     isOpen: isAddFriendOpen,
     onOpen: onAddFriendOpen,
     onOpenChange: onAddFriendChange,
   } = useDisclosure();
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('message received', (newMessageReceived: TMessage) => {
+        dispatch(addNotification(newMessageReceived));
+        setNewMessage(newMessageReceived);
+      });
+
+      return () => {
+        socket.off('message received');
+      };
+    }
+  }, [socket, dispatch]);
 
   return (
     <div className="w-full md:w-[500px] xl:w-[600px] mx-auto">
@@ -31,7 +46,6 @@ const MessageCardList: React.FC = () => {
           <h3 className="p-4 text-lg font-semibold text-default-800">
             Messages
           </h3>
-
           <Input
             onClick={onAddFriendOpen}
             type="search"
@@ -46,13 +60,20 @@ const MessageCardList: React.FC = () => {
           {isLoading ? (
             <MessageCardSkeleton />
           ) : userChats && userChats.length > 0 ? (
-            // Filter userChats that have latestMessage and display them
             userChats.some((chat: TChat) => chat.latestMessage) ? (
-              userChats.map((chat: TChat) => {
-                return chat.latestMessage ? (
-                  <MessageCard key={chat._id} chat={chat} />
-                ) : null;
-              })
+              userChats.map((chat: TChat) =>
+                chat.latestMessage ? (
+                  <MessageCard
+                    key={chat._id}
+                    chat={chat}
+                    newMessage={
+                      newMessage?.chat._id === chat?._id
+                        ? newMessage
+                        : undefined
+                    }
+                  />
+                ) : null
+              )
             ) : (
               <Empty message="No chat available" />
             )

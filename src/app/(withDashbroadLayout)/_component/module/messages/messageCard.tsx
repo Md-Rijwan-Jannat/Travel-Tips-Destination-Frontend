@@ -3,12 +3,18 @@ import { Card, CardBody } from '@nextui-org/card';
 import { Avatar } from '@nextui-org/avatar';
 import Link from 'next/link';
 import { useChat } from '@/src/context/chatContext';
-import { TChat } from '@/src/types';
+import { TChat, TMessage } from '@/src/types';
 import { useCreateChatMutation } from '@/src/redux/features/message/chatApi';
 import { getSender } from '@/src/utils/chatLogics';
 import { useUser } from '@/src/hooks/useUser';
 
-const MessageCard = ({ chat }: { chat: TChat }) => {
+const MessageCard = ({
+  chat,
+  newMessage,
+}: {
+  chat: TChat;
+  newMessage: TMessage | undefined;
+}) => {
   const [createChatFn] = useCreateChatMutation();
   const { userInfo: user } = useUser();
 
@@ -85,7 +91,7 @@ const MessageCard = ({ chat }: { chat: TChat }) => {
             {selectedUser?.name}
           </div>
           <div className="text-xs text-default-500 truncate">
-            {message.content}
+            {newMessage?.content ? newMessage?.content : message.content}
           </div>
         </div>
         <div className="text-xs text-default-400">{message.timestamp}</div>

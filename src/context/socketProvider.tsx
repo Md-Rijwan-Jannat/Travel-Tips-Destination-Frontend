@@ -1,50 +1,40 @@
-import { createContext, useContext, useEffect, useRef, ReactNode } from "react";
-import { io, Socket } from "socket.io-client";
-import { useUser } from "../hooks/useUser";
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { io, Socket } from 'socket.io-client';
+import { useUser } from '@/src/hooks/useUser';
 
-interface ISocketContext {
-  socket: Socket | null;
-}
+const SocketContext = createContext<Socket | null>(null);
 
-const SocketContext = createContext<ISocketContext | null>(null);
+export const useSocket = () => useContext(SocketContext);
 
-export const useSocket = (): Socket | null => {
-  const context = useContext(SocketContext);
-
-  if (!context) {
-    throw new Error("useSocket must be used within a SocketProvider");
-  }
-
-  return context.socket;
-};
-
-export const SocketProvider = ({ children }: { children: ReactNode }) => {
-  const socket = useRef<Socket | null>(null);
-  const { userInfo } = useUser();
+export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [socket, setSocket] = useState<Socket | null>(null);
+  const { userInfo: user } = useUser();
+  const endpoint = process.env.NEXT_PUBLIC_SOCKET_HOST;
 
   useEffect(() => {
-    if (userInfo?._id) {
-      const HOST =
-        process.env.NEXT_PUBLIC_SOCKET_HOST || "http://localhost:5000";
+    if (endpoint && user) {
+      const newSocket = io(endpoint);
+      setSocket(newSocket);
 
-      socket.current = io(HOST, {
-        withCredentials: true,
-        query: { userId: userInfo._id },
+      newSocket.emit('setup', user);
+
+      newSocket.on('connected', () => {
+        console.log('Socket connected');
       });
 
-      socket.current.on("connect", () => {
-        console.log("Connected to socket server");
-      });
+      // newSocket.on('connect_error', (error) => {
+      //   console.error('Socket connection error:', error);
+      // });
 
       return () => {
-        socket.current?.disconnect();
+        newSocket.disconnect();
       };
     }
-  }, [userInfo]);
+  }, [endpoint, user]);
 
   return (
-    <SocketContext.Provider value={{ socket: socket.current }}>
-      {children}
-    </SocketContext.Provider>
+    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
 };

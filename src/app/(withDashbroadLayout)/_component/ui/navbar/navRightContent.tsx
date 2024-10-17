@@ -1,15 +1,16 @@
-"use client";
+'use client';
 
-import { Bell, Plus } from "lucide-react";
-import React from "react";
-import { Badge } from "@nextui-org/badge";
-import NavDropdown from "@/src/app/(withCommonLayout)/_component/ui/navbar/navDropdown";
-import Link from "next/link";
-import AddFriendModal from "../../modal/addFriendModal";
-import { useDisclosure } from "@nextui-org/modal";
-import { Button } from "@nextui-org/button";
+import { Bell } from 'lucide-react';
+import React from 'react';
+import { Badge } from '@nextui-org/badge';
+import NavDropdown from '@/src/app/(withCommonLayout)/_component/ui/navbar/navDropdown';
+import Link from 'next/link';
+import { useAppSelector } from '@/src/redux/hook';
+import { getNotifications } from '@/src/redux/features/message/notificationSlice';
 
 export default function NavRightContent() {
+  const notifications = useAppSelector(getNotifications);
+
   return (
     <div className="flex items-center justify-center gap-5">
       <Badge
@@ -17,7 +18,7 @@ export default function NavRightContent() {
         href="/notifications"
         size="md"
         color="danger"
-        content={5}
+        content={notifications?.length || 0}
         shape="circle"
       >
         <Bell />
