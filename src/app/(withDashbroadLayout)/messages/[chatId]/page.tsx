@@ -5,7 +5,6 @@ interface TChatWithFriendsProps {
 }
 
 export default function ChatWithFriend({ params }: TChatWithFriendsProps) {
-  console.log(params);
   return (
     <div>
       <ChatContainer chatId={params?.chatId} />

@@ -32,6 +32,7 @@ export const generatePDF = async (post: TPost) => {
 
       await new Promise<void>((resolve, reject) => {
         const img = new Image();
+
         img.src = userImageBase64;
         img.onload = () => {
           doc.addImage(userImageBase64, "PNG", 90, yOffset, 30, 30, "", "FAST");

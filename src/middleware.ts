@@ -38,17 +38,20 @@ export async function middleware(request: NextRequest) {
   // Redirect unauthenticated users to login page for protected routes
   if (!user) {
     const isAuthPage = AuthPathname.includes(pathname);
+
     if (!isAuthPage) {
       return NextResponse.redirect(
         new URL(`/login?redirect=${pathname}`, request.url)
       );
     }
+
     return NextResponse.next();
   }
 
   // Handle role-based routing
   if (user?.role && RoleBasedRoutes[user.role as TRoleProps]) {
     const routes = RoleBasedRoutes[user.role as TRoleProps];
+
     if (
       routes.some((route) =>
         typeof route === "string"

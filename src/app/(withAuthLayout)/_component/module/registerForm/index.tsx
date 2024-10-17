@@ -1,28 +1,28 @@
-"use client";
+'use client';
 
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@nextui-org/input";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { toast } from "sonner";
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Input } from '@nextui-org/input';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { toast } from 'sonner';
 
-import RegisterRightContent from "./registerRightContent";
-import GoogleButton from "./googleButton";
+import RegisterRightContent from './registerRightContent';
+import GoogleButton from './googleButton';
 
-import { registerSchema } from "@/src/schema/auth";
-import { primaryColor } from "@/src/styles/button";
-import CButton from "@/src/components/ui/CButton/CButton";
-import { useRegisterMutation } from "@/src/redux/features/auth/authApi";
-import { useAppDispatch } from "@/src/redux/hook";
-import { setCredentials } from "@/src/redux/features/auth/authSlice";
-import GlassLoader from "@/src/components/shared/glassLoader";
-import Cookies from "js-cookie";
-import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import { useState } from "react";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { SerializedError } from "@reduxjs/toolkit";
+import { registerSchema } from '@/src/schema/auth';
+import { primaryColor } from '@/src/styles/button';
+import CButton from '@/src/components/ui/CButton/CButton';
+import { useRegisterMutation } from '@/src/redux/features/auth/authApi';
+import { useAppDispatch } from '@/src/redux/hook';
+import { setCredentials } from '@/src/redux/features/auth/authSlice';
+import GlassLoader from '@/src/components/shared/glassLoader';
+import Cookies from 'js-cookie';
+import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
+import { useState } from 'react';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { SerializedError } from '@reduxjs/toolkit';
 
 type RegisterFormInputs = z.infer<typeof registerSchema>;
 
@@ -34,7 +34,7 @@ export default function RegisterForm() {
     useRegisterMutation();
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect");
+  const redirect = searchParams.get('redirect');
   const router = useRouter();
   const {
     register,
@@ -46,7 +46,6 @@ export default function RegisterForm() {
 
   const onSubmit = async (data: RegisterFormInputs) => {
     try {
-      console.log("Register Data", data);
       const res = await registerUser(data);
 
       if (res?.data?.success && res?.data?.data?.accessToken) {
@@ -60,16 +59,16 @@ export default function RegisterForm() {
           setCredentials({ user: userData, token: res.data.data.accessToken })
         );
 
-        router.push(redirect ? redirect : "/news-feed/posts");
+        router.push(redirect ? redirect : '/news-feed/posts');
 
-        Cookies.set("accessToken", res?.data?.data?.accessToken);
-        toast.success("Register successful");
+        Cookies.set('accessToken', res?.data?.data?.accessToken);
+        toast.success('Register successful');
       } else {
         const error = res?.error;
 
         if (error) {
           // Check if error is of type FetchBaseQueryError
-          if ("data" in (error as FetchBaseQueryError)) {
+          if ('data' in (error as FetchBaseQueryError)) {
             const fetchError = error as FetchBaseQueryError;
             const errorMessage = (fetchError.data as { message?: string })
               ?.message;
@@ -77,16 +76,15 @@ export default function RegisterForm() {
             if (errorMessage) {
               toast.error(errorMessage);
             } else {
-              toast.error("An unknown error occurred");
+              toast.error('An unknown error occurred');
             }
           } else if ((error as SerializedError).message) {
             toast.error((error as SerializedError).message!);
           } else {
-            toast.error("An unknown error occurred");
+            toast.error('An unknown error occurred');
           }
         }
       }
-      console.log(res);
     } catch (error) {
       console.log(error);
     }
@@ -116,13 +114,13 @@ export default function RegisterForm() {
             >
               <div className="h-16">
                 <Input
-                  {...register("name")}
+                  {...register('name')}
                   className="font-semibold"
                   isInvalid={!!errors.name}
                   label="Name"
                   placeholder="What shall we call you?"
                   type="text"
-                  validationState={errors.name ? "invalid" : undefined}
+                  validationState={errors.name ? 'invalid' : undefined}
                   variant="underlined"
                 />
                 {errors.name && (
@@ -134,13 +132,13 @@ export default function RegisterForm() {
 
               <div className="h-16">
                 <Input
-                  {...register("email")}
+                  {...register('email')}
                   className="font-semibold"
                   isInvalid={!!errors.email}
                   label="Email address"
                   placeholder="you@domain.com"
                   type="email"
-                  validationState={errors.email ? "invalid" : undefined}
+                  validationState={errors.email ? 'invalid' : undefined}
                   variant="underlined"
                 />
                 {errors.email && (
@@ -152,7 +150,7 @@ export default function RegisterForm() {
 
               <div className="h-16">
                 <Input
-                  {...register("password")}
+                  {...register('password')}
                   className="font-semibold"
                   endContent={
                     <button
@@ -171,8 +169,8 @@ export default function RegisterForm() {
                   isInvalid={!!errors.password}
                   label="Password"
                   placeholder="Must be at least 8 characters"
-                  type={isVisible ? "text" : "password"}
-                  validationState={errors.password ? "invalid" : undefined}
+                  type={isVisible ? 'text' : 'password'}
+                  validationState={errors.password ? 'invalid' : undefined}
                   variant="underlined"
                 />
                 {errors.password && (
@@ -186,14 +184,14 @@ export default function RegisterForm() {
                 <CButton
                   bgColor={primaryColor}
                   link="#"
-                  text={RegisterLoading ? "Register..." : "Register"}
+                  text={RegisterLoading ? 'Register...' : 'Register'}
                   type="submit"
                 />
               </div>
             </form>
 
             <p className="text-center text-default-500 text-xs relative">
-              Already have an account?{" "}
+              Already have an account?{' '}
               <Link className="text-blue-500 text-xs" href="/login">
                 Log in
               </Link>

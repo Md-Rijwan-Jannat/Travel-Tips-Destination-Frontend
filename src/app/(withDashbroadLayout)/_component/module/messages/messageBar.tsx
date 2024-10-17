@@ -1,19 +1,19 @@
-"use client";
+import React, { useState, ChangeEvent, KeyboardEvent } from 'react';
+import { Input } from '@nextui-org/input';
+import { Button } from '@nextui-org/button';
+import { Popover, PopoverTrigger, PopoverContent } from '@nextui-org/popover';
+import { PaperclipIcon, SendIcon, SmileIcon } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import type { EmojiClickData } from 'emoji-picker-react';
+import { useTheme } from 'next-themes';
+import { Theme as EmojiPickerTheme } from 'emoji-picker-react';
 
-import React, { useState, ChangeEvent, KeyboardEvent } from "react";
-import { Input } from "@nextui-org/input";
-import { Button } from "@nextui-org/button";
-import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/popover";
-import { PaperclipIcon, SendIcon, SmileIcon } from "lucide-react";
-import dynamic from "next/dynamic";
-import type { EmojiClickData } from "emoji-picker-react";
-import { useTheme } from "next-themes";
-import { Theme as EmojiPickerTheme } from "emoji-picker-react";
-
-const EmojiPicker = dynamic(() => import("emoji-picker-react"), { ssr: false });
-
+const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 interface MessageBarProps {
-  onSendMessage: (event: KeyboardEvent<HTMLInputElement>) => void;
+  onSendMessage: (
+    message: string,
+    event: KeyboardEvent<HTMLInputElement> | undefined
+  ) => void;
   onTyping: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -21,7 +21,7 @@ export default function MessageBar({
   onSendMessage,
   onTyping,
 }: MessageBarProps) {
-  const [inputMessage, setInputMessage] = useState<string>("");
+  const [inputMessage, setInputMessage] = useState<string>('');
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState<boolean>(false);
   const { theme } = useTheme();
 
@@ -31,21 +31,26 @@ export default function MessageBar({
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputMessage(e.target.value);
-    onTyping(e); // Pass typing event to ChatContainer
+    onTyping(e);
   };
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      onSendMessage(e);
-      setInputMessage("");
+    if (e.key === 'Enter') {
+      onSendMessage(inputMessage, e);
+      setInputMessage('');
     }
   };
 
+  const handleSendClick = () => {
+    onSendMessage(inputMessage, undefined);
+    setInputMessage('');
+  };
+
   return (
-    <div className="p-4 bg-background border-t">
+    <div className="px-2 pt-2 bg-background border-t border-default-100">
       <div className="flex items-center gap-2">
         <Button size="sm" isIconOnly radius="full" aria-label="Attach document">
-          <PaperclipIcon className="h-5 w-5" />
+          <PaperclipIcon className="h-5 w-5 text-pink-500" />
         </Button>
         <Popover
           isOpen={isEmojiPickerOpen}
@@ -59,27 +64,32 @@ export default function MessageBar({
               radius="full"
               aria-label="Select emoji"
             >
-              <SmileIcon className="h-5 w-5" />
+              <SmileIcon className="h-5 w-5 text-pink-500" />
             </Button>
           </PopoverTrigger>
           <PopoverContent>
             <EmojiPicker
-              theme={(theme === "dark" ? "dark" : "light") as EmojiPickerTheme}
+              theme={(theme === 'dark' ? 'dark' : 'light') as EmojiPickerTheme}
               onEmojiClick={handleEmojiClick}
             />
           </PopoverContent>
         </Popover>
         <Input
-          className="flex-grow"
+          className="flex-grow text-xs"
           placeholder="Type a message..."
-          size="md"
+          size="sm"
           radius="full"
           value={inputMessage}
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
         />
-        <Button size="sm" radius="full" aria-label="Send message">
-          <SendIcon className="h-5 w-5" />
+        <Button
+          size="sm"
+          radius="md"
+          aria-label="Send message"
+          onClick={handleSendClick}
+        >
+          <SendIcon className="h-5 w-5 text-pink-500" />
         </Button>
       </div>
     </div>

@@ -8,12 +8,14 @@ const MessagesApi = baseApi.injectEndpoints({
         method: 'POST',
         body: data,
       }),
+      invalidatesTags: ['chats', 'messages'],
     }),
     getUserMessages: builder.query({
       query: (chatId) => ({
         url: `/messages/${chatId}`,
         method: 'GET',
       }),
+      providesTags: ['chats', 'messages'],
     }),
   }),
 });

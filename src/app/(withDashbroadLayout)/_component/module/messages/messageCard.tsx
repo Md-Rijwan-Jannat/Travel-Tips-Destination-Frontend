@@ -17,10 +17,10 @@ const MessageCard = ({ chat }: { chat: TChat }) => {
     if (!userId) return; // Ensure userId is present
     try {
       const res = await createChatFn({ user: userId });
+
       if (res?.data?.success) {
         const newChat = res.data.data;
       }
-      console.log('Created chat ==>', res);
     } catch (error) {
       console.log(error);
     }
@@ -82,7 +82,7 @@ const MessageCard = ({ chat }: { chat: TChat }) => {
         {/* Display the latest message details */}
         <div className="flex-grow">
           <div className="text-sm font-medium text-default-700">
-            {message.senderName}
+            {selectedUser?.name}
           </div>
           <div className="text-xs text-default-500 truncate">
             {message.content}

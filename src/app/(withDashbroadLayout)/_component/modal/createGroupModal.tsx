@@ -22,7 +22,7 @@ export default function CreateGroupModal({
   onOpenChange,
 }: TCreateGroupModalProps) {
   const [chatName, setChatName] = useState<string>('');
-  const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set()); // Use string type here
+  const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
   const { chats, setChats, setSelectedChat } = useChat();
   const { data: allUsersData } =
     useGetAllNormalForAnalyticsUsersQuery(undefined);
@@ -53,6 +53,7 @@ export default function CreateGroupModal({
 
       if (res?.data?.success) {
         const newChat = res.data.data;
+
         setSelectedChat(newChat);
         if (chats && !chats.find((c) => c._id === newChat._id)) {
           setChats([newChat, ...chats]);
@@ -62,7 +63,6 @@ export default function CreateGroupModal({
         setSelectedKeys(new Set());
         setChatName('');
       }
-      console.log('Created group chat ==>', res);
     } catch (error) {
       console.error(error);
     }
@@ -86,10 +86,8 @@ export default function CreateGroupModal({
             <ModalBody>
               {/* Group Name Input */}
               <div className="mt-4">
-                <label className="text-sm font-medium text-default-700">
-                  Group Name
-                </label>
                 <Input
+                  label="Chat Name"
                   variant="bordered"
                   placeholder="Enter group name..."
                   size="md"

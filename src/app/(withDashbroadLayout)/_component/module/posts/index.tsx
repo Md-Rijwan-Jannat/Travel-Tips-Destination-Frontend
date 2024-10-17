@@ -1,34 +1,32 @@
-"use client";
+'use client';
 
-import { TPost, TUser } from "@/src/types";
-import React, { useEffect, useState } from "react";
-import { useGetAllPostsQuery } from "@/src/redux/features/post/postApi";
-import InfiniteScroll from "react-infinite-scroll-component";
-import PostCard from "./postCard/postCard";
-import Spinner from "@/src/components/ui/spinner";
-import { useUser } from "@/src/hooks/useUser";
-import PostModal from "../../modal/postingModal";
-import { categoriesList } from "@/src/constants";
-import { MdLockReset } from "react-icons/md";
-import DropdownFilter from "./postFilter/dropdownFilter";
-import PremiumPostsMarquee from "../premiumPost/premiumPostsMarquee";
-import PostDetailsSkeleton from "@/src/components/ui/skeleton/postDetailsSkeleton";
+import { TPost, TUser } from '@/src/types';
+import React, { useEffect, useState } from 'react';
+import { useGetAllPostsQuery } from '@/src/redux/features/post/postApi';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import PostCard from './postCard/postCard';
+import Spinner from '@/src/components/ui/spinner';
+import { useUser } from '@/src/hooks/useUser';
+import PostModal from '../../modal/postingModal';
+import { categoriesList } from '@/src/constants';
+import { MdLockReset } from 'react-icons/md';
+import DropdownFilter from './postFilter/dropdownFilter';
+import PremiumPostsMarquee from '../premiumPost/premiumPostsMarquee';
+import PostDetailsSkeleton from '@/src/components/ui/skeleton/postDetailsSkeleton';
 
 export default function Post() {
   const [page, setPage] = useState(1);
   const [posts, setPosts] = useState<TPost[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [filterOption, setFilterOption] = useState<string>("all");
-  const [selectedTab, setSelectedTab] = useState<string>("forYou");
-
-  console.log(selectedCategory);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [filterOption, setFilterOption] = useState<string>('all');
+  const [selectedTab, setSelectedTab] = useState<string>('forYou');
 
   // Current user info
   const { userInfo } = useUser();
 
   const postParams = {
     page: page.toString(),
-    limit: "5",
+    limit: '5',
     ...(selectedCategory && { category: selectedCategory }),
   };
 
@@ -73,16 +71,16 @@ export default function Post() {
   const filteredPosts = () => {
     let filtered = posts;
 
-    if (filterOption === "popular") {
+    if (filterOption === 'popular') {
       filtered = filtered
         .filter((post) => post.likes.length > 0)
         .sort((a, b) => b.likes.length - a.likes.length);
     }
-    if (filterOption === "poor") {
+    if (filterOption === 'poor') {
       filtered = filtered.filter((post) => post.likes.length === 0);
     }
 
-    if (selectedTab === "following") {
+    if (selectedTab === 'following') {
       filtered = filtered.filter((post) =>
         userInfo?.following.includes(post?.user?._id)
       );
@@ -105,11 +103,11 @@ export default function Post() {
             key={category}
             className={`px-4 text-xs py-1 rounded-full border border-default-200 focus:outline-none ${
               selectedCategory === category
-                ? "bg-default-100 text-primaryColor"
-                : "bg-default-50"
+                ? 'bg-default-100 text-primaryColor'
+                : 'bg-default-50'
             } hover:bg-default-100 hover:text-primaryColor hover:transition-colors duration-500`}
             onClick={() =>
-              setSelectedCategory(category === selectedCategory ? "" : category)
+              setSelectedCategory(category === selectedCategory ? '' : category)
             }
           >
             {category}
@@ -117,7 +115,7 @@ export default function Post() {
         ))}
         <button
           className="px-4 py-1 rounded-full border border-default-200 bg-default-50 focus:outline-none hover:bg-default-100 hover:text-primaryColor hover:transition-colors duration-500"
-          onClick={() => setSelectedCategory("")}
+          onClick={() => setSelectedCategory('')}
         >
           <MdLockReset />
         </button>
@@ -139,18 +137,18 @@ export default function Post() {
         <button
           className={`px-4 py-2 rounded-xl
              w-full ${
-               selectedTab === "forYou" ? "bg-default-50" : "bg-default-100"
+               selectedTab === 'forYou' ? 'bg-default-50' : 'bg-default-100'
              } transition-colors duration-700 ease-in-out`}
-          onClick={() => setSelectedTab("forYou")}
+          onClick={() => setSelectedTab('forYou')}
         >
           For You
         </button>
         <button
           className={`px-4 py-2 rounded-xl
              w-full ${
-               selectedTab === "following" ? "bg-default-50" : "bg-default-100"
+               selectedTab === 'following' ? 'bg-default-50' : 'bg-default-100'
              } transition-colors duration-700 ease-in-out`}
-          onClick={() => setSelectedTab("following")}
+          onClick={() => setSelectedTab('following')}
         >
           Following
         </button>

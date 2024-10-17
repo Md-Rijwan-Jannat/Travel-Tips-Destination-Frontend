@@ -1,20 +1,19 @@
-import React from "react";
-import { Avatar } from "@nextui-org/avatar";
+import React from 'react';
+import { Avatar } from '@nextui-org/avatar';
 
-import { useGetAllUsersQuery } from "@/src/redux/features/user/userApi";
-import { TUser } from "@/src/types";
+import { useGetAllUsersQuery } from '@/src/redux/features/user/userApi';
+import { TUser } from '@/src/types';
 
 export default function LoginRightContent() {
   const { data: usersData } = useGetAllUsersQuery(undefined);
   const users = usersData?.data as TUser[];
-  console.log(users);
 
   return (
     <div className="w-full md:w-[500px] xl:w-[530px] p-8 flex flex-col justify-center items-center rounded-r-lg relative overflow-hidden shadow-lg mb-10 md:mb-0">
       {/* Foreground Content */}
       <div className="relative text-center z-10">
         <h3 className="text-3xl font-bold text-default-900 flex flex-wrap items-center justify-center">
-          Welcome <p className="text-secondaryColor px-1"> Back to Our </p>{" "}
+          Welcome <p className="text-secondaryColor px-1"> Back to Our </p>{' '}
           Travel Community
         </h3>
         <p className="mt-2 text-default-600">
@@ -39,7 +38,7 @@ export default function LoginRightContent() {
                 ))}
           </div>
           <span className="text-default-500 text-sm">
-            Join {users?.length || "thousands"}+ users
+            Join {users?.length || 'thousands'}+ users
           </span>
         </div>
       </div>

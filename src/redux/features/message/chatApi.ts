@@ -9,18 +9,21 @@ const ChatsApi = baseApi.injectEndpoints({
         method: 'POST',
         body: data,
       }),
+      invalidatesTags: ['chats', 'messages'],
     }),
     getUserChat: builder.query({
       query: () => ({
         url: `/chats`,
         method: 'GET',
       }),
+      providesTags: ['chats', 'messages'],
     }),
     getSingleChat: builder.query({
       query: (chatId) => ({
         url: `/chats/${chatId}`,
         method: 'GET',
       }),
+      providesTags: ['chats', 'messages'],
     }),
   }),
 });

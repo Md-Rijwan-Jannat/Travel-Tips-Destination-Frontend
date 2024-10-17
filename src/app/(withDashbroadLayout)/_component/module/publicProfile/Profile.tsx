@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { TUser } from "@/src/types";
-import React from "react";
-import { GoVerified } from "react-icons/go";
-import { Avatar } from "@nextui-org/avatar";
-import { Divider } from "@nextui-org/divider";
-import { motion } from "framer-motion";
-import UpdateNameImageModal from "../../modal/updateUserModal";
-import UserProfileTabs from "./userProfileTabs";
-import { useUser } from "@/src/hooks/useUser";
-import Follow from "./follow";
-import VerifiedForPayment from "../userProfile/VerifiedForPayment.tsx";
+import { TUser } from '@/src/types';
+import React from 'react';
+import { GoVerified } from 'react-icons/go';
+import { Avatar } from '@nextui-org/avatar';
+import { Divider } from '@nextui-org/divider';
+import { motion } from 'framer-motion';
+import UpdateNameImageModal from '../../modal/updateUserModal';
+import UserProfileTabs from './userProfileTabs';
+import { useUser } from '@/src/hooks/useUser';
+import Follow from './follow';
+import VerifiedForPayment from '../userProfile/VerifiedForPayment.tsx';
 
 interface TUserProps {
   user: TUser | undefined;
@@ -18,7 +18,6 @@ interface TUserProps {
 
 export default function Profile({ user }: TUserProps) {
   const { userInfo: currentUser } = useUser();
-  console.log(user);
 
   if (!user) {
     return <div className="text-center">User not found.</div>;
@@ -36,14 +35,12 @@ export default function Profile({ user }: TUserProps) {
     address,
   } = (user as TUser) || {};
 
-  console.log(follower, "=>>");
-
   return (
     <motion.div
       className="w-full md:w-[500px] xl:w-[600px] mx-auto"
       initial={{ opacity: 0, y: 20 }} // Animating container on load
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       {/* Profile Section */}
       <div className="flex flex-col items-center relative">
@@ -95,7 +92,7 @@ export default function Profile({ user }: TUserProps) {
         </motion.div>
         <div className="flex flex-col items-center justify-center gap-3 w-full">
           {/* Follow and Message Buttons */}
-          {currentUser?.email === email ? "" : <Follow userId={_id} />}
+          {currentUser?.email === email ? '' : <Follow userId={_id} />}
           <div className="flex items-center gap-2">
             <h2 className="text-default-500 text-xs rounded-full px-2 py-1 border border-default-100">
               {address && address}

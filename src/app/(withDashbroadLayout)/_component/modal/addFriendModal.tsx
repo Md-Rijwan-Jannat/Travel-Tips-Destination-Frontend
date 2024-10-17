@@ -38,10 +38,11 @@ export default function AddFriendModal({
     if (!userId || isLoading) return;
     try {
       const res = await createChatFn({ user: userId }).unwrap();
+
       if (res?.success) {
         const newChat = res.data;
+
         if (newChat) {
-          console.log('Created chat ==>', newChat);
           router.push(`/messages/${newChat._id}`);
         }
       }

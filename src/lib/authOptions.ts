@@ -1,7 +1,7 @@
-import nexiosInstance from "nexios-http";
-import nextAuth, { NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import { cookies } from "next/headers";
+import nexiosInstance from 'nexios-http';
+import nextAuth, { NextAuthOptions } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+import { cookies } from 'next/headers';
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -14,26 +14,24 @@ const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ profile, account }: any) {
       try {
-        console.log({ profile, account });
-
         if (!profile || !account) {
           return false;
         }
 
-        if (account?.provider === "google") {
-          const response: any = await nexiosInstance.post("/auth/register", {
+        if (account?.provider === 'google') {
+          const response: any = await nexiosInstance.post('/auth/register', {
             name: profile.name,
             email: profile.email,
             image: profile.picture,
           });
 
-          console.log("response====>>>", response);
+          console.log('response====>>>', response);
           if (
             response.data.data.accessToken ||
             response.data.data.refreshToken
           ) {
-            cookies().set("accessToken", response.data.data.accessToken);
-            cookies().set("refreshToken", response.data.data.refreshToken);
+            cookies().set('accessToken', response.data.data.accessToken);
+            cookies().set('refreshToken', response.data.data.refreshToken);
 
             return true;
           } else {
@@ -53,7 +51,7 @@ const authOptions: NextAuthOptions = {
   },
 
   pages: {
-    signIn: "/register",
+    signIn: '/register',
   },
 
   secret: process.env.NEXTAUTH_SECRET as string,

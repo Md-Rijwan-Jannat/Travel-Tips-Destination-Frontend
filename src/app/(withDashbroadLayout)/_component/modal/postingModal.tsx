@@ -118,6 +118,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
           });
 
           const data = await res.json();
+
           return data.secure_url;
         })
       );
@@ -130,10 +131,12 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
 
   const removeImagePreview = (index: number) => {
     const updatedPreviews = [...imagePreviews];
+
     updatedPreviews.splice(index, 1);
     setImagePreviews(updatedPreviews);
 
     const updatedImages = [...images];
+
     updatedImages.splice(index, 1);
     setValue("images", updatedImages);
   };

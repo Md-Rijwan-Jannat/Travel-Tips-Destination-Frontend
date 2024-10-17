@@ -1,24 +1,23 @@
-"use client";
+'use client';
 
-import { Button } from "@nextui-org/button";
+import { Button } from '@nextui-org/button';
 import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-} from "@nextui-org/dropdown";
-import React from "react";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import UpdatePostModal from "../../../../modal/updatepostModal";
-import DeletePostModal from "../../../../modal/deletePostModal";
-import { TPost, TUser } from "@/src/types";
-import { useDisclosure } from "@nextui-org/modal";
-import { useUser } from "@/src/hooks/useUser";
-import { toast } from "sonner";
-import { copyToClipboard } from "@/src/utils/copyToClipboard";
-import ReportModal from "../../../../modal/reportModal";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+} from '@nextui-org/dropdown';
+import React from 'react';
+import { BsThreeDotsVertical } from 'react-icons/bs';
+import UpdatePostModal from '../../../../modal/updatepostModal';
+import DeletePostModal from '../../../../modal/deletePostModal';
+import { TPost, TUser } from '@/src/types';
+import { useDisclosure } from '@nextui-org/modal';
+import { useUser } from '@/src/hooks/useUser';
+import { copyToClipboard } from '@/src/utils/copyToClipboard';
+import ReportModal from '../../../../modal/reportModal';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface TPostDropdownProps {
   userInfo: TUser;
@@ -56,8 +55,6 @@ export default function PostDropdown({
 
   const pathname = usePathname();
 
-  console.log(pathname);
-
   return (
     <>
       <Dropdown>
@@ -75,7 +72,7 @@ export default function PostDropdown({
             Copy link
           </DropdownItem>
           <DropdownItem
-            className={`${pathname === `/news-feed/posts/${postData?._id}` && "hidden"}`}
+            className={`${pathname === `/news-feed/posts/${postData?._id}` && 'hidden'}`}
             key="copy-link"
             as={Link}
             href={`/news-feed/posts/${postData?._id}`}
@@ -84,14 +81,14 @@ export default function PostDropdown({
           </DropdownItem>
 
           <DropdownItem
-            className={`${userInfo?.email !== currentUser?.email && "hidden"}`}
+            className={`${userInfo?.email !== currentUser?.email && 'hidden'}`}
             key="edit-post"
             onClick={onEditOpen}
           >
             Edit post
           </DropdownItem>
           <DropdownItem
-            className={`text-danger ${userInfo?.email === currentUser?.email && "hidden"}`}
+            className={`text-danger ${userInfo?.email === currentUser?.email && 'hidden'}`}
             key="copy-link"
             onClick={onReportOpen}
           >
@@ -99,7 +96,7 @@ export default function PostDropdown({
           </DropdownItem>
           <DropdownItem
             key="delete-post"
-            className={`text-danger ${userInfo?.email !== currentUser?.email && "hidden"}`}
+            className={`text-danger ${userInfo?.email !== currentUser?.email && 'hidden'}`}
             color="danger"
             onClick={onDeleteOpen}
           >

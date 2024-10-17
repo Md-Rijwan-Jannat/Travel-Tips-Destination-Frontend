@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Modal,
@@ -6,15 +6,15 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-} from "@nextui-org/modal";
-import { Button } from "@nextui-org/button";
-import { useDisclosure } from "@nextui-org/modal";
-import { toast } from "sonner";
-import { useState } from "react";
-import { useSoftDeletePostMutation } from "@/src/redux/features/post/postApi";
-import GlassLoader from "@/src/components/shared/glassLoader";
-import CButton from "@/src/components/ui/CButton/CButton";
-import { primaryColor, secondaryColor } from "@/src/styles/button";
+} from '@nextui-org/modal';
+import { Button } from '@nextui-org/button';
+import { useDisclosure } from '@nextui-org/modal';
+import { toast } from 'sonner';
+import { useState } from 'react';
+import { useSoftDeletePostMutation } from '@/src/redux/features/post/postApi';
+import GlassLoader from '@/src/components/shared/glassLoader';
+import CButton from '@/src/components/ui/CButton/CButton';
+import { primaryColor, secondaryColor } from '@/src/styles/button';
 
 interface TDeletePostModalProps {
   postId: string;
@@ -28,19 +28,18 @@ const DeletePostModal = ({
   postId,
 }: TDeletePostModalProps) => {
   const [postDeleteFn, { isLoading }] = useSoftDeletePostMutation();
-  const [isError, setIsError] = useState<string>("");
+  const [isError, setIsError] = useState<string>('');
 
   const handleDelete = async () => {
     try {
       const res = await postDeleteFn(postId);
 
-      console.log(res);
-      toast.success("Post deleted successfully");
-      setIsError("");
+      toast.success('Post deleted successfully');
+      setIsError('');
       onOpenChange(); // Close the modal
     } catch (error: any) {
-      setIsError("Failed to delete post");
-      toast.error("Failed to delete post");
+      setIsError('Failed to delete post');
+      toast.error('Failed to delete post');
     }
   };
 

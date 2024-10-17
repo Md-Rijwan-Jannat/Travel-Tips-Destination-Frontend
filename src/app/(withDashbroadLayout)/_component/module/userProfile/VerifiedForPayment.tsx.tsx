@@ -41,8 +41,6 @@ export default function VerifiedForPayment({ user }: TVerifiedForPaymentProps) {
         paymentData,
       }).unwrap();
 
-      console.log('Payment started:', response);
-
       if (response.success && response.data.paymentResponse.payment_url) {
         // Navigate to the payment URL
         window.location.href = response.data.paymentResponse.payment_url;

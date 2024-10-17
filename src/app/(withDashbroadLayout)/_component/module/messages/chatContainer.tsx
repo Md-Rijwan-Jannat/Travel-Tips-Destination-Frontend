@@ -1,69 +1,122 @@
 'use client';
 
 import React, { useState, useRef, useEffect, KeyboardEvent } from 'react';
-import { Card, CardBody } from '@nextui-org/card';
 import { Avatar } from '@nextui-org/avatar';
-import { ScrollShadow } from '@nextui-org/scroll-shadow';
-import { motion, AnimatePresence } from 'framer-motion';
-import MessageBar from './messageBar';
-import { TMessage, TUser } from '@/src/types';
-import { useChat } from '@/src/context/chatContext';
+import { io, Socket } from 'socket.io-client';
+import { useUser } from '@/src/hooks/useUser';
 import {
   useGetUserMessagesQuery,
   useCreateMessageMutation,
 } from '@/src/redux/features/message/messageApi';
-import { io, Socket } from 'socket.io-client';
-import { useUser } from '@/src/hooks/useUser';
 import { useGetSingleChatQuery } from '@/src/redux/features/message/chatApi';
 import { getSender } from '@/src/utils/chatLogics';
+import ScrollableChat from './scrollableChat';
+import { TChat, TMessage } from '@/src/types';
+import MessageBar from './messageBar';
 
-const ENDPOINT = 'http://localhost:5000';
+const endpoint = process.env.NEXT_PUBLIC_SOCKET_HOST || 'http://localhost:5000';
+
+let socket: Socket, selectedChatCompare: TChat;
 
 export default function ChatContainer({ chatId }: { chatId: string }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<TMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const [socketConnected, setSocketConnected] = useState(false);
-  const [typing, setTyping] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
+  const [socketConnected, setSocketConnected] = useState<boolean>();
+
+  // Current user
   const { userInfo: user } = useUser();
 
-  const socket = useRef<Socket | null>(null);
-
-  console.log(chatId);
-
-  const { data: selectedChatsData, refetch } = useGetSingleChatQuery(chatId);
+  // Get chat and messages
+  const { data: selectedChatsData } = useGetSingleChatQuery(chatId);
+  const { data: userMessagesData } = useGetUserMessagesQuery(chatId);
   const selectedChat = selectedChatsData?.data;
+  const userMessages = userMessagesData?.data;
 
-  console.log('selectedChat==>', selectedChat);
-
+  // Create message mutation
   const [createMessageFn] = useCreateMessageMutation();
 
-  const sendMessage = async (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && newMessage) {
-      socket.current?.emit('stop typing', chatId);
-      try {
-        setNewMessage('');
+  // UseEffect for socket io
+  useEffect(() => {
+    if (endpoint) {
+      socket = io(endpoint);
+      socket.emit('setup', user);
+      socket.on('connection', () => {
+        setSocketConnected(true);
+      });
+    } else {
+      console.error('Socket endpoint is undefined');
+    }
+  }, [user]);
 
+  // Error Handling for Socket Connection
+  useEffect(() => {
+    if (socket) {
+      socket.on('connect_error', (error) => {
+        console.error('Socket connection error:', error);
+      });
+    }
+  }, []);
+
+  // Update the sendMessage function to accept a message input parameter
+  const sendMessage = async (
+    message: string,
+    event?: KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event) event.preventDefault();
+
+    if (message.trim()) {
+      try {
         const res = await createMessageFn({
-          content: newMessage,
+          content: message,
           chat: chatId,
         });
+        if (res?.data?.success) {
+          const data = res.data.data;
+          setMessages((prevMessages) => [...prevMessages, data]);
+          socket.emit('new message', data);
 
-        console.log(res);
-
-        const data = res?.data;
-
-        socket.current?.emit('new message', data);
-        setMessages((prevMessages) => [...prevMessages, data]);
+          // Clear input after sending
+          setNewMessage('');
+        }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
   };
 
-  const typingHandler = (e: React.ChangeEvent<HTMLInputElement>) => {};
+  // On typing
+  const typingHandler = () => {};
 
+  // Update messages
+  useEffect(() => {
+    if (userMessages) {
+      setMessages(userMessages);
+    }
+    socket.emit('join chat', chatId);
+    selectedChatCompare = selectedChat;
+  }, [userMessages, selectedChat]);
+
+  useEffect(() => {
+    socket.on('message received', (newMessageReceived: TMessage) => {
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare._id === newMessageReceived.chat._id
+      ) {
+        setMessages((prevMessages) => [...prevMessages, newMessageReceived]);
+      } else {
+        // If it's not the selected chat, give a notification
+        // Add your notification logic here
+      }
+    });
+
+    return () => {
+      // Clean up the event listener when the component unmounts
+      socket.off('message received');
+    };
+  }, [messages, selectedChat]);
+
+  // Scroll to bottom on new messages
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -72,92 +125,16 @@ export default function ChatContainer({ chatId }: { chatId: string }) {
 
   const selectedUser = getSender(selectedChat, user);
 
-  console.log(selectedUser);
-
   return (
-    <div className="h-[calc(100vh-100px)] flex flex-col">
-      <div className="flex flex-col items-center justify-center gap-1">
-        {!selectedChat?.isGroupChat ? (
-          <>
-            <div>
-              <Avatar
-                className="cursor-pointer text-[24px] font-bold z-20"
-                name={selectedUser?.name?.charAt(0)?.toUpperCase()}
-                size="md"
-                src={selectedUser?.image || undefined}
-              />
-            </div>
+    <div className="flex flex-col">
+      <ScrollableChat
+        messages={messages}
+        currentUser={user}
+        scrollRef={scrollRef}
+        selectedChat={selectedChat}
+        selectedUser={selectedUser}
+      />
 
-            <h2 className="text-sm font-bold text-default-600">
-              {selectedUser?.name}
-            </h2>
-          </>
-        ) : (
-          <>
-            <div>
-              <Avatar
-                className="cursor-pointer text-[24px] font-bold z-20"
-                name={selectedChat?.chatName?.charAt(0)?.toUpperCase()}
-                size="lg"
-                src={undefined}
-              />
-            </div>
-
-            <h2 className="text-lg font-bold mt-2">{selectedChat?.chatName}</h2>
-          </>
-        )}
-      </div>
-      <ScrollShadow
-        ref={scrollRef}
-        className="flex-grow p-4 space-y-4 overflow-y-auto"
-      >
-        <AnimatePresence>
-          {messages.map((message) => (
-            <motion.div
-              key={message._id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className={`flex ${message?.sender?._id === user?._id ? 'justify-end' : 'justify-start'}`}
-            >
-              <Card
-                className={`max-w-[70%] ${message?.sender?._id === user?._id ? 'bg-primary' : 'dark:bg-default-800'}`}
-              >
-                <CardBody className="p-3">
-                  <div className="flex items-start gap-3">
-                    {message.sender._id !== user?._id && (
-                      <Avatar
-                        src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                        size="sm"
-                        className="flex-shrink-0"
-                      />
-                    )}
-                    <p className="text-sm">{message.content}</p>
-                  </div>
-                </CardBody>
-              </Card>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-        {isTyping && (
-          <motion.div
-            className="flex justify-start mb-2"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Card className="bg-default-100 dark:bg-default-800 max-w-[50%]">
-              <CardBody className="p-3">
-                <div className="flex items-center gap-2">
-                  <p className="text-sm">...</p>
-                </div>
-              </CardBody>
-            </Card>
-          </motion.div>
-        )}
-      </ScrollShadow>
       <MessageBar onSendMessage={sendMessage} onTyping={typingHandler} />
     </div>
   );

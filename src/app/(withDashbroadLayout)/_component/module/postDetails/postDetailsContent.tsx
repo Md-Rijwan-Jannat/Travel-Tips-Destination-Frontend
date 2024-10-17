@@ -17,6 +17,7 @@ export default function PostDetailsContent({ post }: PostDetailsContentProps) {
     if (!post) {
       setError("Failed to load post.");
       setIsLoading(false);
+
       return;
     }
     setIsLoading(false);

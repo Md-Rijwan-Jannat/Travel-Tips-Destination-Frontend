@@ -6,8 +6,6 @@ export const isSameSenderMargin = (
   i: number,
   userId: string
 ) => {
-  // console.log(i === messages.length - 1);
-
   if (
     i < messages.length - 1 &&
     messages[i + 1].sender._id === m.sender._id &&
@@ -64,6 +62,7 @@ export const getSender = (
   user: TUser | undefined
 ): TUser | undefined => {
   if (!selectedChat || !user) return undefined;
+
   return selectedChat?.users?.find((u: TUser) => u._id !== user._id);
 };
 

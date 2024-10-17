@@ -1,12 +1,12 @@
-import { TChat } from "./chat.type";
-import { TUser } from "./user.type";
+import { TChat } from './chat.type';
+import { TUser } from './user.type';
 
 export interface TMessage {
   _id: string;
   sender: TUser;
   content: string;
   chat: TChat;
-  readBy: string[];
+  readBy: [TUser];
   createdAt: string;
   updatedAt: string;
   __v: number;
