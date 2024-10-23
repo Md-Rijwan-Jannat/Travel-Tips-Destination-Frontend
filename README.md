@@ -2,7 +2,7 @@
 
 ## Live Site
 
-Check out the live site [here](https://travel-tips-destinationco.vercel.app)
+Check out the live site [here](https://traveltipsdestinationcommunity.vercel.app)
 
 ## Project Overview
 
