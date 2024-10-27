@@ -10,7 +10,10 @@ const SocialMediaSolutionSection: React.FC = () => {
   return (
     <>
       <SectionTitle text="Go On" />
-      <section className="flex flex-col lg:flex-row items-center justify-between bg-gradient-to-r bg-default-50 rounded-lg p-8 lg:p-12 space-y-8 lg:space-y-0 mt-10">
+      <section
+        className="flex flex-col lg:flex-row items-center justify-between bg-gradient-to-r bg-default-50 rounded-lg p-8 lg:p-12 space-y-8 lg:space-y-0 mt-10
+      "
+      >
         {/* Left Side - Large Image with Badge */}
         <div className="relative w-full lg:w-1/2 flex justify-center lg:justify-start">
           {/* Large Image */}
