@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import TableSkeleton from "@/src/components/ui/skeleton/tableSkeleton";
-import React, { Suspense } from "react";
-import Following from "../../_component/module/userProfile/following";
+import React, { Suspense } from 'react';
+import Following from '../../_component/module/userProfile/following';
+import FollowerSkeleton from '@/src/components/ui/skeleton/followerSkeleton';
 
 export default function FollowingPage() {
   return (
-    <Suspense fallback={<TableSkeleton />}>
+    <Suspense fallback={<FollowerSkeleton />}>
       <Following />
     </Suspense>
   );

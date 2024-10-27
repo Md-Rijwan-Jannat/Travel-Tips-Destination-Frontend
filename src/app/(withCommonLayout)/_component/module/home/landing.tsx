@@ -1,17 +1,18 @@
-import { FC } from "react";
-import { Code } from "@nextui-org/code";
-import { Snippet } from "@nextui-org/snippet";
-import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
+import { FC } from 'react';
+import { Code } from '@nextui-org/code';
+import { Snippet } from '@nextui-org/snippet';
+import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
 
-import CButton from "@/src/components/ui/CButton/CButton";
-import { primaryColor, secondaryColor } from "@/src/styles/button";
-import { GoHeart } from "react-icons/go";
+import CButton from '@/src/components/ui/CButton/CButton';
+import { primaryColor, secondaryColor } from '@/src/styles/button';
+import { GoHeart } from 'react-icons/go';
+import SocialLinks from '../../ui/socialLinks';
 
 type TLandingBannerProps = object;
 
 const LandingBanner: FC<TLandingBannerProps> = () => {
   return (
-    <section className="relative flex flex-col items-center justify-center gap-4 py-8 md:py-10 overflow-hidden h-[760px] md:h-[90vh]">
+    <section className="relative flex flex-col items-center justify-center gap-4 py-8 md:py-10 overflow-hidden h-[600px] md:h-[65vh]">
       {/* Main Content */}
       <div className="flex text-pink-500">
         <GoHeart className="animate-pulse duration-500" size={35} />
@@ -41,20 +42,7 @@ const LandingBanner: FC<TLandingBannerProps> = () => {
       </div>
 
       {/* Social Media Icons */}
-      <div className="flex gap-6 mt-6 z-10">
-        <FaFacebook
-          className="text-blue-600 hover:scale-110 transition-transform"
-          size={28}
-        />
-        <FaInstagram
-          className="text-pink-500 hover:scale-110 transition-transform"
-          size={28}
-        />
-        <FaTwitter
-          className="text-blue-400 hover:scale-110 transition-transform"
-          size={28}
-        />
-      </div>
+      <SocialLinks />
 
       {/* Snippet */}
       <div className="mt-8 z-10 animate-fade-in-up">

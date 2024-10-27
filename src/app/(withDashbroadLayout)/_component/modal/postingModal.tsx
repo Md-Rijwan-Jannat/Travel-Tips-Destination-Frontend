@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Modal,
@@ -6,28 +6,28 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-} from "@nextui-org/modal";
-import { Avatar } from "@nextui-org/avatar";
-import { useDisclosure } from "@nextui-org/modal";
-import { Input } from "@nextui-org/input";
-import { useForm, Controller } from "react-hook-form";
-import { useState, useEffect } from "react";
-import { IoIosImages } from "react-icons/io";
-import { Select, SelectItem } from "@nextui-org/select";
-import Image from "next/image";
-import { FaX } from "react-icons/fa6";
-import { toast } from "sonner";
-import { Button } from "@nextui-org/button";
-import { useCreatePostMutation } from "@/src/redux/features/post/postApi";
-import { TUser } from "@/src/types";
-import GlassLoader from "@/src/components/shared/glassLoader";
-import CButton from "@/src/components/ui/CButton/CButton";
-import { primaryColor } from "@/src/styles/button";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Import Quill's styles
-import { GoVerified } from "react-icons/go";
-import { useUser } from "@/src/hooks/useUser";
-import Link from "next/link";
+} from '@nextui-org/modal';
+import { Avatar } from '@nextui-org/avatar';
+import { useDisclosure } from '@nextui-org/modal';
+import { Input } from '@nextui-org/input';
+import { useForm, Controller } from 'react-hook-form';
+import { useState, useEffect } from 'react';
+import { IoIosImages } from 'react-icons/io';
+import { Select, SelectItem } from '@nextui-org/select';
+import Image from 'next/image';
+import { FaX } from 'react-icons/fa6';
+import { toast } from 'sonner';
+import { Button } from '@nextui-org/button';
+import { useCreatePostMutation } from '@/src/redux/features/post/postApi';
+import { TUser } from '@/src/types';
+import GlassLoader from '@/src/components/shared/glassLoader';
+import CButton from '@/src/components/ui/CButton/CButton';
+import { primaryColor } from '@/src/styles/button';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Import Quill's styles
+import { GoVerified } from 'react-icons/go';
+import { useUser } from '@/src/hooks/useUser';
+import Link from 'next/link';
 
 interface PostData {
   images: string[];
@@ -43,43 +43,43 @@ interface TPostModalProps {
 }
 
 const categoriesList = [
-  "Adventure",
-  "Exploration",
-  "Business Travel",
-  "Other",
-  "Culture",
-  "Wildlife",
-  "Beaches",
-  "Mountaineering",
-  "Sports",
-  "Road Trip",
-  "City Tours",
-  "Photography",
+  'Adventure',
+  'Exploration',
+  'Business Travel',
+  'Other',
+  'Culture',
+  'Wildlife',
+  'Beaches',
+  'Mountaineering',
+  'Sports',
+  'Road Trip',
+  'City Tours',
+  'Photography',
 ];
 
 const PostModal = ({ userInfo }: TPostModalProps) => {
   const [createPostFn, { isLoading }] = useCreatePostMutation();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
-  const [isError, setIsError] = useState<string>("");
+  const [isError, setIsError] = useState<string>('');
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
-  const [description, setDescription] = useState<string>("");
+  const [description, setDescription] = useState<string>('');
 
   // current user
 
   const { handleSubmit, control, setValue, reset, watch } = useForm<PostData>({
     defaultValues: {
       images: [],
-      title: "",
-      description: "",
-      status: "FREE",
+      title: '',
+      description: '',
+      status: 'FREE',
       reportCount: 0,
-      category: "Other",
+      category: 'Other',
     },
   });
 
-  const images = watch("images");
-  const title = watch("title");
+  const images = watch('images');
+  const title = watch('title');
 
   useEffect(() => {
     if (title || description || images.length > 0) {
@@ -104,16 +104,16 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
         files.map(async (file) => {
           const formData = new FormData();
 
-          formData.append("file", file);
-          formData.append("upload_preset", "travel-tips");
+          formData.append('file', file);
+          formData.append('upload_preset', 'travel-tips');
           formData.append(
-            "cloud_name",
-            "Travel-tips&-destination-guides-images"
+            'cloud_name',
+            'Travel-tips&-destination-guides-images'
           );
 
           const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
           const res = await fetch(`${cloudinaryUrl}`, {
-            method: "POST",
+            method: 'POST',
             body: formData,
           });
 
@@ -123,9 +123,9 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
         })
       );
 
-      setValue("images", uploadedImages);
+      setValue('images', uploadedImages);
     } catch (error) {
-      setIsError("Failed to upload image");
+      setIsError('Failed to upload image');
     }
   };
 
@@ -138,7 +138,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
     const updatedImages = [...images];
 
     updatedImages.splice(index, 1);
-    setValue("images", updatedImages);
+    setValue('images', updatedImages);
   };
 
   const onSubmit = async (data: PostData) => {
@@ -151,14 +151,14 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
         setImagePreviews([]);
         reset();
         onOpenChange();
-        toast.success("Post created successfully");
-        setIsError("");
+        toast.success('Post created successfully');
+        setIsError('');
       } else {
-        throw new Error("Post creation failed");
+        throw new Error('Post creation failed');
       }
     } catch (error: any) {
-      setIsError(error.message || "Failed to create post");
-      toast.error("Failed to create post");
+      setIsError(error.message || 'Failed to create post');
+      toast.error('Failed to create post');
     }
   };
 
@@ -179,20 +179,20 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
           <div>
             <Link href={`/profile/${userInfo?._id}`}>
               <p className="whitespace-nowrap text-xs flex items-center gap-1 mt-0.5 hover:underline">
-                {userInfo?.name}{" "}
+                {userInfo?.name}{' '}
                 {userInfo?.verified! && (
                   <GoVerified className="text-primaryColor" />
                 )}
               </p>
             </Link>
             <span className="text-xs text-default-400 whitespace-nowrap">
-              Create post{" "}
+              Create post{' '}
             </span>
           </div>
         </div>
         <input
           className="cursor-pointer w-full px-3 py-2 border border-default-100 rounded-full text-xs focus:border-default-300 focus:outline-none"
-          placeholder={`${userInfo?.role === "USER" ? `What's on your mind, ${userInfo?.name}?` : `Admin announcement`}`}
+          placeholder={`${userInfo?.role === 'USER' ? `What's on your mind, ${userInfo?.name}?` : `Admin announcement`}`}
           type="text"
           onClick={onOpen}
         />
@@ -216,7 +216,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
               />
               <div>
                 <p className="whitespace-nowrap text-xs flex items-center gap-1 mt-0.5">
-                  {userInfo?.name}{" "}
+                  {userInfo?.name}{' '}
                   {userInfo?.verified! && (
                     <GoVerified className="text-primaryColor" />
                   )}
@@ -253,11 +253,11 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
                   placeholder="Write your post..."
                   modules={{
                     toolbar: [
-                      [{ header: "1" }, { header: "2" }, { font: [] }],
-                      [{ list: "ordered" }, { list: "bullet" }],
-                      ["bold", "italic", "underline"],
-                      ["image", "link"],
-                      ["clean"], // remove formatting button
+                      [{ header: '1' }, { header: '2' }, { font: [] }],
+                      [{ list: 'ordered' }, { list: 'bullet' }],
+                      ['bold', 'italic', 'underline'],
+                      ['image', 'link'],
+                      ['clean'], // remove formatting button
                     ],
                   }}
                   theme="snow"

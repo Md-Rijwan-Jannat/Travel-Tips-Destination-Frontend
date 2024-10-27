@@ -1,11 +1,12 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { currentUser } from "./service/currentUser";
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { currentUser } from './service/currentUser';
+import { cookies } from 'next/headers';
 
 type TDecodeUser = {
   id: string;
   email: string;
-  role: "USER" | "ADMIN";
+  role: 'USER' | 'ADMIN';
   iat: number;
   exp: number;
 };
@@ -14,21 +15,22 @@ type TRoleProps = keyof typeof RoleBasedRoutes;
 
 // Role-based routing: USER and ADMIN
 const RoleBasedRoutes = {
-  USER: ["/profile", /^\/profile\/[a-zA-Z0-9]+$/],
-  ADMIN: ["/admin-dashboard"],
+  USER: ['/profile', /^\/profile\/[a-zA-Z0-9]+$/],
+  ADMIN: ['/admin-dashboard'],
 };
 
-const AuthPathname = ["/login", "/register"];
+const AuthPathname = ['/login', '/register'];
 
 const PublicRoutes = [
   /^\/news-feed\/posts\/[a-zA-Z0-9]+$/,
-  "/news-feed/posts",
+  '/news-feed/posts',
   /^\/profile\/[a-zA-Z0-9]+$/,
 ];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const user = currentUser() as TDecodeUser | undefined;
+  const user = (await currentUser()) as TDecodeUser | undefined;
+  const accessToken = cookies().get('accessToken');
 
   // Allow access to public routes for both roles
   if (PublicRoutes.some((route) => pathname.match(route))) {
@@ -36,7 +38,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Redirect unauthenticated users to login page for protected routes
-  if (!user) {
+  if (!user && !accessToken) {
     const isAuthPage = AuthPathname.includes(pathname);
 
     if (!isAuthPage) {
@@ -54,7 +56,7 @@ export async function middleware(request: NextRequest) {
 
     if (
       routes.some((route) =>
-        typeof route === "string"
+        typeof route === 'string'
           ? pathname.startsWith(route)
           : pathname.match(route)
       )
@@ -64,17 +66,17 @@ export async function middleware(request: NextRequest) {
   }
 
   // Redirect to home if no role-based route matches
-  return NextResponse.redirect(new URL("/", request.url));
+  return NextResponse.redirect(new URL('/', request.url));
 }
 
 export const config = {
   matcher: [
-    "/profile",
-    "/admin-dashboard",
-    "/admin-dashboard/:page*",
-    "/news-feed/posts/:postId*",
-    "/profile/:profileId*",
-    "/login",
-    "/register",
+    '/profile',
+    '/admin-dashboard',
+    '/admin-dashboard/:page*',
+    '/news-feed/posts/:postId*',
+    '/profile/:profileId*',
+    '/login',
+    '/register',
   ],
 };
