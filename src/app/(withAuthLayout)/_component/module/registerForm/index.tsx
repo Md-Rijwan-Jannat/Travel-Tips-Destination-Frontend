@@ -110,9 +110,9 @@ export default function RegisterForm() {
               <p className="text-center text-default-500">
                 Start your 30 day free trial
               </p>
-              <div className="flex items-center justify-center flex-col md:flex-row gap-5">
+              {/* <div className="flex items-center justify-center flex-col md:flex-row gap-5">
                 <GoogleButton />
-              </div>
+              </div> */}
               {/* Form Fields */}
               <form
                 className="w-full flex flex-col gap-4"

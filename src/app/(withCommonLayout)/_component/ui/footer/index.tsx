@@ -10,13 +10,12 @@ import SocialLinks from '../socialLinks';
 
 const Footer: React.FC = () => {
   const date = new Date().getFullYear();
+
   return (
     <footer className="text-default-900 flex flex-col items-center py-10">
       <Divider className="my-2" />
-      <div
-        className="flex flex-col md:flex-row items-center justify-center md:items-start md:
-      justify-between w-full gap-8 mb-8 max-w-7xl mx-auto px-2 md:px-6"
-      >
+
+      <div className="flex flex-col md:flex-row items-center justify-center md:items-start md:justify-between w-full gap-8 mb-8 max-w-7xl mx-auto px-2 md:px-6">
         {/* Logo */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -30,9 +29,10 @@ const Footer: React.FC = () => {
           </div>
           <p className="text-default-900 text-xs">
             Exploring the World, one adventure at a time. Connecting travelers
-            everywhere and your journey starts here
+            everywhere and your journey starts here.
           </p>
         </motion.div>
+
         {/* Satisfied Travelers */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -41,7 +41,6 @@ const Footer: React.FC = () => {
           className="flex flex-col items-center text-center md:text-left mt-2"
         >
           <h3 className="text-lg font-semibold mb-2">Satisfied Travelers</h3>
-          {/* Animated Number */}
           <motion.div
             className="text-4xl font-bold text-pink-500 mt-6 flex flex-col gap-1 items-center"
             initial={{ opacity: 0, y: -20 }}
@@ -75,9 +74,8 @@ const Footer: React.FC = () => {
         >
           <h3 className="text-lg font-semibold mb-2">Our Office Location</h3>
           <p className="text-default-900">Bogura, Bangladesh</p>
-          <p className="text-default-900">tarvel@travel.com</p>
+          <p className="text-default-900">travel@travel.com</p>
           <p className="text-default-900">+880 1797550947</p>
-          {/* Social Media Icons */}
           <SocialLinks />
         </motion.div>
       </div>
@@ -91,13 +89,13 @@ const Footer: React.FC = () => {
       >
         <span>© Copyright Travel Platform {date}</span>
         <div className="space-x-4">
-          <a href="#" className="hover:text-default-900">
+          <a href="/sitemap" className="hover:text-default-900">
             Sitemap
           </a>
-          <a href="#" className="hover:text-default-900">
+          <a href="/terms-and-conditions" className="hover:text-default-900">
             Terms and Conditions
           </a>
-          <a href="#" className="hover:text-default-900">
+          <a href="/privacy-policy" className="hover:text-default-900">
             Privacy Policy
           </a>
         </div>

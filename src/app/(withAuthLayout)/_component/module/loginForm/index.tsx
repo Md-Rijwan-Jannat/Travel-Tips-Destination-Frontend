@@ -134,9 +134,9 @@ export default function LoginForm() {
               <p className="text-center text-default-500">
                 Welcome back! Please login to continue.
               </p>
-              <div className="flex items-center justify-center flex-col md:flex-row gap-5">
+              {/* <div className="flex items-center justify-center flex-col md:flex-row gap-5">
                 <GoogleButton />
-              </div>
+              </div> */}
 
               {/* Login Form */}
               <form
