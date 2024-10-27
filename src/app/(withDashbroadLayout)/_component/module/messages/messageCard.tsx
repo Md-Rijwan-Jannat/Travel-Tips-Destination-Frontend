@@ -7,6 +7,7 @@ import { TChat, TMessage } from '@/src/types';
 import { useCreateChatMutation } from '@/src/redux/features/message/chatApi';
 import { getSender } from '@/src/utils/chatLogics';
 import { useUser } from '@/src/hooks/useUser';
+import { GoVerified } from 'react-icons/go';
 
 const MessageCard = ({
   chat,
@@ -57,7 +58,7 @@ const MessageCard = ({
       onClick={() => createChatHandler(message.id)}
       as={Link}
       href={`/messages/${chat._id}`}
-      className="w-full mb-2 cursor-pointer hover:bg-default-50 transition-colors h-18 border border-default-50"
+      className="w-full mb-2 cursor-pointer hover:bg-default-50 transition-colors h-20 border border-default-50"
     >
       <CardBody className="flex flex-row items-center p-2 gap-2">
         {/* Conditional rendering based on isGroupChat */}
@@ -87,9 +88,14 @@ const MessageCard = ({
 
         {/* Display the latest message details */}
         <div className="flex-grow">
-          <div className="text-sm font-medium text-default-700">
-            {selectedUser?.name}
-          </div>
+          <div className="text-sm font-medium text-default-700"></div>
+          <h2 className="text-sm font-medium text-default-700 flex items-center gap-2">
+            {selectedUser?.name}{' '}
+            {selectedUser?.verified && (
+              <GoVerified className="text-primaryColor" />
+            )}
+            {selectedUser?.role === 'ADMIN' && '(Admin)'}
+          </h2>
           <div className="text-xs text-default-500 truncate">
             {newMessage?.content ? newMessage?.content : message.content}
           </div>

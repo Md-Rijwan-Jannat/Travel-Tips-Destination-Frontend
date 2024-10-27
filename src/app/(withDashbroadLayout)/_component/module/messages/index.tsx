@@ -56,7 +56,7 @@ const MessageCardList: React.FC = () => {
           />
         </div>
 
-        <ScrollShadow className="h-[560px]">
+        <ScrollShadow className="h-auto p-2">
           {isLoading ? (
             <MessageCardSkeleton />
           ) : userChats && userChats.length > 0 ? (

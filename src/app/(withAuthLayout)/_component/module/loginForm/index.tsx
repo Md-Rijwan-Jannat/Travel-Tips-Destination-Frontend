@@ -7,7 +7,7 @@ import { Input } from '@nextui-org/input';
 import Link from 'next/link';
 import { jwtDecode } from 'jwt-decode';
 import { toast } from 'sonner';
-import React from 'react';
+import React, { useState } from 'react';
 import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 import GoogleButton from '../registerForm/googleButton';
 import LoginRightContent from './loginRightContent';
@@ -22,6 +22,8 @@ import Cookies from 'js-cookie';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
 import { useRouter, useSearchParams } from 'next/navigation';
+import BackButton from '../../ui/backButton';
+import DemoCredential from '../../ui/demoCredential';
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 interface TDecodedData {
@@ -36,11 +38,14 @@ export default function LoginForm() {
   const toggleVisibility = () => setIsVisible(!isVisible);
   const [loginUser, { isLoading: LoginIsLoading, isSuccess }] =
     useLoginMutation();
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect');
   const router = useRouter();
 
+  // Form handling
   const {
     register,
     handleSubmit,
@@ -48,7 +53,19 @@ export default function LoginForm() {
     reset,
   } = useForm<LoginFormInputs>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   });
+
+  console.log(email, password);
+
+  // Function to handle demo credentials
+  const setDemoCredentials = (email: string, password: string) => {
+    setEmail(email);
+    setPassword(password);
+  };
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
@@ -97,102 +114,114 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="w-full md:min-h-screen flex items-center justify-center max-w-7xl">
+    <div className="w-full md:min-h-screen flex flex-col items-center justify-center max-w-7xl">
       {LoginIsLoading && !isSuccess && <GlassLoader />}
-      <div className="flex flex-col-reverse md:flex-row bg-default-100 rounded-lg w-full overflow-hidden my-5">
-        {/* Left side - Form Section */}
-        <div className="w-full md:w-[500px] xl:w-[530px] flex flex-col justify-center">
-          <div className="flex flex-col gap-6 p-2 md:p-16">
-            <h2 className="text-2xl font-bold text-center">
-              Log in to your account
-            </h2>
-            <p className="text-center text-default-500">
-              Welcome back! Please login to continue.
-            </p>
-            {/* <div className="flex items-center justify-center flex-col md:flex-row gap-5">
-              <GoogleButton />
-            </div> */}
+      <div className="flex flex-col items-start my-2">
+        <div className="flex flex-col md:flex-row gap-3 w-full items-center justify-center">
+          <BackButton />
+          <DemoCredential onDemoClick={setDemoCredentials} />
+        </div>
+        <div className="flex flex-col-reverse md:flex-row bg-default-100 rounded-lg w-full overflow-hidden my-5">
+          {/* Left side - Form Section */}
+          <LoginRightContent />
 
-            {/* Login Form */}
-            <form
-              className="w-full flex flex-col gap-4"
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              {/* Email Input */}
-              <div className="h-16">
-                <Input
-                  {...register('email')}
-                  className="font-semibold"
-                  isInvalid={!!errors.email}
-                  label="Email address"
-                  placeholder="you@domain.com"
-                  type="email"
-                  validationState={errors.email ? 'invalid' : undefined}
-                  variant="underlined"
-                />
-                {errors.email && (
-                  <p className="text-danger-500 text-sm mt-1">
-                    {errors.email.message}
-                  </p>
-                )}
+          {/* Right side - Info Section */}
+          <div className="w-full md:w-[500px] xl:w-[530px] flex flex-col justify-center">
+            <div className="flex flex-col gap-6 p-2 md:p-16">
+              <h2 className="text-2xl font-bold text-center">
+                Log in to your account
+              </h2>
+              <p className="text-center text-default-500">
+                Welcome back! Please login to continue.
+              </p>
+              <div className="flex items-center justify-center flex-col md:flex-row gap-5">
+                <GoogleButton />
               </div>
 
-              {/* Password Input */}
-              <div className="h-16">
-                <Input
-                  {...register('password')}
-                  className="font-semibold"
-                  endContent={
-                    <button
-                      aria-label="toggle password visibility"
-                      className="focus:outline-none"
-                      type="button"
-                      onClick={toggleVisibility}
-                    >
-                      {isVisible ? (
-                        <IoEyeOffOutline className="text-2xl text-default-400 pointer-events-none" />
-                      ) : (
-                        <IoEyeOutline className="text-2xl text-default-400 pointer-events-none" />
-                      )}
-                    </button>
-                  }
-                  isInvalid={!!errors.password}
-                  label="Password"
-                  placeholder="Must be at least 6 characters"
-                  type={isVisible ? 'text' : 'password'}
-                  validationState={errors.password ? 'invalid' : undefined}
-                  variant="underlined"
-                />
-                {errors.password && (
-                  <p className="text-danger-500 text-sm mt-1">
-                    {errors.password.message}
-                  </p>
-                )}
-              </div>
-              <div className="flex my-1 items-center justify-end text-xs relative">
-                <Link
-                  className="text-blue-500 hover:underline"
-                  href={'/forgot-password'}
-                >
-                  Forgot password
+              {/* Login Form */}
+              <form
+                className="w-full flex flex-col gap-4"
+                onSubmit={handleSubmit(onSubmit)}
+              >
+                {/* Email Input */}
+                <div className="h-16">
+                  <Input
+                    {...register('email')}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)} // Update state on change
+                    className="font-semibold"
+                    isInvalid={!!errors.email}
+                    label="Email address"
+                    placeholder="you@domain.com"
+                    type="email"
+                    validationState={errors.email ? 'invalid' : undefined}
+                    variant="underlined"
+                  />
+                  {errors.email && (
+                    <p className="text-danger-500 text-sm mt-1">
+                      {errors.email.message}
+                    </p>
+                  )}
+                </div>
+                <div className="h-16">
+                  <Input
+                    {...register('password')}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)} // Update state on change
+                    className="font-semibold"
+                    endContent={
+                      <button
+                        aria-label="toggle password visibility"
+                        className="focus:outline-none"
+                        type="button"
+                        onClick={toggleVisibility}
+                      >
+                        {isVisible ? (
+                          <IoEyeOffOutline className="text-2xl text-default-400 pointer-events-none" />
+                        ) : (
+                          <IoEyeOutline className="text-2xl text-default-400 pointer-events-none" />
+                        )}
+                      </button>
+                    }
+                    isInvalid={!!errors.password}
+                    label="Password"
+                    placeholder="Must be at least 6 characters"
+                    type={isVisible ? 'text' : 'password'}
+                    validationState={errors.password ? 'invalid' : undefined}
+                    variant="underlined"
+                  />
+                  {errors.password && (
+                    <p className="text-danger-500 text-sm mt-1">
+                      {errors.password.message}
+                    </p>
+                  )}
+                </div>
+                <div className="flex my-1 items-center justify-end text-xs relative">
+                  <Link
+                    className="text-blue-500 hover:underline"
+                    href={'/forgot-password'}
+                  >
+                    Forgot password
+                  </Link>
+                </div>
+                <div className="w-full mt-5">
+                  <CButton
+                    bgColor={secondaryColor}
+                    text="Login"
+                    type="submit"
+                  />
+                </div>
+              </form>
+
+              <p className="text-center text-default-500 text-xs relative">
+                New here?{' '}
+                <Link className="text-blue-500 text-xs" href="/register">
+                  Create an account
                 </Link>
-              </div>
-              <div className="w-full mt-5">
-                <CButton bgColor={secondaryColor} text="Login" type="submit" />
-              </div>
-            </form>
-
-            <p className="text-center text-default-500 text-xs relative">
-              New here?{' '}
-              <Link className="text-blue-500 text-xs" href="/register">
-                Create an account
-              </Link>
-            </p>
+              </p>
+            </div>
           </div>
         </div>
-
-        {/* Right side - Info Section */}
-        <LoginRightContent />
       </div>
     </div>
   );

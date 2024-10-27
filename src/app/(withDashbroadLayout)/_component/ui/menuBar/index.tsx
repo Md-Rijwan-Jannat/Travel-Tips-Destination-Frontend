@@ -1,18 +1,17 @@
 // src/components/MenuBar.tsx
-"use client";
+'use client';
 
-import React from "react";
-import { FaBell, FaUsers } from "react-icons/fa";
-import { FaBookmark } from "react-icons/fa6";
-import { IoIosCheckmarkCircle } from "react-icons/io";
-import { TbArrowAutofitContentFilled } from "react-icons/tb";
-import { RiSecurePaymentFill } from "react-icons/ri";
-import { FaFacebookMessenger } from "react-icons/fa6";
-import { MdAnalytics, MdDynamicFeed } from "react-icons/md";
-import { useAppSelector } from "@/src/redux/hook";
-import { useRouter } from "next/navigation";
-import { useUser } from "@/src/hooks/useUser";
-import MenubarButton from "./menubarButton";
+import React from 'react';
+import { FaBell, FaUsers } from 'react-icons/fa';
+import { IoIosCheckmarkCircle } from 'react-icons/io';
+import { TbArrowAutofitContentFilled } from 'react-icons/tb';
+import { RiSecurePaymentFill } from 'react-icons/ri';
+import { FaFacebookMessenger } from 'react-icons/fa6';
+import { MdAnalytics, MdDynamicFeed } from 'react-icons/md';
+import { useAppSelector } from '@/src/redux/hook';
+import { useRouter } from 'next/navigation';
+import { useUser } from '@/src/hooks/useUser';
+import MenubarButton from './menubarButton';
 
 interface TMenuBarProps {
   className: string;
@@ -24,14 +23,14 @@ export default function MenuBar({ className }: TMenuBarProps) {
   const token = useAppSelector((state) => state.auth?.token);
 
   if (!token) {
-    router.push("/login");
+    router.push('/login');
   }
 
   return (
     <div
       className={`${className} flex flex-row justify-between lg:justify-center lg:flex-col gap-4`}
     >
-      {userInfo?.role === "USER" && (
+      {userInfo?.role === 'USER' && (
         <>
           {/* Common Menu Items */}
           <MenubarButton
@@ -59,16 +58,11 @@ export default function MenuBar({ className }: TMenuBarProps) {
             title="Messages"
             icon={<FaFacebookMessenger className="text-[20px]" />}
           />
-          <MenubarButton
-            href="/bookmark-post"
-            title="Bookmarks"
-            icon={<FaBookmark className="text-[20px]" />}
-          />
         </>
       )}
 
       {/* Admin-specific Menu Items */}
-      {userInfo?.role === "ADMIN" && (
+      {userInfo?.role === 'ADMIN' && (
         <>
           <MenubarButton
             href="/news-feed/posts"

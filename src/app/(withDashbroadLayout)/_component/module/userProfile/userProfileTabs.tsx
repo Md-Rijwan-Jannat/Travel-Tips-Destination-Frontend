@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   useGetMyPostsQuery,
   useGetMyPremiumPostsQuery,
-} from "@/src/redux/features/post/postApi";
-import { TPost } from "@/src/types";
-import { Tab, Tabs } from "@nextui-org/tabs";
-import { motion } from "framer-motion";
-import PostCard from "../../module/posts/postCard/postCard";
-import Spinner from "@/src/components/ui/spinner";
-import InfiniteScrollContainer from "@/src/components/ui/infiniteScrollerContainer";
-import Empty from "@/src/components/ui/empty";
-import { useGetAllPremiumPostsQuery } from "@/src/redux/features/premiumPost/premiumPostApi";
-import { PiCrownSimpleDuotone } from "react-icons/pi";
-import { useUser } from "@/src/hooks/useUser";
-import TableSkeleton from "@/src/components/ui/skeleton/tableSkeleton";
+} from '@/src/redux/features/post/postApi';
+import { TPost } from '@/src/types';
+import { Tab, Tabs } from '@nextui-org/tabs';
+import { motion } from 'framer-motion';
+import PostCard from '../../module/posts/postCard/postCard';
+import InfiniteScrollContainer from '@/src/components/ui/infiniteScrollerContainer';
+import Empty from '@/src/components/ui/empty';
+import { useGetAllPremiumPostsQuery } from '@/src/redux/features/premiumPost/premiumPostApi';
+import { PiCrownSimpleDuotone } from 'react-icons/pi';
+import { useUser } from '@/src/hooks/useUser';
+import TableSkeleton from '@/src/components/ui/skeleton/tableSkeleton';
+import PostDetailsSkeleton from '@/src/components/ui/skeleton/postDetailsSkeleton';
 
 export default function UserProfileTabs() {
   const [page, setPage] = useState(1);
@@ -69,7 +69,7 @@ export default function UserProfileTabs() {
             <motion.div className="grid grid-cols-1 gap-5">
               {isFetchingMyPosts || myPostLoading || isFetchingMore ? (
                 <div className="flex justify-center">
-                  <TableSkeleton />
+                  <PostDetailsSkeleton />
                 </div>
               ) : (
                 myPosts?.map((post) => <PostCard key={post._id} post={post} />)
@@ -105,7 +105,7 @@ export default function UserProfileTabs() {
           className="w-full"
           title={
             <div className="flex items-center gap-1">
-              Subscribed{" "}
+              Subscribed{' '}
               <PiCrownSimpleDuotone className="text-yellow-500" size={14} />
             </div>
           }

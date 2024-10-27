@@ -1,30 +1,33 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
-import Link from "next/link";
+import React from 'react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 const blogPosts = [
   {
     id: 1,
-    title: "Exploring the Beauty of Nature",
+    title: 'Exploring the Beauty of Nature',
     description:
-      "Discover the hidden gems of nature and learn how to enjoy the great outdoors.",
-    image: "https://example.com/image1.jpg", // Replace with a real image URL
+      'Discover the hidden gems of nature and learn how to enjoy the great outdoors.',
+    image:
+      'https://res.cloudinary.com/dihqveqyc/image/upload/v1730000501/f330vrcnoenjiuxfejzw.jpg', // Replace with a real image URL
   },
   {
     id: 2,
-    title: "Culinary Adventures: A Taste of Travel",
+    title: 'Culinary Adventures: A Taste of Travel',
     description:
-      "Join us on a journey through the flavors of the world and the stories behind them.",
-    image: "https://example.com/image2.jpg", // Replace with a real image URL
+      'Join us on a journey through the flavors of the world and the stories behind them.',
+    image:
+      'https://res.cloudinary.com/dihqveqyc/image/upload/v1730001159/bgftolhd60eualfkelye.png', // Replace with a real image URL
   },
   {
     id: 3,
-    title: "Travel Tips for Your Next Adventure",
+    title: 'Travel Tips for Your Next Adventure',
     description:
-      "Get insider tips on how to make the most of your travels and avoid common pitfalls.",
-    image: "https://example.com/image3.jpg", // Replace with a real image URL
+      'Get insider tips on how to make the most of your travels and avoid common pitfalls.',
+    image:
+      'https://res.cloudinary.com/dihqveqyc/image/upload/v1730000518/adadka1ay9td1yikjriw.png', // Replace with a real image URL
   },
 ];
 

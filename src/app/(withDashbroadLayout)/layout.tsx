@@ -1,14 +1,14 @@
-import React from "react";
-import FeedNavbar from "./_component/ui/navbar";
-import MenuBar from "./_component/ui/menuBar";
-import PremiumPosts from "./_component/module/premiumPost";
-import Container from "@/src/components/shared/container";
-import { currentUser } from "@/src/service/currentUser";
+import React from 'react';
+import FeedNavbar from './_component/ui/navbar';
+import MenuBar from './_component/ui/menuBar';
+import PremiumPosts from './_component/module/premiumPost';
+import Container from '@/src/components/shared/container';
+import { currentUser } from '@/src/service/currentUser';
 
 type TUserProps = {
   id: string;
   email: string;
-  role: "USER" | "ADMIN";
+  role: 'USER' | 'ADMIN';
   iat: number;
   exp: number;
 };
@@ -19,6 +19,7 @@ export default async function WithDashboardLayout({
   children: React.ReactNode;
 }) {
   const user = (await currentUser()) as TUserProps;
+  const { role } = user || {};
 
   return (
     <div>
@@ -34,18 +35,14 @@ export default async function WithDashboardLayout({
           {/* Main Section */}
           <main
             className={`flex-1 w-full md:w-[500px] xl:w-[600px] mx-auto ${
-              user?.email && user?.role === "ADMIN" ? "lg:w-full" : "lg:w-3/5"
+              role === 'ADMIN' ? 'lg:w-full' : 'lg:w-3/5'
             } md:px-4 overflow-hidden pt-20 mb-20 lg:mb-5`}
           >
             {children}
           </main>
 
           {/* Premium Posts Section (hidden for ADMIN) */}
-          {user?.email && user?.role !== "ADMIN" && (
-            <aside className="hidden lg:block md:sticky top-0 pt-20 h-screen w-1/4">
-              <PremiumPosts />
-            </aside>
-          )}
+          {role !== 'ADMIN' && <PremiumPosts />}
 
           {/* Bottom Menu for Mobile Devices */}
           <div className="fixed bottom-0 left-0 right-0 lg:hidden border-t border-default-200">
