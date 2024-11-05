@@ -62,10 +62,7 @@ export default function Blog() {
                 {post.title}
               </h2>
               <p className="text-default-700 mb-3">{post.description}</p>
-              <Link
-                className="text-pink-500 hover:underline"
-                href={`/blog/${post.id}`}
-              >
+              <Link className="text-pink-500 hover:underline" href={`#`}>
                 Read More
               </Link>
             </div>

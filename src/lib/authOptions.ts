@@ -25,7 +25,6 @@ const authOptions: NextAuthOptions = {
             image: profile.picture,
           });
 
-          console.log('response====>>>', response);
           if (
             response.data.data.accessToken ||
             response.data.data.refreshToken
@@ -37,8 +36,6 @@ const authOptions: NextAuthOptions = {
           } else {
             return false;
           }
-
-          return true;
         } else {
           return false;
         }

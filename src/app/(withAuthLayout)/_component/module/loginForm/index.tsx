@@ -59,8 +59,6 @@ export default function LoginForm() {
     },
   });
 
-  console.log(email, password);
-
   // Function to handle demo credentials
   const setDemoCredentials = (email: string, password: string) => {
     setEmail(email);

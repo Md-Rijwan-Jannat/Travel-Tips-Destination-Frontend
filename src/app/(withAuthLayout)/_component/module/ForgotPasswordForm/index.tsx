@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@nextui-org/input";
-import Link from "next/link";
-import { toast } from "sonner";
-import React from "react";
-import GlassLoader from "@/src/components/shared/glassLoader";
-import CButton from "@/src/components/ui/CButton/CButton";
-import { secondaryColor } from "@/src/styles/button";
-import { useForgotPasswordMutation } from "@/src/redux/features/auth/authApi";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { SerializedError } from "@reduxjs/toolkit";
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Input } from '@nextui-org/input';
+import Link from 'next/link';
+import { toast } from 'sonner';
+import React from 'react';
+import GlassLoader from '@/src/components/shared/glassLoader';
+import CButton from '@/src/components/ui/CButton/CButton';
+import { secondaryColor } from '@/src/styles/button';
+import { useForgotPasswordMutation } from '@/src/redux/features/auth/authApi';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { SerializedError } from '@reduxjs/toolkit';
 
 // Define schema using Zod for validation
 const forgotPasswordSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
+  email: z.string().email('Please enter a valid email address'),
 });
 
 type ForgotPasswordFormInputs = z.infer<typeof forgotPasswordSchema>;
@@ -37,15 +37,13 @@ export default function ForgotPasswordForm() {
     try {
       const res = await forgotPasswordFn(data);
 
-      console.log("res==>>", res);
-
       if (res?.data?.success) {
-        toast.success("Password reset email sent. Please check your inbox.");
+        toast.success('Password reset email sent. Please check your inbox.');
       } else {
         const error = res?.error;
 
         if (error) {
-          if ("data" in (error as FetchBaseQueryError)) {
+          if ('data' in (error as FetchBaseQueryError)) {
             const fetchError = error as FetchBaseQueryError;
             const errorMessage = (fetchError.data as { message?: string })
               ?.message;
@@ -53,18 +51,18 @@ export default function ForgotPasswordForm() {
             if (errorMessage) {
               toast.error(errorMessage);
             } else {
-              toast.error("An unknown error occurred");
+              toast.error('An unknown error occurred');
             }
           } else if ((error as SerializedError).message) {
             toast.error((error as SerializedError).message!);
           } else {
-            toast.error("An unknown error occurred");
+            toast.error('An unknown error occurred');
           }
         }
       }
     } catch (error) {
       console.log(error);
-      toast.error("An error occurred. Please try again.");
+      toast.error('An error occurred. Please try again.');
     }
   };
 
@@ -88,13 +86,13 @@ export default function ForgotPasswordForm() {
             >
               <div className="h-16">
                 <Input
-                  {...register("email")}
+                  {...register('email')}
                   className="font-semibold"
                   isInvalid={!!errors.email}
                   label="Email address"
                   placeholder="you@domain.com"
                   type="email"
-                  validationState={errors.email ? "invalid" : undefined}
+                  validationState={errors.email ? 'invalid' : undefined}
                   variant="underlined"
                 />
                 {errors.email && (
@@ -115,7 +113,7 @@ export default function ForgotPasswordForm() {
             </form>
 
             <p className="text-center text-default-500 text-xs relative">
-              Remembered your password?{" "}
+              Remembered your password?{' '}
               <Link className="text-blue-500 text-xs" href="/login">
                 Login here
               </Link>

@@ -10,17 +10,21 @@ import {
   FaTwitter,
   FaSpotify,
 } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import SectionTitle from '../../../ui/sectionTitle';
+import { useRef } from 'react';
 
 export default function FeaturesSection() {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true });
+
   return (
     <>
       <SectionTitle text="Features" />
-      <div className="py-10 w-full my-10">
+      <div ref={sectionRef} className="my-5 w-full">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, ease: 'easeOut' }}
           whileHover={{ scale: 1.05 }}
           className="w-full mx-auto text-center mb-8"
@@ -38,7 +42,7 @@ export default function FeaturesSection() {
           {/* Card 1 */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.3, ease: 'easeOut', delay: 0.1 }}
             whileHover={{ scale: 1.05 }}
             className="bg-default-50 rounded-lg p-6 shadow-md text-center"
@@ -63,7 +67,7 @@ export default function FeaturesSection() {
           {/* Card 2 */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.3, ease: 'easeOut', delay: 0.3 }}
             whileHover={{ scale: 1.05 }}
             className="bg-default-50 rounded-lg p-6 shadow-md text-center"
@@ -100,7 +104,7 @@ export default function FeaturesSection() {
           {/* Card 3 */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.3, ease: 'easeOut', delay: 0.6 }}
             whileHover={{ scale: 1.05 }}
             className="bg-default-50 rounded-lg p-6 shadow-md text-center"

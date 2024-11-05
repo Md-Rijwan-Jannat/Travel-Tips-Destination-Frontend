@@ -1,31 +1,35 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+import AboutUsFeatures from './aboutUsFeatures';
+import TeamSection from './teamSection';
 
 export default function About() {
   return (
-    <div className="p-5 min-h-screen border-default-50 mt-10">
-      <motion.h1
-        className="text-3xl font-bold text-center text-default-700 mb-2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        About Us
-      </motion.h1>
+    <div>
+      {/* Header Section */}
+      <div className="text-center mb-10 h-[60vh] mx-auto w-full flex flex-col items-center justify-center">
+        <h1 className="text-3xl font-bold">About Us</h1>
+        <p className="text-default-700 flex items-center justify-center my-2 text-xs">
+          <Link href={'/'}>Home</Link> &gt; About Us
+        </p>
+        <Image
+          className="w-[340px] md:w-[400px]"
+          src={
+            'https://uigaint.com/demo/html/staco_i/assets/images/shape/breadcrumb-img.svg'
+          }
+          width={500}
+          height={500}
+          alt="doc image"
+        />
+      </div>
 
-      <motion.p
-        className="text-lg text-center text-default-700 mb-8 max-w-2xl mx-auto"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.7 }}
-      >
-        Welcome to our travel community! We are passionate travelers who believe
-        in the power of exploration and sharing experiences. Our platform aims
-        to connect adventurers and provide valuable resources to help you make
-        the most of your journeys.
-      </motion.p>
+      <AboutUsFeatures />
+
+      <TeamSection />
 
       <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         <motion.div

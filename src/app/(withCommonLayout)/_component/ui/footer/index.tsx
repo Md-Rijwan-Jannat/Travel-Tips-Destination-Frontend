@@ -4,9 +4,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import CountUp from 'react-countup';
 import BrandLogo from '@/src/components/shared/logo';
-import Image from 'next/image';
 import { Divider } from '@nextui-org/divider';
 import SocialLinks from '../socialLinks';
+import Link from 'next/link'; // Import Next.js Link component
+import Image from 'next/image';
 
 const Footer: React.FC = () => {
   const date = new Date().getFullYear();
@@ -42,13 +43,13 @@ const Footer: React.FC = () => {
         >
           <h3 className="text-lg font-semibold mb-2">Satisfied Travelers</h3>
           <motion.div
-            className="text-4xl font-bold text-pink-500 mt-6 flex flex-col gap-1 items-center"
+            className="text-4xl font-bold text-pink-500 mt-1 flex flex-col gap-1 items-center"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
             <Image
-              className="w-[200px] object-cover rounded-xl"
+              className="w-[200px] object-cover rounded"
               src={
                 'https://res.cloudinary.com/dihqveqyc/image/upload/v1730004592/hclxgpwllvotvtew74ag.avif'
               }
@@ -73,11 +74,51 @@ const Footer: React.FC = () => {
           className="flex flex-col items-center md:items-start md:text-left mt-2"
         >
           <h3 className="text-lg font-semibold mb-2">Our Office Location</h3>
-          <p className="text-default-900">Bogura, Bangladesh</p>
-          <p className="text-default-900">travel@travel.com</p>
-          <p className="text-default-900">+880 1797550947</p>
+          <p className="text-default-900 text-xs">Bogura, Bangladesh</p>
+          <p className="text-default-900 text-xs">travel@travel.com</p>
+          <p className="text-default-900 text-xs">+880 1797550947</p>
           <SocialLinks />
         </motion.div>
+      </div>
+
+      {/* Navigation Links */}
+      <div className="flex flex-col items-center md:flex-row md:justify-center mt-4">
+        <Link
+          href="/news-feed/posts"
+          className="mx-2 hover:text-default-900 text-default-800 text-xs"
+        >
+          News Feed
+        </Link>
+        <Link
+          href="/docs"
+          className="mx-2 hover:text-default-900 text-default-800 text-xs"
+        >
+          Docs
+        </Link>
+        <Link
+          href="/pricing"
+          className="mx-2 hover:text-default-900 text-default-800 text-xs"
+        >
+          Pricing
+        </Link>
+        <Link
+          href="/blog"
+          className="mx-2 hover:text-default-900 text-default-800 text-xs"
+        >
+          Blog
+        </Link>
+        <Link
+          href="/about"
+          className="mx-2 hover:text-default-900 text-default-800 text-xs"
+        >
+          About Us
+        </Link>
+        <Link
+          href="/contact"
+          className="mx-2 hover:text-default-900 text-default-800 text-xs"
+        >
+          Contact Us
+        </Link>
       </div>
 
       {/* Footer Bottom */}
@@ -89,15 +130,24 @@ const Footer: React.FC = () => {
       >
         <span>© Copyright Travel Platform {date}</span>
         <div className="space-x-4">
-          <a href="/sitemap" className="hover:text-default-900">
+          <Link
+            href="/sitemap"
+            className="hover:text-default-900 text-default-800 text-xs"
+          >
             Sitemap
-          </a>
-          <a href="/terms-and-conditions" className="hover:text-default-900">
+          </Link>
+          <Link
+            href="/terms-and-conditions"
+            className="hover:text-default-900 text-default-800 text-xs"
+          >
             Terms and Conditions
-          </a>
-          <a href="/privacy-policy" className="hover:text-default-900">
+          </Link>
+          <Link
+            href="/privacy-policy"
+            className="hover:text-default-900 text-default-800 text-xs"
+          >
             Privacy Policy
-          </a>
+          </Link>
         </div>
       </motion.div>
     </footer>

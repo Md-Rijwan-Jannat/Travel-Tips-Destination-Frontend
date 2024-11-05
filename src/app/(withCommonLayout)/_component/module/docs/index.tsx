@@ -1,137 +1,248 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
-import { Button } from "@nextui-org/button";
-import Link from "next/link";
+import React, { useState } from 'react';
+import DocumentCard from './documentCard';
+import Link from 'next/link';
+import Image from 'next/image';
+import { SearchIcon } from 'lucide-react';
 
-export default function Documentations() {
+const Documents: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const itemsPerPage = 8; // Number of items to display per page
+
+  // Example document data
+  const documentItems = [
+    {
+      title: 'Extensions',
+      link: 'https://developer.wordpress.org/plugins/', // WordPress plugin development documentation
+      items: [
+        'Follow up Emails',
+        'Standard Post Format',
+        'Social Server Setup',
+        'Plugin Installation',
+        'Subscription Model Setup',
+        'Custom Shortcodes',
+        'Theme Customization',
+      ],
+    },
+    {
+      title: 'Admin Panel',
+      link: 'https://docs.djangoproject.com/en/stable/ref/contrib/admin/', // Django admin panel documentation
+      items: [
+        'Follow up Emails',
+        'Standard Post Format',
+        'Social Server Setup',
+        'Plugin Installation',
+        'Subscription Model Setup',
+        'User Management',
+        'Role Permissions',
+        'Dashboard Analytics',
+      ],
+    },
+    {
+      title: 'Administration',
+      link: 'https://www.serverworld.info/en/', // General server setup and configuration
+      items: [
+        'Follow up Emails',
+        'Standard Post Format',
+        'Social Server Setup',
+        'Plugin Installation',
+        'Subscription Model Setup',
+        'Database Backup',
+        'Server Configuration',
+        'Security Settings',
+      ],
+    },
+    {
+      title: 'Online Documentation',
+      link: 'https://readthedocs.org/', // Read the Docs documentation hosting
+      items: [
+        'Follow up Emails',
+        'Standard Post Format',
+        'Social Server Setup',
+        'Plugin Installation',
+        'Subscription Model Setup',
+        'API Documentation',
+        'User Guide',
+        'FAQ',
+      ],
+    },
+    {
+      title: 'Code Syntax Highlight',
+      link: 'https://prismjs.com/', // Prism.js for syntax highlighting
+      items: [
+        'Follow up Emails',
+        'Standard Post Format',
+        'Social Server Setup',
+        'Plugin Installation',
+        'Subscription Model Setup',
+        'JavaScript Syntax',
+        'CSS Syntax',
+        'HTML Syntax',
+      ],
+    },
+    {
+      title: 'Getting Started',
+      link: 'https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web', // MDN Web Docs for web development basics
+      items: [
+        'Follow up Emails',
+        'Standard Post Format',
+        'Social Server Setup',
+        'Plugin Installation',
+        'Subscription Model Setup',
+        'Installation Guide',
+        'System Requirements',
+        'Basic Configuration',
+      ],
+    },
+    {
+      title: 'Themes and Customization',
+      link: 'https://developer.wordpress.org/themes/', // WordPress themes and customization
+      items: [
+        'Theme Installation',
+        'Color Scheme Settings',
+        'Custom CSS',
+        'Widget Placement',
+        'Homepage Layout',
+        'Typography Settings',
+        'Custom Logo',
+      ],
+    },
+    {
+      title: 'SEO and Marketing',
+      link: 'https://moz.com/beginners-guide-to-seo', // Moz's Beginner's Guide to SEO
+      items: [
+        'SEO Optimization',
+        'Meta Tag Setup',
+        'Google Analytics',
+        'Social Media Integration',
+        'Email Marketing',
+        'Keyword Research',
+        'Content Strategy',
+      ],
+    },
+    {
+      title: 'User Management',
+      link: 'https://firebase.google.com/docs/auth', // Firebase Authentication documentation
+      items: [
+        'Create New User',
+        'User Roles',
+        'Profile Settings',
+        'Password Reset',
+        'User Permissions',
+        'Account Deactivation',
+        'User Logs',
+      ],
+    },
+    {
+      title: 'E-commerce Setup',
+      link: 'https://woocommerce.com/documentation/', // WooCommerce documentation for e-commerce
+      items: [
+        'Product Listings',
+        'Pricing Rules',
+        'Checkout Process',
+        'Order Management',
+        'Payment Gateway Integration',
+        'Discount Codes',
+        'Inventory Management',
+      ],
+    },
+    {
+      title: 'Support and Maintenance',
+      link: 'https://support.zendesk.com/hc/en-us', // Zendesk support system documentation
+      items: [
+        'Customer Support Setup',
+        'Live Chat Integration',
+        'Ticketing System',
+        'Knowledge Base',
+        'Feedback Collection',
+        'System Updates',
+        'Bug Reporting',
+      ],
+    },
+  ];
+
+  // Filter document items based on search term
+  const filteredDocuments = documentItems.filter((doc) =>
+    doc.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredDocuments.length / itemsPerPage);
+  const displayedDocuments = filteredDocuments.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
-    <div className="p-2 min-h-screen mt-10">
-      <motion.h1
-        className="text-3xl font-bold text-center text-default-700 mb-2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        Travel Tips & Destination Guides
-      </motion.h1>
-
-      <motion.p
-        className="text-lg text-center text-default-700 mb-8 max-w-2xl mx-auto"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.7 }}
-      >
-        Welcome to Your Travel Community! This platform is designed to help you
-        share your travel stories, tips, and interact with fellow travelers.
-        Here is how to get started!
-      </motion.p>
-
-      <div className="grid gap-10 sm:grid-cols-2">
-        <motion.div
-          className="bg-default-50 bg-opacity-15 rounded-lg p-5"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h2 className="text-xl font-semibold mb-3 text-pink-600">
-            Using Social Media Features
-          </h2>
-          <p className="mb-2">
-            Engage with the community by following other travelers, commenting
-            on posts, and sharing your own experiences.
-          </p>
-          <ul className="list-disc ml-5 mb-3">
-            <li>
-              <strong>Follow:</strong> Users to stay updated on their posts.
-            </li>
-            <li>
-              <strong>Comment:</strong> On posts to share your thoughts.
-            </li>
-            <li>
-              <strong>Upvote:</strong> Content you find valuable.
-            </li>
-          </ul>
-        </motion.div>
-
-        <motion.div
-          className="bg-default-50 bg-opacity-15 rounded-lg p-5"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h2 className="text-xl font-semibold mb-3 text-pink-600">
-            Creating a Post
-          </h2>
-          <p className="mb-2">
-            Use the rich text editor to create detailed travel guides:
-          </p>
-          <ul className="list-disc ml-5 mb-3">
-            <li>
-              Click the <strong>Create Post</strong> button.
-            </li>
-            <li>Add a title and content using the editor.</li>
-            <li>Attach images for better storytelling.</li>
-            <li>Categorize your post for easy discovery.</li>
-          </ul>
-          <Button
-            radius="full"
-            as={Link}
-            href="/news-feed/posts"
-            className="border-primaryColor text-default-50 bg-pink-600 rounded-md"
-          >
-            Create a Post
-          </Button>
-        </motion.div>
+    <div className="py-10">
+      {/* Header Section */}
+      <div className="text-center mb-10 h-[60vh] mx-auto w-full flex flex-col items-center justify-center">
+        <h1 className="text-3xl font-bold">Documents</h1>
+        <p className="text-default-700 flex items-center justify-center my-2 text-xs">
+          <Link href={'/'}>Home</Link> &gt; Documents
+        </p>
+        <Image
+          className="md:w-[350px]"
+          src={'http://thetheme.io/thedocs/assets/img/vector/1.png'}
+          width={500}
+          height={500}
+          alt="doc image"
+        />
       </div>
 
-      <motion.div
-        className="bg-default-50 bg-opacity-15 rounded-lg p-5 mt-10"
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h2 className="text-xl font-semibold mb-3 text-pink-600">
-          Frequently Asked Questions
-        </h2>
-        <div className="mb-3">
-          <h3 className="font-semibold">User Authentication</h3>
-          <p>
-            Register using your email and password. Secure login is ensured with
-            JWT.
-          </p>
-        </div>
-        <div className="mb-3">
-          <h3 className="font-semibold">Profile Management</h3>
-          <p>
-            Update your profile, follow others, and verify your profile for
-            premium content access.
-          </p>
-        </div>
-        <div className="mb-3">
-          <h3 className="font-semibold">Upvote and Downvote System</h3>
-          <p>
-            Help others discover great content by upvoting or downvoting posts.
-          </p>
-        </div>
-        <div className="mb-3">
-          <h3 className="font-semibold">Payment Integration</h3>
-          <p>
-            Access premium content through secure payments like Aamarpay or
-            Stripe.
-          </p>
-        </div>
-      </motion.div>
+      {/* Search Bar */}
+      <div className="flex justify-center mb-6">
+        <input
+          type="text"
+          placeholder="Search documents..."
+          className="border rounded-full px-4 py-2 w-full md:w-1/2 border-default-200 text-default-900 "
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <SearchIcon className="-ml-9 mt-2 text-default-600" />
+      </div>
 
-      <motion.p
-        className="text-center text-default-50 mt-10"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.7 }}
-      >
-        For further assistance, contact us. Happy travels!
-      </motion.p>
+      {/* Document Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+        {displayedDocuments.map((doc, index) => (
+          <DocumentCard
+            key={index}
+            title={doc.title}
+            items={doc.items}
+            link={doc.link}
+          />
+        ))}
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-center mt-8">
+        <div className="flex gap-2">
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+            (pageNum) => (
+              <button
+                key={pageNum}
+                className={`w-8 h-8 flex items-center justify-center rounded-full border ${
+                  currentPage === pageNum
+                    ? 'bg-default-300'
+                    : 'hover:bg-default-200'
+                }`}
+                onClick={() => handlePageChange(pageNum)}
+              >
+                {pageNum}
+              </button>
+            )
+          )}
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default Documents;

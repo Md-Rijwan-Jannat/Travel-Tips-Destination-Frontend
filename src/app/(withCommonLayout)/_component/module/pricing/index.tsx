@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
-import { Button } from "@nextui-org/button";
-import Link from "next/link";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Button } from '@nextui-org/button';
+import Link from 'next/link';
 
 export default function Pricing() {
   return (
@@ -72,8 +72,8 @@ export default function Pricing() {
           <Button
             radius="full"
             as={Link}
-            href="/payment"
-            className="border-primaryColor text-default-50 bg-pink-600 rounded-md"
+            href="#"
+            className="bg-default-50 border border-pink-500 text-pink-500 font-semibold px-4 py-3 rounded-full transition duration-300 ease-in-out hover:bg-pink-500 hover:text-white"
           >
             Buy Now for 1000 BDT
           </Button>
