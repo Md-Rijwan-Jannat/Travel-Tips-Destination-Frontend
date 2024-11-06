@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Modal,
@@ -6,25 +6,25 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-} from "@nextui-org/modal";
-import { Avatar } from "@nextui-org/avatar";
-import { Input } from "@nextui-org/input";
-import { useForm, Controller } from "react-hook-form";
-import { useState, useEffect } from "react";
-import { Select, SelectItem } from "@nextui-org/select";
-import { toast } from "sonner";
+} from '@nextui-org/modal';
+import { Avatar } from '@nextui-org/avatar';
+import { Input } from '@nextui-org/input';
+import { useForm, Controller } from 'react-hook-form';
+import { useState, useEffect } from 'react';
+import { Select, SelectItem } from '@nextui-org/select';
+import { toast } from 'sonner';
 
-import { useUpdatePostMutation } from "@/src/redux/features/post/postApi";
-import { TUser, TPost } from "@/src/types";
-import GlassLoader from "@/src/components/shared/glassLoader";
-import CButton from "@/src/components/ui/CButton/CButton";
-import { primaryColor } from "@/src/styles/button";
-import dynamic from "next/dynamic";
+import { useUpdatePostMutation } from '@/src/redux/features/post/postApi';
+import { TUser, TPost } from '@/src/types';
+import GlassLoader from '@/src/components/shared/glassLoader';
+import CButton from '@/src/components/ui/CButton/CButton';
+import { primaryColor } from '@/src/styles/button';
+import dynamic from 'next/dynamic';
 
 // Dynamically import the ReactQuill component to prevent SSR issues
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
-import "react-quill/dist/quill.snow.css";
+import 'react-quill/dist/quill.snow.css';
 
 interface TUpdatePostModalProps {
   userInfo: TUser | undefined;
@@ -40,17 +40,17 @@ const UpdatePostModal = ({
   onOpenChange,
 }: TUpdatePostModalProps) => {
   const [updatePostFn, { isLoading }] = useUpdatePostMutation();
-  const [isError, setIsError] = useState<string>("");
+  const [isError, setIsError] = useState<string>('');
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [editorContent, setEditorContent] = useState(
-    postData?.description || ""
+    postData?.description || ''
   );
 
   const { handleSubmit, control, reset, watch } = useForm<TPost>({
     defaultValues: {
-      title: "",
-      description: "",
-      status: "FREE",
+      title: '',
+      description: '',
+      status: 'FREE',
       reportCount: 0,
     },
   });
@@ -61,14 +61,14 @@ const UpdatePostModal = ({
       reset({
         title: postData?.title,
         description: postData?.description,
-        status: postData?.status || "FREE",
+        status: postData?.status || 'FREE',
         reportCount: postData?.reportCount || 0,
       });
-      setEditorContent(postData?.description || "");
+      setEditorContent(postData?.description || '');
     }
   }, [postData, reset]);
 
-  const title = watch("title");
+  const title = watch('title');
 
   useEffect(() => {
     if (title || editorContent) {
@@ -90,14 +90,14 @@ const UpdatePostModal = ({
       if (res?.data?.success) {
         reset();
         onOpenChange();
-        toast.success("Post updated successfully");
-        setIsError("");
+        toast.success('Post updated successfully');
+        setIsError('');
       } else {
-        throw new Error("Post update failed");
+        throw new Error('Post update failed');
       }
     } catch (error: any) {
-      setIsError(error.message || "Failed to update post");
-      toast.error("Failed to update post");
+      setIsError(error.message || 'Failed to update post');
+      toast.error('Failed to update post');
     }
   };
 
@@ -146,7 +146,7 @@ const UpdatePostModal = ({
                 )}
               />
 
-              <div className="bg-default-50 text-default-100 rounded-lg p-2 border border-default-300">
+              <div className="">
                 <ReactQuill
                   className="bg-default-50 text-default-700 placeholder:text-default-700"
                   value={editorContent}

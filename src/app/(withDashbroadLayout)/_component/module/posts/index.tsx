@@ -90,7 +90,7 @@ export default function Post() {
   };
 
   return (
-    <div className="w-full md:w-[500px] xl:w-[600px] mx-auto">
+    <div className="w-full md:w-[500px] xl:w-[600px] md:mx-auto">
       {/* Post Modal */}
       <div>
         <PostModal userInfo={userInfo as TUser | undefined} />

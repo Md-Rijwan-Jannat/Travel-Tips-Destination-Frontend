@@ -37,7 +37,7 @@ export default function Profile({ user }: TUserProps) {
 
   return (
     <motion.div
-      className="w-full md:w-[500px] xl:w-[600px] mx-auto"
+      className="w-full md:w-[500px] xl:w-[580px] mx-auto"
       initial={{ opacity: 0, y: 20 }} // Animating container on load
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}

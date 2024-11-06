@@ -1,9 +1,21 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
 
 const TravelFeatures: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('tips');
+
+  // Intersection observer hooks to detect if the sections are in view
+  const { ref: leftRef, inView: leftInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  const { ref: rightRef, inView: rightInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
 
   const tabs = [
     { id: 'tips', label: 'Travel Tips' },
@@ -22,7 +34,13 @@ const TravelFeatures: React.FC = () => {
   return (
     <section className="flex flex-col lg:flex-row items-center gap-8 px-2">
       {/* Left Side: Text Content */}
-      <div className="lg:w-1/2 space-y-6">
+      <motion.div
+        ref={leftRef}
+        initial={{ opacity: 0, x: -50 }}
+        animate={leftInView ? { opacity: 1, x: 0 } : {}}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        className="lg:w-1/2 space-y-6"
+      >
         <h2 className="text-pink-600 tracking-wider text-sm">
           Travel Platform
         </h2>
@@ -71,23 +89,30 @@ const TravelFeatures: React.FC = () => {
             Community Recommendations
           </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Right Side: Image with Stats */}
-      <div className="lg:w-1/2 relative bg-default-50 rounded-lg">
+      <motion.div
+        ref={rightRef}
+        initial={{ opacity: 0, x: 50 }}
+        animate={rightInView ? { opacity: 1, x: 0 } : {}}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        className="lg:w-1/2 relative bg-default-50 rounded-lg"
+      >
         <div className="relative overflow-hidden rounded-lg">
           <Image
             width={500}
             height={500}
-            src="https://media.istockphoto.com/id/1526986072/photo/airplane-flying-over-tropical-sea-at-sunset.jpg?s=612x612&w=0&k=20&c=Ccvg3BqlqsWTT0Mt0CvHlbwCuRjPAIWaCLMKSl3PCks=" // Replace with an appropriate travel-related image URL
+            src="https://media.istockphoto.com/id/1526986072/photo/airplane-flying-over-tropical-sea-at-sunset.jpg?s=612x612&w=0&k=20&c=Ccvg3BqlqsWTT0Mt0CvHlbwCuRjPAIWaCLMKSl3PCks="
             alt="Explore Destinations"
-            className="object-cover full"
+            className="object-cover w-full"
           />
           {/* Stat 1 */}
           <motion.div
-            className="absolute top-4 left-4 bg-white p-3 rounded-lg border border-default-100 text-center"
+            className="absolute top-4 left-4 bg-default-50 p-3 rounded-lg border border-default-100 text-center text-default-80"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
             whileHover={{ scale: 1.1 }}
           >
             <p className="text-2xl font-bold">75+</p>
@@ -96,16 +121,17 @@ const TravelFeatures: React.FC = () => {
 
           {/* Stat 2 */}
           <motion.div
-            className="absolute bottom-4 right-4 bg-white p-3 rounded-lg border border-default-100 text-center"
+            className="absolute bottom-4 right-4 bg-default-50 p-3 rounded-lg border border-default-100 text-center text-default-80"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
             whileHover={{ scale: 1.1 }}
           >
             <p className="text-2xl font-bold">1M+</p>
             <p className="text-default-500 text-sm">Happy Travelers</p>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

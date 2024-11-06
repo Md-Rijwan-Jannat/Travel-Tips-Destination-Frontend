@@ -32,13 +32,19 @@ const LandingBanner: FC<TLandingBannerProps> = () => {
       </div>
 
       {/* Buttons */}
-      <div className="flex gap-3 z-10 animate-fade-in-up">
+      <div className="flex gap-3 z-10 mt-5 animate-fade-in-up">
         <CButton
           bgColor={primaryColor}
           link="/news-feed/posts"
           text="Explore Now"
+          size="lg"
         />
-        <CButton bgColor={secondaryColor} link="/docs" text="Learn More" />
+        <CButton
+          size="lg"
+          bgColor={secondaryColor}
+          link="/docs"
+          text="Learn More"
+        />
       </div>
 
       {/* Social Media Icons */}

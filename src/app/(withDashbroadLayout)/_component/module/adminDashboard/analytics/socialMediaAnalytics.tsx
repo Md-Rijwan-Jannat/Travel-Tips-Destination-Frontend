@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React from "react";
-import { Bar } from "react-chartjs-2";
+import React from 'react';
+import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,19 +10,19 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
+} from 'chart.js';
 import {
   useGetAllUserForAnalyticsQuery,
   useGetAlPremiumUserForAnalyticsQuery,
-} from "@/src/redux/features/adminManagement/manageUserApi";
+} from '@/src/redux/features/adminManagement/manageUserApi';
 import {
   useGetAllDislikesQuery,
   useGetAllLikesQuery,
-} from "@/src/redux/features/adminManagement/manageReactsApi";
+} from '@/src/redux/features/adminManagement/manageReactsApi';
 import {
   useGetAllPostsNormalForAnalyticsQuery,
   useGetAllPostsPremiumForAnalyticsQuery,
-} from "@/src/redux/features/adminManagement/managePostApi";
+} from '@/src/redux/features/adminManagement/managePostApi';
 import {
   FaMoneyBillWave,
   FaUserShield,
@@ -31,9 +31,9 @@ import {
   FaThumbsDown,
   FaCrown,
   FaRegNewspaper,
-} from "react-icons/fa";
-import { useGetAllPaymentsDatForAnalyticsQuery } from "@/src/redux/features/adminManagement/payment";
-import TableSkeleton from "@/src/components/ui/skeleton/tableSkeleton";
+} from 'react-icons/fa';
+import { useGetAllPaymentsDatForAnalyticsQuery } from '@/src/redux/features/adminManagement/payment';
+import TableSkeleton from '@/src/components/ui/skeleton/tableSkeleton';
 
 ChartJS.register(
   CategoryScale,
@@ -94,17 +94,17 @@ export default function SocialMediaAnalytics() {
   // Chart Data
   const chartData = {
     labels: [
-      "Badge Sells",
-      "Premium Users",
-      "Total Users",
-      "Likes",
-      "Dislikes",
-      "Premium Posts",
-      "Normal Posts",
+      'Badge Sells',
+      'Premium Users',
+      'Total Users',
+      'Likes',
+      'Dislikes',
+      'Premium Posts',
+      'Normal Posts',
     ],
     datasets: [
       {
-        label: "Analytics Data",
+        label: 'Analytics Data',
         data: [
           analyticsData.payments,
           analyticsData.premiumUsers,
@@ -115,13 +115,13 @@ export default function SocialMediaAnalytics() {
           analyticsData.normalPosts,
         ],
         backgroundColor: [
-          "#68D391",
-          "#63B3ED",
-          "#F6E05E",
-          "#F687B3",
-          "#FC8181",
-          "#B794F4",
-          "#A0AEC0",
+          '#F687B3',
+          '#63B3ED',
+          '#F6E05E',
+          '#68D391',
+          '#FC8181',
+          '#B794F4',
+          '#38C8B7',
         ],
       },
     ],
@@ -129,7 +129,7 @@ export default function SocialMediaAnalytics() {
 
   return (
     <div className="bg-default-50 p-3 rounded-lg mt-5">
-      <h3 className="text-xl font-bold mb-4 text-pink-500/80">
+      <h3 className="text-xl font-bold mb-4 text-pink-600/90">
         Social Media Analytics
       </h3>
 
@@ -137,57 +137,53 @@ export default function SocialMediaAnalytics() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:5 mb-5">
         {/* Payments */}
-        <div className="bg-gradient-to-br from-green-500/80 to-green-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+        <div className="bg-gradient-to-br from-pink-600/90 to-pink-300/90 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
           <FaMoneyBillWave className="text-lg md:text-3xl mr-3" />
-          <div className="text-sm md:text-lg">
+          <div className="text-sm">
             Total Badge Selling: {analyticsData.payments}
           </div>
         </div>
 
         {/* Premium Users */}
-        <div className="bg-gradient-to-br from-blue-500/80 to-blue-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+        <div className="bg-gradient-to-br from-blue-600/90 to-blue-300/90 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
           <FaUserShield className="text-lg md:text-3xl mr-3" />
-          <div className="text-sm md:text-lg">
+          <div className="text-sm">
             Total Premium Users: {analyticsData.premiumUsers}
           </div>
         </div>
 
         {/* Total Users */}
-        <div className="bg-gradient-to-br from-yellow-500/80 to-yellow-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+        <div className="bg-gradient-to-br from-yellow-600/90 to-yellow-300/90 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
           <FaUsers className="text-lg md:text-3xl mr-3" />
-          <div className="text-sm md:text-lg">
-            Total Users: {analyticsData.allUsers}
-          </div>
+          <div className="text-sm">Total Users: {analyticsData.allUsers}</div>
         </div>
 
         {/* Likes */}
-        <div className="bg-gradient-to-br from-pink-500/80 to-pink-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+        <div className="bg-gradient-to-br from-green-600/90 to-green-400/90 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
           <FaThumbsUp className="text-lg md:text-3xl mr-3" />
-          <div className="text-sm md:text-lg">
-            Total Likes: {analyticsData.likes}
-          </div>
+          <div className="text-sm">Total Likes: {analyticsData.likes}</div>
         </div>
 
         {/* Dislikes */}
-        <div className="bg-gradient-to-br from-red-500/80 to-red-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+        <div className="bg-gradient-to-br from-red-600/90 to-red-300/90 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
           <FaThumbsDown className="text-lg md:text-3xl mr-3" />
-          <div className="text-sm md:text-lg">
+          <div className="text-sm">
             Total Dislikes: {analyticsData.dislikes}
           </div>
         </div>
 
         {/* Premium Posts */}
-        <div className="bg-gradient-to-br from-purple-500/80 to-purple-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+        <div className="bg-gradient-to-br from-purple-600/90 to-purple-300/90 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
           <FaCrown className="text-lg md:text-3xl mr-3" />
-          <div className="text-sm md:text-lg">
+          <div className="text-sm">
             Total Premium Posts: {analyticsData.premiumPosts}
           </div>
         </div>
 
         {/* Normal Posts */}
-        <div className="bg-gradient-to-br from-gray-500/80 to-gray-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+        <div className="bg-gradient-to-br from-teal-600/90 to-teal-300/90 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
           <FaRegNewspaper className="text-lg md:text-3xl mr-3" />
-          <div className="text-sm md:text-lg">
+          <div className="text-sm">
             Total Normal Posts: {analyticsData.normalPosts}
           </div>
         </div>
@@ -199,13 +195,14 @@ export default function SocialMediaAnalytics() {
           data={chartData}
           options={{
             responsive: true,
+
             plugins: {
               legend: {
-                position: "top",
+                position: 'top',
               },
               title: {
                 display: true,
-                text: "Social Media Analytics Overview",
+                text: 'Social Media Analytics Overview',
               },
             },
           }}

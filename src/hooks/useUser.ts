@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { useGetMeQuery } from "../redux/features/auth/authApi";
-import { TUser } from "../types";
+import { useEffect } from 'react';
+import { useGetMeQuery } from '../redux/features/auth/authApi';
+import { TUser } from '../types';
 
 export const useUser = () => {
   const {
@@ -8,13 +8,15 @@ export const useUser = () => {
     isFetching,
     error,
     refetch,
-  } = useGetMeQuery(undefined);
+  } = useGetMeQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
 
   const userInfo = userData?.data as TUser | undefined;
 
   useEffect(() => {
     if (!userInfo?.email && !isFetching) {
-      console.log("User not authenticated or data not available.");
+      console.log('User not authenticated or data not available.');
     }
   }, [userInfo, isFetching]);
 

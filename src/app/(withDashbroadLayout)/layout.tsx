@@ -4,6 +4,7 @@ import MenuBar from './_component/ui/menuBar';
 import PremiumPosts from './_component/module/premiumPost';
 import Container from '@/src/components/shared/container';
 import { currentUser } from '@/src/service/currentUser';
+import MiniDashboard from './_component/module/adminDashboard/analytics/miniDashboard';
 
 type TUserProps = {
   id: string;
@@ -42,7 +43,7 @@ export default async function WithDashboardLayout({
           </main>
 
           {/* Premium Posts Section (hidden for ADMIN) */}
-          {role !== 'ADMIN' && <PremiumPosts />}
+          {role === 'ADMIN' ? <MiniDashboard /> : <PremiumPosts />}
 
           {/* Bottom Menu for Mobile Devices */}
           <div className="fixed bottom-0 left-0 right-0 lg:hidden border-t border-default-200">

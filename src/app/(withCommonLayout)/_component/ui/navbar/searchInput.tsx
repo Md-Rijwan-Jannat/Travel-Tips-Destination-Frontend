@@ -1,15 +1,19 @@
-"use client";
+'use client';
 
-import { Input } from "@nextui-org/input";
-import { Kbd } from "@nextui-org/kbd";
-import React, { useState, useEffect, useRef } from "react";
-import { SearchIcon } from "@/src/components/ui/icons";
-import { useGetAllPostsQuery } from "@/src/redux/features/post/postApi";
-import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
+import { Input } from '@nextui-org/input';
+import { Kbd } from '@nextui-org/kbd';
+import React, { useState, useEffect, useRef } from 'react';
+import { SearchIcon } from '@/src/components/ui/icons';
+import { useGetAllPostsQuery } from '@/src/redux/features/post/postApi';
+import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
+import { TPost } from '@/src/types';
+import { FiArrowUpRight } from 'react-icons/fi';
+import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
+import Image from 'next/image';
 
 export default function SearchInput() {
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -17,7 +21,7 @@ export default function SearchInput() {
   // Fetch posts with the searchTerm
   const { data: allPostsData, refetch } = useGetAllPostsQuery({ searchTerm });
 
-  const posts = allPostsData?.data;
+  const posts = allPostsData?.data as TPost[];
 
   useEffect(() => {
     const debounce = setTimeout(() => {
@@ -36,23 +40,23 @@ export default function SearchInput() {
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
 
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   // Handle Ctrl + K key
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.ctrlKey && event.key === "k") {
+      if (event.ctrlKey && event.key === 'k') {
         event.preventDefault();
         inputRef.current?.focus();
       }
     }
 
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
 
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   return (
@@ -67,11 +71,11 @@ export default function SearchInput() {
         }}
         onFocus={() => setIsDropdownOpen(true)}
         classNames={{
-          inputWrapper: "bg-default-100",
-          input: "text-sm",
+          inputWrapper: 'bg-default-100',
+          input: 'text-sm',
         }}
         endContent={
-          <Kbd className="hidden md:flex" keys={["command"]}>
+          <Kbd className="hidden md:flex" keys={['command']}>
             K
           </Kbd>
         }
@@ -98,14 +102,24 @@ export default function SearchInput() {
           >
             {posts?.length > 0 ? (
               <div className="grid grid-cols-1 gap-3 p-2">
-                {posts.map((post: any) => (
+                {posts.map((post: TPost) => (
                   <Link
                     key={post._id}
                     onClick={() => setIsDropdownOpen(false)}
-                    className="py-2 px-4 text-sm cursor-pointer hover:bg-default-100 rounded-md border border-default-100"
+                    className="py-2 px-4 text-sm cursor-pointer hover:bg-default-100 rounded-md border border-default-100 flex justify-between gap-3 items-center"
                     href={`/news-feed/posts/${post?._id}`}
                   >
-                    {post.title}
+                    <FiArrowUpRight size={20} />
+
+                    <div className="flex flex-col items-start gap-0.5">
+                      <p className="font-semibold">{post.title.slice(0, 15)}</p>
+                      <p
+                        dangerouslySetInnerHTML={{
+                          __html: post.description.slice(0, 25) + '...',
+                        }}
+                      ></p>
+                    </div>
+                    <MdOutlineKeyboardArrowRight size={20} />
                   </Link>
                 ))}
               </div>

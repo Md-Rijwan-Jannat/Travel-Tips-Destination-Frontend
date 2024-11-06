@@ -5,12 +5,14 @@ import DocumentCard from './documentCard';
 import Link from 'next/link';
 import Image from 'next/image';
 import { SearchIcon } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Documents: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  const itemsPerPage = 8; // Number of items to display per page
+  const itemsPerPage = 8;
 
+  // Sample document data
   // Example document data
   const documentItems = [
     {
@@ -163,27 +165,27 @@ const Documents: React.FC = () => {
     },
   ];
 
-  // Filter document items based on search term
   const filteredDocuments = documentItems.filter((doc) =>
     doc.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredDocuments.length / itemsPerPage);
   const displayedDocuments = filteredDocuments.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  // Handle page change
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+  const handlePageChange = (page: number) => setCurrentPage(page);
 
   return (
     <div className="py-10">
       {/* Header Section */}
-      <div className="text-center mb-10 h-[60vh] mx-auto w-full flex flex-col items-center justify-center">
+      <motion.div
+        className="text-center mb-10 h-[60vh] mx-auto w-full flex flex-col items-center justify-center"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
         <h1 className="text-3xl font-bold">Documents</h1>
         <p className="text-default-700 flex items-center justify-center my-2 text-xs">
           <Link href={'/'}>Home</Link> &gt; Documents
@@ -195,14 +197,14 @@ const Documents: React.FC = () => {
           height={500}
           alt="doc image"
         />
-      </div>
+      </motion.div>
 
       {/* Search Bar */}
-      <div className="flex justify-center mb-6">
+      <div className="flex justify-center mb-6 w-full">
         <input
           type="text"
           placeholder="Search documents..."
-          className="border rounded-full px-4 py-2 w-full md:w-1/2 border-default-200 text-default-900 "
+          className="border rounded-full px-4 py-2 w-[300px] md:w-[400px] focus:outline-none border-default-200 text-default-900 "
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -212,12 +214,14 @@ const Documents: React.FC = () => {
       {/* Document Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
         {displayedDocuments.map((doc, index) => (
-          <DocumentCard
+          <motion.div
             key={index}
-            title={doc.title}
-            items={doc.items}
-            link={doc.link}
-          />
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: index * 0.05 }}
+          >
+            <DocumentCard title={doc.title} items={doc.items} link={doc.link} />
+          </motion.div>
         ))}
       </div>
 
@@ -226,7 +230,7 @@ const Documents: React.FC = () => {
         <div className="flex gap-2">
           {Array.from({ length: totalPages }, (_, index) => index + 1).map(
             (pageNum) => (
-              <button
+              <motion.button
                 key={pageNum}
                 className={`w-8 h-8 flex items-center justify-center rounded-full border ${
                   currentPage === pageNum
@@ -234,9 +238,11 @@ const Documents: React.FC = () => {
                     : 'hover:bg-default-200'
                 }`}
                 onClick={() => handlePageChange(pageNum)}
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.2 }}
               >
                 {pageNum}
-              </button>
+              </motion.button>
             )
           )}
         </div>

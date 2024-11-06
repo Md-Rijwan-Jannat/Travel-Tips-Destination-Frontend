@@ -27,11 +27,11 @@ export default function Contact() {
       setMessage('');
     }, 2000);
 
-    toast.success('Message send successful');
+    toast.success('Message sent successfully');
   };
 
   return (
-    <div className="max-w-7xl mx-auto w-full">
+    <div className="max-w-7xl w-full">
       {/* Header Section */}
       <div className="text-center h-[60vh] mx-auto w-full flex flex-col items-center justify-center">
         <h1 className="text-3xl font-bold">Contact Us</h1>
@@ -49,55 +49,111 @@ export default function Contact() {
         />
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="rounded-lg w-full md:w-[500px] border p-5 bg-default-50"
-      >
-        {/* Name Field */}
-        <div className="mb-6">
-          <Input
-            fullWidth
-            variant="underlined"
-            label="Your Name"
-            placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
+      {/* Form Section */}
+      <div className="flex items-center justify-between gap-5 flex-col md:flex-row border border-default-100 p-5 bg-default-50 rounded-md w-full">
+        <Image
+          src={
+            'https://tykit.rometheme.pro/sogram/wp-content/uploads/sites/15/2021/07/ps8.png'
+          }
+          height={500}
+          width={500}
+          alt="contact"
+        />
+        <form
+          onSubmit={handleSubmit}
+          className="rounded-lg w-full md:w-[500px]"
+        >
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <h2 className="text-pink-600 tracking-wider text-sm md:text-lg my-3">
+              Travel Platform
+            </h2>
+            <h1 className="text-2xl md:text-3xl font-bold">
+              Do not hesitate to ask <br /> a question
+            </h1>
+          </motion.div>
 
-        {/* Email Field */}
-        <div className="mb-6">
-          <Input
-            fullWidth
-            variant="underlined"
-            label="Your Email"
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
+          {/* Name Field */}
+          <motion.div className="mb-6 mt-10" whileHover={{ scale: 1.02 }}>
+            <Input
+              fullWidth
+              variant="bordered"
+              radius="full"
+              label="Your Name"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </motion.div>
 
-        {/* Message Field */}
-        <div className="mb-6">
-          <Textarea
-            fullWidth
-            variant="underlined"
-            label="Your Message"
-            placeholder="Write your message here..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            required
-          />
-        </div>
+          {/* Email Field */}
+          <motion.div className="mb-6" whileHover={{ scale: 1.02 }}>
+            <Input
+              fullWidth
+              variant="bordered"
+              radius="full"
+              label="Your Email"
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </motion.div>
 
-        {/* Submit Button */}
-        <div className="flex justify-center mb-5">
-          <CButton text="Submit" type="submit" bgColor={primaryColor} />
-        </div>
-      </form>
+          {/* Message Field */}
+          <motion.div className="mb-6" whileHover={{ scale: 1.02 }}>
+            <Textarea
+              fullWidth
+              variant="bordered"
+              radius="full"
+              label="Your Message"
+              placeholder="Write your message here..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              required
+            />
+          </motion.div>
+
+          {/* Submit Button */}
+          <motion.div
+            className="flex justify-end mb-5"
+            whileHover={{ scale: 1.05 }}
+          >
+            <CButton text="Submit" type="submit" bgColor={primaryColor} />
+          </motion.div>
+        </form>
+      </div>
+
+      {/* Contact Information Section */}
+      <div className="mt-10 p-5 bg-default-50 rounded-md shadow-lg">
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2 }}
+        >
+          <h2 className="text-2xl font-bold text-primaryColor">Get in Touch</h2>
+          <p className="text-default-700 mt-2">
+            We’d love to hear from you! Reach us via:
+          </p>
+          <div className="flex flex-col md:flex-row gap-4 items-center mt-4 justify-center">
+            <p className="bg-default-50 rounded-md px-3 py-1 border border-default-100 text-xs">
+              <strong>Phone:</strong> +123 456 7890
+            </p>
+            <p className="bg-default-50 rounded-md px-3 py-1 border border-default-100 text-xs">
+              <strong>Email:</strong> contact@example.com
+            </p>
+            <p className="bg-default-50 rounded-md px-3 py-1 border border-default-100 text-xs">
+              <strong>WhatsApp:</strong> +123 456 7890
+            </p>
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 }

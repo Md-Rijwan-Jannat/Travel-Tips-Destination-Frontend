@@ -245,7 +245,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
                 )}
               />
 
-              <div className="bg-default-50 text-default-100 rounded-lg p-2 border border-default-300">
+              <div className="">
                 <ReactQuill
                   className="bg-default-50 text-default-700 placeholder:text-default-700"
                   value={description}

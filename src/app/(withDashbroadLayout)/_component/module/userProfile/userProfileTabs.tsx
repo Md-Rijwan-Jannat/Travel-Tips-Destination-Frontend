@@ -14,6 +14,7 @@ import { PiCrownSimpleDuotone } from 'react-icons/pi';
 import { useUser } from '@/src/hooks/useUser';
 import TableSkeleton from '@/src/components/ui/skeleton/tableSkeleton';
 import PostDetailsSkeleton from '@/src/components/ui/skeleton/postDetailsSkeleton';
+import MyDashboard from './myDashboard';
 
 export default function UserProfileTabs() {
   const [page, setPage] = useState(1);
@@ -57,24 +58,30 @@ export default function UserProfileTabs() {
       animate={{ opacity: 1 }}
       transition={{ delay: 0.4, duration: 0.4 }}
     >
-      <Tabs aria-label="Options" className="w-full md:w-[500px] xl:w-[600px]">
+      <Tabs
+        aria-label="Options"
+        className="w-full md:w-[500px] xl:w-[600px] mx-auto"
+      >
         <Tab key="posts" className="w-full" title="Posts">
           <InfiniteScrollContainer
             onBottomReached={loadMorePosts}
             isFetchingMore={isFetchingMore}
           >
-            {myPosts?.length === 0 && (
+            {myPosts?.length === 0 ? (
               <Empty message="There are no posts available" />
+            ) : (
+              <motion.div className="grid grid-cols-1 gap-5">
+                {isFetchingMyPosts || myPostLoading || isFetchingMore ? (
+                  <div className="flex justify-center">
+                    <PostDetailsSkeleton />
+                  </div>
+                ) : (
+                  myPosts?.map((post) => (
+                    <PostCard key={post._id} post={post} />
+                  ))
+                )}
+              </motion.div>
             )}
-            <motion.div className="grid grid-cols-1 gap-5">
-              {isFetchingMyPosts || myPostLoading || isFetchingMore ? (
-                <div className="flex justify-center">
-                  <PostDetailsSkeleton />
-                </div>
-              ) : (
-                myPosts?.map((post) => <PostCard key={post._id} post={post} />)
-              )}
-            </motion.div>
           </InfiniteScrollContainer>
         </Tab>
         <Tab key="my-premium-posts" className="w-full" title="Premium Posts">
@@ -82,22 +89,24 @@ export default function UserProfileTabs() {
             onBottomReached={loadMorePosts}
             isFetchingMore={isFetchingMore}
           >
-            {myPremiumPosts?.length === 0 && (
+            {myPremiumPosts?.length === 0 ? (
               <Empty message="There are no premium posts available" />
+            ) : (
+              <motion.div className="grid grid-cols-1 gap-5">
+                {isFetchingMyPremiumPosts ||
+                myPremiumPostLoading ||
+                isFetchingMore ? (
+                  <div className="flex justify-center">
+                    {' '}
+                    <TableSkeleton />
+                  </div>
+                ) : (
+                  myPremiumPosts?.map((post) => (
+                    <PostCard key={post._id} post={post} />
+                  ))
+                )}
+              </motion.div>
             )}
-            <motion.div className="grid grid-cols-1 gap-5">
-              {isFetchingMyPremiumPosts ||
-              myPremiumPostLoading ||
-              isFetchingMore ? (
-                <div className="flex justify-center">
-                  <TableSkeleton />
-                </div>
-              ) : (
-                myPremiumPosts?.map((post) => (
-                  <PostCard key={post._id} post={post} />
-                ))
-              )}
-            </motion.div>
           </InfiniteScrollContainer>
         </Tab>
         <Tab
@@ -114,21 +123,25 @@ export default function UserProfileTabs() {
             onBottomReached={loadMorePosts}
             isFetchingMore={isFetchingMore}
           >
-            {allPremiumPosts?.length === 0 && (
-              <Empty message="There are no subscribed posts available" />
-            )}
             {userInfo?.verified ? (
               <motion.div className="grid grid-cols-1 gap-5">
-                {isFetchingAllPremiumPosts ||
-                allPremiumPostLoading ||
-                isFetchingMore ? (
-                  <div className="flex justify-center">
-                    <TableSkeleton />
-                  </div>
+                {allPremiumPosts?.length === 0 ? (
+                  <Empty message="There are no subscribed posts available" />
                 ) : (
-                  allPremiumPosts?.map((post) => (
-                    <PostCard key={post._id} post={post} />
-                  ))
+                  <div>
+                    {isFetchingAllPremiumPosts ||
+                    allPremiumPostLoading ||
+                    isFetchingMore ? (
+                      <div className="flex justify-center">
+                        {' '}
+                        <TableSkeleton />
+                      </div>
+                    ) : (
+                      allPremiumPosts?.map((post) => (
+                        <PostCard key={post._id} post={post} />
+                      ))
+                    )}
+                  </div>
                 )}
               </motion.div>
             ) : (
@@ -144,7 +157,7 @@ export default function UserProfileTabs() {
           >
             <motion.div className="grid grid-cols-1 gap-5">
               {/* Add Dashboard content */}
-              <Empty message="There is no content available" />
+              <MyDashboard />
             </motion.div>
           </InfiniteScrollContainer>
         </Tab>

@@ -37,25 +37,32 @@ export default function UserProfileTabs({ userId }: TUserProfileTabsProps) {
       animate={{ opacity: 1 }}
       transition={{ delay: 0.4, duration: 0.4 }}
     >
-      <Tabs aria-label="Options" className="w-full md:w-[520px] xl:w-[600px]">
+      <Tabs
+        aria-label="Options"
+        className="w-full md:w-[520px] xl:w-[600px] mx-auto"
+      >
         <Tab key="posts" className="w-full" title="Posts">
           <InfiniteScrollContainer
             isFetchingMore={isFetchingMore}
             onBottomReached={loadMorePosts}
           >
-            {isFetchingMore || myPostLoading ? (
-              <div className="flex justify-center">
-                <TableSkeleton />
-              </div>
+            {!myPosts?.length ? (
+              <Empty message="There are not post available" />
             ) : (
-              <motion.div className="grid grid-cols-1 gap-5">
-                {!myPosts?.length && (
-                  <Empty message="There are not post available" />
+              <>
+                {' '}
+                {isFetchingMore || myPostLoading ? (
+                  <div className="flex justify-center">
+                    <TableSkeleton />
+                  </div>
+                ) : (
+                  <motion.div className="grid grid-cols-1 gap-5">
+                    {myPosts?.map((post) => (
+                      <PostCard key={post._id} post={post} />
+                    ))}
+                  </motion.div>
                 )}
-                {myPosts?.map((post) => (
-                  <PostCard key={post._id} post={post} />
-                ))}
-              </motion.div>
+              </>
             )}
           </InfiniteScrollContainer>
         </Tab>

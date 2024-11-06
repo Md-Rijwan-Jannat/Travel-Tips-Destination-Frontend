@@ -11,10 +11,9 @@ const SubscriptionSection: FC = () => {
   // State to manage the email input
   const [email, setEmail] = useState('');
 
-  // Intersection observer hooks to detect if the sections are in view
   const { ref: leftRef, inView: leftInView } = useInView({
-    triggerOnce: true, // Trigger animation only once
-    threshold: 0.1, // Trigger when 10% of the section is in view
+    triggerOnce: true,
+    threshold: 0.1,
   });
 
   const { ref: rightRef, inView: rightInView } = useInView({

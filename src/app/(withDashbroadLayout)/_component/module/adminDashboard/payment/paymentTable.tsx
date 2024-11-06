@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React from "react";
+import React from 'react';
 import {
   Table,
   TableHeader,
@@ -8,12 +8,12 @@ import {
   TableColumn,
   TableRow,
   TableCell,
-} from "@nextui-org/table";
-import { Chip } from "@nextui-org/chip";
-import { Avatar } from "@nextui-org/avatar";
-import { Tooltip } from "@nextui-org/tooltip";
-import { TPayment } from "@/src/types";
-import GlassLoader from "@/src/components/shared/glassLoader";
+} from '@nextui-org/table';
+import { Chip } from '@nextui-org/chip';
+import { Avatar } from '@nextui-org/avatar';
+import { Tooltip } from '@nextui-org/tooltip';
+import { TPayment } from '@/src/types';
+import GlassLoader from '@/src/components/shared/glassLoader';
 
 type PaymentTableProps = {
   payments: TPayment[];
@@ -36,7 +36,9 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, isLoading }) => {
           {payments.map((payment) => (
             <TableRow key={payment._id}>
               <TableCell>
-                <p className="whitespace-nowrap">{payment.transitionId}</p>
+                <p className="whitespace-nowrap">
+                  {payment.transitionId.slice(0, 20)}...
+                </p>
               </TableCell>
               <TableCell>
                 <div className="flex items-center gap-1">
@@ -57,7 +59,7 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, isLoading }) => {
                 <Chip
                   size="sm"
                   variant="flat"
-                  color={payment.status === "Paid" ? "success" : "danger"}
+                  color={payment.status === 'Paid' ? 'success' : 'danger'}
                 >
                   {payment.status}
                 </Chip>

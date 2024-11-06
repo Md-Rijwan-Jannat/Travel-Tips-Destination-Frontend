@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import PostHeader from "./postHeader";
-import PostContent from "./postContent";
-import PostImage from "./postImages";
+import PostHeader from './postHeader';
+import PostContent from './postContent';
+import PostImage from './postImages';
 
-import { TPost } from "@/src/types";
-import { motion } from "framer-motion";
-import PostActions from "../postActions/postActions";
-import { Chip } from "@nextui-org/chip";
-import { PiCrownSimpleDuotone } from "react-icons/pi";
-import { useUser } from "@/src/hooks/useUser";
-import CommentCard from "../postActions/postComments/commentCard";
+import { TPost } from '@/src/types';
+import { motion } from 'framer-motion';
+import PostActions from '../postActions/postActions';
+import { Chip } from '@nextui-org/chip';
+import { PiCrownSimpleDuotone } from 'react-icons/pi';
+import { useUser } from '@/src/hooks/useUser';
+import CommentCard from '../postActions/postComments/commentCard';
 
 interface TPostCardProps {
   post: TPost;
@@ -24,7 +24,7 @@ export default function PostCard({ post }: TPostCardProps) {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.7 }}
-      className="w-full md:w-[500px] xl:w-[600px] mx-auto"
+      className="w-full md:w-[500px] xl:w-[580px] mx-auto"
     >
       <article className="group/post space-y-4 rounded-lg border border-default-200 bg-default-50 p-2 md:p-6 duration-300 ease-in-out">
         {/* Post Header */}
@@ -36,7 +36,7 @@ export default function PostCard({ post }: TPostCardProps) {
         {/* Post Image */}
         {post?.images.length > 0 && <PostImage post={post} />}
 
-        {post.status === "PREMIUM" && (
+        {post.status === 'PREMIUM' && (
           <Chip
             className="px-2"
             endContent={
@@ -46,7 +46,7 @@ export default function PostCard({ post }: TPostCardProps) {
               />
             }
           >
-            {currentUser?.verified ? "Subscribed" : "Premium"}
+            {currentUser?.verified ? 'Subscribed' : 'Premium'}
           </Chip>
         )}
 

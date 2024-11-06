@@ -103,6 +103,7 @@ export default function CreateGroupModal({
                   label="Select Users"
                   variant="bordered"
                   selectionMode="multiple"
+                  radius="full"
                   placeholder="Select users"
                   selectedKeys={selectedKeys}
                   onSelectionChange={(keys) =>

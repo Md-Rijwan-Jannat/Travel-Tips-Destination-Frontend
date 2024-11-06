@@ -18,7 +18,7 @@ const teamMembers: TeamMember[] = [
   {
     name: 'Md Rijwan Jannat',
     role: 'Founder',
-    imageUrl: 'https://i.ibb.co/rvP9r7m/Portfoli-imageo-removebg-preview.png',
+    imageUrl: 'https://i.ibb.co.com/fVg8DVg/sketch1699926435270.png',
     socialLinks: {
       facebook: '#',
       twitter: '#',
@@ -27,7 +27,7 @@ const teamMembers: TeamMember[] = [
   },
   {
     name: 'Abu Talha',
-    role: 'Co Founder',
+    role: 'Co-Founder',
     imageUrl: 'https://i.ibb.co/kmqWZ9x/IMG-0044.jpg',
     socialLinks: {
       facebook: '#',
@@ -69,33 +69,61 @@ const TeamSection: React.FC = () => {
         {teamMembers.map((member, index) => (
           <motion.div
             key={member.name}
-            className="max-w-xs bg-default-50 shadow-md rounded-lg p-6 flex flex-col items-center space-y-4"
-            initial={{ opacity: 0, y: 20 }} // Initial state
-            animate={{ opacity: 1, y: 0 }} // End state
-            transition={{ delay: index * 0.1, duration: 0.5 }} // Staggered entrance
+            className="max-w-xs bg-default-50 shadow-lg rounded-lg p-6 flex flex-col items-center space-y-4 transform hover:scale-105 transition-transform duration-300"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{
+              delay: index * 0.1,
+              duration: 0.5,
+              type: 'spring',
+              stiffness: 100,
+            }}
           >
-            <div className="w-32 h-32 rounded-full overflow-hidden bg-default-100">
+            <motion.div
+              className="w-32 h-32 rounded-full overflow-hidden bg-default-100"
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.3 }}
+            >
               <Avatar
                 size="sm"
                 src={member.imageUrl}
                 alt={member.name}
                 className="w-full h-full object-cover"
               />
-            </div>
+            </motion.div>
             <div className="text-center">
               <h4 className="text-xl font-semibold">{member.name}</h4>
               <p className="text-default-500">{member.role}</p>
             </div>
-            <div className="flex space-x-4 text-default-500">
-              <a href={member.socialLinks.facebook} aria-label="Facebook">
-                <FaFacebook className="text-pink-500" size={20} />
-              </a>
-              <a href={member.socialLinks.twitter} aria-label="Twitter">
-                <FaTwitter className="text-pink-500" size={20} />
-              </a>
-              <a href={member.socialLinks.instagram} aria-label="Instagram">
-                <FaInstagram className="text-pink-500" size={20} />
-              </a>
+            <div className="flex space-x-4">
+              <motion.a
+                href={member.socialLinks.facebook}
+                aria-label="Facebook"
+                whileHover={{ scale: 1.2, color: '#E1306C' }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className="text-pink-500"
+              >
+                <FaFacebook size={20} />
+              </motion.a>
+              <motion.a
+                href={member.socialLinks.twitter}
+                aria-label="Twitter"
+                whileHover={{ scale: 1.2, color: '#E1306C' }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className="text-pink-500"
+              >
+                <FaTwitter size={20} />
+              </motion.a>
+              <motion.a
+                href={member.socialLinks.instagram}
+                aria-label="Instagram"
+                whileHover={{ scale: 1.2, color: '#E1306C' }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className="text-pink-500"
+              >
+                <FaInstagram size={20} />
+              </motion.a>
             </div>
           </motion.div>
         ))}
