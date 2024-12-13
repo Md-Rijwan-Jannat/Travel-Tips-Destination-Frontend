@@ -3,12 +3,10 @@
 import React, { useState } from 'react';
 import { Input, Textarea } from '@nextui-org/input';
 import { motion } from 'framer-motion';
-import CButton from '@/src/components/ui/CButton/CButton';
-import { primaryColor } from '@/src/styles/button';
-import GlassLoader from '@/src/components/shared/glassLoader';
 import { toast } from 'sonner';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Button } from '@nextui-org/button';
 
 export default function Contact() {
   const [name, setName] = useState('');
@@ -124,7 +122,14 @@ export default function Contact() {
             className="flex justify-end mb-5"
             whileHover={{ scale: 1.05 }}
           >
-            <CButton text="Submit" type="submit" bgColor={primaryColor} />
+            <Button
+              isLoading={isSubmitting}
+              disabled={isSubmitting}
+              className="primary-button"
+              type="submit"
+            >
+              Submit
+            </Button>
           </motion.div>
         </form>
       </div>

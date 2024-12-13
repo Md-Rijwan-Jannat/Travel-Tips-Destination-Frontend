@@ -13,7 +13,6 @@ import GoogleButton from './googleButton';
 
 import { registerSchema } from '@/src/schema/auth';
 import { primaryColor } from '@/src/styles/button';
-import CButton from '@/src/components/ui/CButton/CButton';
 import { useRegisterMutation } from '@/src/redux/features/auth/authApi';
 import { useAppDispatch } from '@/src/redux/hook';
 import { setCredentials } from '@/src/redux/features/auth/authSlice';
@@ -25,6 +24,7 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
 import BackButton from '../../ui/backButton';
 import DemoCredential from '../../ui/demoCredential';
+import { Button } from '@nextui-org/button';
 
 type RegisterFormInputs = z.infer<typeof registerSchema>;
 
@@ -186,13 +186,15 @@ export default function RegisterForm() {
                   )}
                 </div>
 
-                <div className="mt-5">
-                  <CButton
-                    bgColor={primaryColor}
-                    link="#"
-                    text={RegisterLoading ? 'Register...' : 'Register'}
+                <div className="mx-auto">
+                  <Button
+                    isLoading={RegisterLoading}
+                    disabled={RegisterLoading}
+                    className="secondary-button"
                     type="submit"
-                  />
+                  >
+                    {RegisterLoading ? 'Register...' : 'Register'}
+                  </Button>
                 </div>
               </form>
 

@@ -9,8 +9,7 @@ import { useGetAllNormalForAnalyticsUsersQuery } from '@/src/redux/features/user
 import { useCreateGroupChatMutation } from '@/src/redux/features/message/groupChatApi';
 import { useChat } from '@/src/context/chatContext';
 import { Input } from '@nextui-org/input';
-import CButton from '@/src/components/ui/CButton/CButton';
-import { primaryColor } from '@/src/styles/button';
+import { Button } from '@nextui-org/button';
 
 interface TCreateGroupModalProps {
   isOpen: boolean;
@@ -132,11 +131,9 @@ export default function CreateGroupModal({
 
               {/* Create Group Button */}
               <div className="my-8">
-                <CButton
-                  text="Create group"
-                  bgColor={primaryColor}
-                  onClick={createGroupHandler}
-                />
+                <Button className="primary-button" onClick={createGroupHandler}>
+                  Create group
+                </Button>
               </div>
             </ModalBody>
           </>

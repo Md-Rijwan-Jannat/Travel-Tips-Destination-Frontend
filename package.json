@@ -29,6 +29,7 @@
 		"@nextui-org/modal": "^2.0.41",
 		"@nextui-org/navbar": "2.0.37",
 		"@nextui-org/pagination": "^2.0.36",
+		"@nextui-org/progress": "^2.2.4",
 		"@nextui-org/scroll-shadow": "^2.1.20",
 		"@nextui-org/select": "^2.2.7",
 		"@nextui-org/skeleton": "^2.0.32",

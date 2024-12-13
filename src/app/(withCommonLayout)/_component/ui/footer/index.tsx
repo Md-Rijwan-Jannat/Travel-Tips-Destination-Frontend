@@ -48,21 +48,7 @@ const Footer: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            <Image
-              className="w-[200px] object-cover rounded"
-              src={
-                'https://res.cloudinary.com/dihqveqyc/image/upload/v1730004592/hclxgpwllvotvtew74ag.avif'
-              }
-              width={500}
-              height={500}
-              alt="plane"
-            />
-            <CountUp
-              className="-mt-12"
-              end={5879}
-              duration={2.5}
-              separator=","
-            />
+            <CountUp className="mt-3" end={5879} duration={2.5} separator="," />
           </motion.div>
         </motion.div>
 
@@ -82,7 +68,7 @@ const Footer: React.FC = () => {
       </div>
 
       {/* Navigation Links */}
-      <div className="flex flex-col items-center md:flex-row md:justify-center mt-4">
+      <div className="flex  items-center flex-wrap md:justify-center mt-4">
         <Link
           href="/news-feed/posts"
           className="mx-2 hover:text-default-900 text-default-800 text-xs"
@@ -93,6 +79,7 @@ const Footer: React.FC = () => {
           href="/docs"
           className="mx-2 hover:text-default-900 text-default-800 text-xs"
         >
+          {' '}
           Docs
         </Link>
         <Link

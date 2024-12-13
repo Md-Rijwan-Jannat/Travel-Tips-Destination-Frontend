@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700&display=swap');
 
 .container {
   display: flex;
@@ -20,7 +20,9 @@
 
 .container .btn .link {
   position: absolute;
-  font-size: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.925);
   top: 0;
   left: 0;
   width: 100%;
@@ -37,17 +39,17 @@
   letter-spacing: 1px;
   text-decoration: none;
   overflow: hidden;
-  font-weight: 400;
   z-index: 1;
   transition: 0.5s;
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(10px);
 }
 
 /* Small size */
 .btn.sm {
-  width: 80px;
-  height: 30px;
+  width: 100px;
+  height: 35px;
   font-size: 10px;
+  font-weight: 500;
 }
 
 /* Medium size */
@@ -55,30 +57,32 @@
   width: 120px;
   height: 40px;
   font-size: 14px;
+  font-weight: 500;
 }
 
 /* Large size */
 .btn.lg {
   width: 150px;
   height: 50px;
-  font-size: 16px;
+  font-size: 20px;
+  font-weight: 500;
 }
 .container .btn:hover .link {
-  letter-spacing: 3px;
+  letter-spacing: 1px;
 }
 
 .container .btn:hover .link {
-  letter-spacing: 3px;
+  letter-spacing: 1.5px;
 }
 
 .container .btn .link::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 50%;
   height: 100%;
-  background: linear-gradient(to left, rgba(255, 255, 255, 0.15), transparent);
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.342), transparent);
   transform: skewX(45deg) translate(0);
   transition: 0.5s;
   filter: blur(0px);
@@ -89,10 +93,8 @@
 }
 
 .container .btn::before {
-  content: "";
+  content: '';
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   bottom: -5px;
   width: 30px;
   height: 10px;
@@ -110,10 +112,8 @@
 }
 
 .container .btn::after {
-  content: "";
+  content: '';
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   top: -5px;
   width: 30px;
   height: 10px;

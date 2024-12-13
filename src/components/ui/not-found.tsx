@@ -1,10 +1,12 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import CButton from "./CButton/CButton";
-import { primaryColor, secondaryColor } from "@/src/styles/button";
+import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import CButton from './CButton/CButton';
+import { primaryColor, secondaryColor } from '@/src/styles/button';
+import { Button } from '@nextui-org/button';
+import Link from 'next/link';
 
 export default function NotFound() {
   const router = useRouter();
@@ -16,13 +18,13 @@ export default function NotFound() {
     };
 
     document
-      .getElementById("backButton")
-      ?.addEventListener("click", handleGoBack);
+      .getElementById('backButton')
+      ?.addEventListener('click', handleGoBack);
 
     return () => {
       document
-        .getElementById("backButton")
-        ?.removeEventListener("click", handleGoBack);
+        .getElementById('backButton')
+        ?.removeEventListener('click', handleGoBack);
     };
   }, []);
 
@@ -56,12 +58,17 @@ export default function NotFound() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.5 }}
       >
-        <CButton text="Go Back" bgColor={primaryColor} />
-        <CButton
-          onClick={() => router.push("/")}
-          text="Home"
-          bgColor={secondaryColor}
-        />
+        {' '}
+        <Button
+          onClick={() => router.back()}
+          className="primary-button"
+          type="submit"
+        >
+          Go Back
+        </Button>
+        <Button as={Link} href="/" className="primary-button" type="submit">
+          Home
+        </Button>
       </motion.div>
     </div>
   );

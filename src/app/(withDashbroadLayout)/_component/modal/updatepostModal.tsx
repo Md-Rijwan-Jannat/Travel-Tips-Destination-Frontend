@@ -17,14 +17,13 @@ import { toast } from 'sonner';
 import { useUpdatePostMutation } from '@/src/redux/features/post/postApi';
 import { TUser, TPost } from '@/src/types';
 import GlassLoader from '@/src/components/shared/glassLoader';
-import CButton from '@/src/components/ui/CButton/CButton';
-import { primaryColor } from '@/src/styles/button';
 import dynamic from 'next/dynamic';
 
 // Dynamically import the ReactQuill component to prevent SSR issues
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 import 'react-quill/dist/quill.snow.css';
+import { Button } from '@nextui-org/button';
 
 interface TUpdatePostModalProps {
   userInfo: TUser | undefined;
@@ -41,7 +40,6 @@ const UpdatePostModal = ({
 }: TUpdatePostModalProps) => {
   const [updatePostFn, { isLoading }] = useUpdatePostMutation();
   const [isError, setIsError] = useState<string>('');
-  const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [editorContent, setEditorContent] = useState(
     postData?.description || ''
   );
@@ -69,14 +67,6 @@ const UpdatePostModal = ({
   }, [postData, reset]);
 
   const title = watch('title');
-
-  useEffect(() => {
-    if (title || editorContent) {
-      setIsFormValid(true);
-    } else {
-      setIsFormValid(false);
-    }
-  }, [title, editorContent]);
 
   const onSubmit = async (data: TPost) => {
     const updatedPostData = { ...data, description: editorContent };
@@ -172,7 +162,9 @@ const UpdatePostModal = ({
               />
             </ModalBody>
             <ModalFooter>
-              <CButton type="submit" bgColor={primaryColor} text="Save" />
+              <Button className="primary-button" type="submit">
+                Save
+              </Button>
             </ModalFooter>
           </form>
         </ModalContent>

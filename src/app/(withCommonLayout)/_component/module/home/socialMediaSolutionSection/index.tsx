@@ -40,7 +40,7 @@ const SocialMediaSolutionSection: React.FC = () => {
               alt="Social Media Platform"
               width={400}
               height={500}
-              className="object-cover"
+              className="object-cover h-[450px]"
             />
           </div>
           {/* Experience Badge */}
@@ -61,7 +61,7 @@ const SocialMediaSolutionSection: React.FC = () => {
             <span className="text-gray-600 text-xs">YEAR EXPERIENCE</span>
           </motion.div>
           {/* Circular Image Overlay */}
-          <div className="absolute bottom-32 right-10 size-32 lg:size-48 rounded-full overflow-hidden border-4 border-white shadow-lg">
+          <div className="absolute bottom-20 right-10 size-32 lg:size-48 rounded-full overflow-hidden border-4 border-white shadow-lg">
             <Image
               src="https://demo.xperthemes.com/sociohub/wp-content/uploads/sites/10/2024/07/cheerful-man-and-woman-with-laptops-pointing.jpg"
               alt="Happy Traveler"
@@ -136,11 +136,7 @@ const SocialMediaSolutionSection: React.FC = () => {
               </div>
             </div>
             {/* Button */}
-            <Button
-              as={Link}
-              href="/about"
-              className="bg-default-50 border border-pink-500 text-pink-500 font-semibold px-4 py-3 rounded-full transition duration-300 ease-in-out hover:bg-pink-500 hover:text-white"
-            >
+            <Button as={Link} href="/about" className="secondary-button">
               More About Us
             </Button>
           </div>

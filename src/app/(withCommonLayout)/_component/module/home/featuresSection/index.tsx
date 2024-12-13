@@ -22,22 +22,6 @@ export default function FeaturesSection() {
     <>
       <SectionTitle text="Features" />
       <div ref={sectionRef} className="my-5 w-full">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          whileHover={{ scale: 1.05 }}
-          className="w-full mx-auto text-center mb-8"
-        >
-          <Button
-            as={Link}
-            href="/pricing"
-            className="px-4 py-2 bg-pink-300 text-pink-700 rounded-full font-semibold"
-          >
-            Explore all plans
-          </Button>
-        </motion.div>
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Card 1 */}
           <motion.div

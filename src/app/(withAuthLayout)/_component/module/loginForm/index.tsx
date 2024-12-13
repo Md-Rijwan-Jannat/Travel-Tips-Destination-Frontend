@@ -12,7 +12,6 @@ import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 import GoogleButton from '../registerForm/googleButton';
 import LoginRightContent from './loginRightContent';
 import { loginSchema } from '@/src/schema/auth';
-import CButton from '@/src/components/ui/CButton/CButton';
 import { secondaryColor } from '@/src/styles/button';
 import { useLoginMutation } from '@/src/redux/features/auth/authApi';
 import { useAppDispatch } from '@/src/redux/hook';
@@ -24,6 +23,7 @@ import { SerializedError } from '@reduxjs/toolkit';
 import { useRouter, useSearchParams } from 'next/navigation';
 import BackButton from '../../ui/backButton';
 import DemoCredential from '../../ui/demoCredential';
+import { Button } from '@nextui-org/button';
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 interface TDecodedData {
@@ -202,12 +202,15 @@ export default function LoginForm() {
                     Forgot password
                   </Link>
                 </div>
-                <div className="w-full mt-5">
-                  <CButton
-                    bgColor={secondaryColor}
-                    text="Login"
+                <div className="mx-auto">
+                  <Button
+                    isLoading={LoginIsLoading}
+                    disabled={LoginIsLoading}
+                    className="secondary-button"
                     type="submit"
-                  />
+                  >
+                    {LoginIsLoading ? 'Logging in...' : 'Log in'}
+                  </Button>
                 </div>
               </form>
 

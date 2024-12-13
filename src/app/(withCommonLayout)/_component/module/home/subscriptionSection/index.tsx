@@ -68,7 +68,7 @@ const SubscriptionSection: FC = () => {
           />
           <Button
             onClick={handleSubscribe} // Handle subscription on click
-            className="bg-default-50 border border-pink-500 text-pink-500 font-semibold px-6 py-3 rounded-full transition duration-300 ease-in-out hover:bg-pink-500 hover:text-white"
+            className="secondary-button"
           >
             Subscribe
           </Button>

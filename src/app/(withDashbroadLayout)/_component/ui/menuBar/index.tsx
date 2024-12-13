@@ -7,7 +7,7 @@ import { IoIosCheckmarkCircle } from 'react-icons/io';
 import { TbArrowAutofitContentFilled } from 'react-icons/tb';
 import { RiSecurePaymentFill } from 'react-icons/ri';
 import { FaFacebookMessenger } from 'react-icons/fa6';
-import { MdAnalytics, MdDynamicFeed } from 'react-icons/md';
+import { MdAddHome, MdAnalytics, MdDynamicFeed } from 'react-icons/md';
 import { useAppSelector } from '@/src/redux/hook';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/src/hooks/useUser';
@@ -58,6 +58,11 @@ export default function MenuBar({ className }: TMenuBarProps) {
             title="Messages"
             icon={<FaFacebookMessenger className="text-[20px]" />}
           />
+          <MenubarButton
+            href="/"
+            title="Home"
+            icon={<MdAddHome className="text-[20px]" />}
+          />
         </>
       )}
 
@@ -98,6 +103,11 @@ export default function MenuBar({ className }: TMenuBarProps) {
             href="/messages"
             title="Messages"
             icon={<FaFacebookMessenger className="text-[20px]" />}
+          />
+          <MenubarButton
+            href="/"
+            title="Home"
+            icon={<MdAddHome className="text-[20px]" />}
           />
         </>
       )}

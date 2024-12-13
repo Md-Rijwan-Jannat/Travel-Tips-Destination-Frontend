@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Modal,
@@ -6,15 +6,13 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-} from "@nextui-org/modal";
-import { Button } from "@nextui-org/button";
-import { useState } from "react";
-import { toast } from "sonner";
-import GlassLoader from "@/src/components/shared/glassLoader";
-import { useUpdateCommentsForPostsMutation } from "@/src/redux/features/post/commentApi";
-import { TRenderedComment } from "../module/posts/postActions/postComments/commentCard";
-import CButton from "@/src/components/ui/CButton/CButton";
-import { primaryColor } from "@/src/styles/button";
+} from '@nextui-org/modal';
+import { Button } from '@nextui-org/button';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import GlassLoader from '@/src/components/shared/glassLoader';
+import { useUpdateCommentsForPostsMutation } from '@/src/redux/features/post/commentApi';
+import { TRenderedComment } from '../module/posts/postActions/postComments/commentCard';
 
 interface CommentEditModalProps {
   comment: TRenderedComment;
@@ -31,7 +29,7 @@ export default function CommentEditModal({
   const [updatedCommentText, setUpdatedCommentText] = useState<string>(
     comment.text
   );
-  const [isError, setIsError] = useState<string>("");
+  const [isError, setIsError] = useState<string>('');
 
   const handleEdit = async () => {
     const newData = {
@@ -41,12 +39,12 @@ export default function CommentEditModal({
 
     try {
       await editCommentFn(newData);
-      toast.success("Comment edited successfully");
-      setIsError("");
+      toast.success('Comment edited successfully');
+      setIsError('');
       onOpenChange(); // Close the modal
     } catch (error) {
-      setIsError("Failed to edit comment");
-      toast.error("Failed to edit comment");
+      setIsError('Failed to edit comment');
+      toast.error('Failed to edit comment');
     }
   };
 
@@ -70,12 +68,9 @@ export default function CommentEditModal({
           />
         </ModalBody>
         <ModalFooter className="flex items-center gap-8 my-3">
-          <CButton
-            onClick={handleEdit}
-            bgColor={primaryColor}
-            type="submit"
-            text="Save"
-          />
+          <Button className="primary-button" onClick={handleEdit}>
+            Save
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

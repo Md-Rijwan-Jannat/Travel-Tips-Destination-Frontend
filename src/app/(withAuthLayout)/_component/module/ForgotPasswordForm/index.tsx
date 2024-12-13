@@ -8,11 +8,11 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import React from 'react';
 import GlassLoader from '@/src/components/shared/glassLoader';
-import CButton from '@/src/components/ui/CButton/CButton';
 import { secondaryColor } from '@/src/styles/button';
 import { useForgotPasswordMutation } from '@/src/redux/features/auth/authApi';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
+import { Button } from '@nextui-org/button';
 
 // Define schema using Zod for validation
 const forgotPasswordSchema = z.object({
@@ -69,8 +69,8 @@ export default function ForgotPasswordForm() {
   return (
     <div className=" w-full md:min-h-screen flex items-center justify-center max-w-7xl">
       {forgotPasswordIsLoading && <GlassLoader />}
-      <div className="flex flex-col-reverse md:flex-row bg-default-100 rounded-lg shadow-lg w-full overflow-hidden my-5">
-        <div className="w-full md:w-[500px] xl:w-[530px] flex flex-col justify-center">
+      <div className="flex max-w-xl mx-auto bg-default-100 rounded-lg shadow-lg w-full overflow-hidden my-5">
+        <div className="w-full flex flex-col justify-center">
           <div className="flex flex-col gap-6 p-2 md:p-16">
             <h2 className="text-2xl font-bold text-center">
               Forgot your password?
@@ -101,14 +101,10 @@ export default function ForgotPasswordForm() {
                   </p>
                 )}
               </div>
-              <div className="w-full mt-5">
-                <CButton
-                  bgColor={secondaryColor}
-                  link="#"
-                  size="lg"
-                  text="Send Reset Link"
-                  type="submit"
-                />
+              <div className="mx-auto">
+                <Button type="submit" className="secondary-button">
+                  Send Reset Link
+                </Button>
               </div>
             </form>
 

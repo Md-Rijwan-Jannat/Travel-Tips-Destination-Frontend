@@ -1,12 +1,13 @@
-"use client";
+'use client';
 
-import { Modal, ModalContent, ModalHeader, ModalBody } from "@nextui-org/modal";
-import { toast } from "sonner";
-import GlassLoader from "@/src/components/shared/glassLoader";
-import { useState } from "react";
-import { useDeleteCommentsForPostsMutation } from "@/src/redux/features/post/commentApi";
-import CButton from "@/src/components/ui/CButton/CButton";
-import { primaryColor, secondaryColor } from "@/src/styles/button";
+import { Modal, ModalContent, ModalHeader, ModalBody } from '@nextui-org/modal';
+import { toast } from 'sonner';
+import GlassLoader from '@/src/components/shared/glassLoader';
+import { useState } from 'react';
+import { useDeleteCommentsForPostsMutation } from '@/src/redux/features/post/commentApi';
+import CButton from '@/src/components/ui/CButton/CButton';
+import { primaryColor, secondaryColor } from '@/src/styles/button';
+import { Button } from '@nextui-org/button';
 
 interface CommentDeleteModalProps {
   commentId: string;
@@ -20,17 +21,17 @@ export default function CommentDeleteModal({
   onOpenChange,
 }: CommentDeleteModalProps) {
   const [deleteCommentFn, { isLoading }] = useDeleteCommentsForPostsMutation();
-  const [isError, setIsError] = useState<string>("");
+  const [isError, setIsError] = useState<string>('');
 
   const handleDelete = async () => {
     try {
       await deleteCommentFn(commentId);
-      toast.success("Comment deleted successfully");
-      setIsError("");
+      toast.success('Comment deleted successfully');
+      setIsError('');
       onOpenChange();
     } catch (error) {
-      setIsError("Failed to delete comment");
-      toast.error("Failed to delete comment");
+      setIsError('Failed to delete comment');
+      toast.error('Failed to delete comment');
     }
   };
 
@@ -49,18 +50,17 @@ export default function CommentDeleteModal({
           <p>Are you sure you want to delete this comment?</p>
         </ModalBody>
         <div className="flex items-center gap-3 justify-end mt-10 mb-5">
-          <CButton
+          <Button
+            className="delete-button"
+            isLoading={isLoading}
             size="md"
             onClick={handleDelete}
-            bgColor={primaryColor}
-            text="Yes, Delete"
-          />
-          <CButton
-            size="md"
-            onClick={onOpenChange}
-            bgColor={secondaryColor}
-            text="Cancel"
-          />
+          >
+            Yes, Delete
+          </Button>
+          <Button className="cancel-button" size="md" onClick={onOpenChange}>
+            Cancel
+          </Button>
         </div>
       </ModalContent>
     </Modal>

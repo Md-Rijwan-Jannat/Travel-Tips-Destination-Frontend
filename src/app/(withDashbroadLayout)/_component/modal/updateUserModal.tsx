@@ -1,22 +1,22 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import {
   Modal,
   ModalContent,
   ModalBody,
   ModalFooter,
   useDisclosure,
-} from "@nextui-org/modal";
-import { toast } from "sonner";
-import Image from "next/image";
-import { Button } from "@nextui-org/button";
-import { useUpdateMyProfileMutation } from "@/src/redux/features/user/userApi";
-import { GoPencil } from "react-icons/go";
-import { Input } from "@nextui-org/input";
-import { IoIosImages } from "react-icons/io";
-import GlassLoader from "@/src/components/shared/glassLoader";
-import { useForm, SubmitHandler } from "react-hook-form";
-import CButton from "@/src/components/ui/CButton/CButton";
-import { primaryColor } from "@/src/styles/button";
+} from '@nextui-org/modal';
+import { toast } from 'sonner';
+import Image from 'next/image';
+import { Button } from '@nextui-org/button';
+import { useUpdateMyProfileMutation } from '@/src/redux/features/user/userApi';
+import { GoPencil } from 'react-icons/go';
+import { Input } from '@nextui-org/input';
+import { IoIosImages } from 'react-icons/io';
+import GlassLoader from '@/src/components/shared/glassLoader';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import CButton from '@/src/components/ui/CButton/CButton';
+import { primaryColor } from '@/src/styles/button';
 
 interface CloudinaryResponse {
   secure_url: string;
@@ -45,7 +45,7 @@ export default function UpdateUserModal({
   userId,
 }: UpdateUserModalProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [image, setImage] = useState<string>(defaultImage || "");
+  const [image, setImage] = useState<string>(defaultImage || '');
   const [isUploading, setIsUploading] = useState<boolean>(false);
 
   const [updateMyProfileFn, { isLoading }] = useUpdateMyProfileMutation();
@@ -61,8 +61,8 @@ export default function UpdateUserModal({
     defaultValues: {
       name: defaultName,
       imageFile: null,
-      country: country || "",
-      address: address || "",
+      country: country || '',
+      address: address || '',
     },
   });
 
@@ -75,7 +75,7 @@ export default function UpdateUserModal({
         country, // Keep the country value
         address, // Keep the address value
       });
-      setImage(defaultImage || "");
+      setImage(defaultImage || '');
     }
   }, [isOpen, defaultName, defaultImage, country, address, reset]);
 
@@ -83,7 +83,7 @@ export default function UpdateUserModal({
     const file = e.target.files?.[0];
 
     if (file) {
-      setValue("imageFile", file);
+      setValue('imageFile', file);
       setImage(URL.createObjectURL(file));
     }
   };
@@ -92,22 +92,22 @@ export default function UpdateUserModal({
     setIsUploading(true);
     const formData = new FormData();
 
-    formData.append("file", file);
-    formData.append("upload_preset", "travel-tips");
-    formData.append("cloud_name", "Travel-tips&-destination-guides-images");
+    formData.append('file', file);
+    formData.append('upload_preset', 'travel-tips');
+    formData.append('cloud_name', 'Travel-tips&-destination-guides-images');
 
     const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
 
     try {
       const res = await fetch(`${cloudinaryUrl}`, {
-        method: "POST",
+        method: 'POST',
         body: formData,
       });
 
       const data: CloudinaryResponse = await res.json();
 
       if (!res.ok) {
-        throw new Error("Failed to upload image");
+        throw new Error('Failed to upload image');
       }
 
       setIsUploading(false);
@@ -115,7 +115,7 @@ export default function UpdateUserModal({
       return data.secure_url;
     } catch (error) {
       setIsUploading(false);
-      toast.error("Cloudinary upload failed");
+      toast.error('Cloudinary upload failed');
       throw error;
     }
   };
@@ -145,11 +145,11 @@ export default function UpdateUserModal({
       }).unwrap();
 
       if (res?.success) {
-        toast.success("Profile updated successfully!");
+        toast.success('Profile updated successfully!');
         onOpenChange();
       }
     } catch (error) {
-      toast.error("Failed to update profile");
+      toast.error('Failed to update profile');
     }
   };
 
@@ -188,7 +188,7 @@ export default function UpdateUserModal({
                 </div>
                 <Input
                   type="text"
-                  {...register("name")}
+                  {...register('name')}
                   variant="flat"
                   label="Name"
                   className="bg-opacity-0"
@@ -196,7 +196,7 @@ export default function UpdateUserModal({
                 />
                 <Input
                   type="text"
-                  {...register("address")}
+                  {...register('address')}
                   variant="flat"
                   label="Address"
                   className="bg-opacity-0"
@@ -204,7 +204,7 @@ export default function UpdateUserModal({
                 />
                 <Input
                   type="text"
-                  {...register("country")}
+                  {...register('country')}
                   variant="flat"
                   label="Country"
                   className="bg-opacity-0"
@@ -228,7 +228,9 @@ export default function UpdateUserModal({
               </div>
             </ModalBody>
             <ModalFooter className="flex items-center gap-8">
-              <CButton bgColor={primaryColor} type="submit" text="Save" />
+              <Button className="primary-button" type="submit">
+                Save
+              </Button>
             </ModalFooter>
           </form>
         </ModalContent>

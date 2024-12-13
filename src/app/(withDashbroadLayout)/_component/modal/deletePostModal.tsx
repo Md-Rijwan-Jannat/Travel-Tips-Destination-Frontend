@@ -59,18 +59,17 @@ const DeletePostModal = ({
             <p>Are you sure you want to delete this post?</p>
           </ModalBody>
           <div className="flex items-center gap-3 justify-end mt-10 mb-5">
-            <CButton
+            <Button
+              className="delete-button"
+              isLoading={isLoading}
               size="md"
               onClick={handleDelete}
-              bgColor={primaryColor}
-              text="Yes, Delete"
-            />
-            <CButton
-              size="md"
-              onClick={onOpenChange}
-              bgColor={secondaryColor}
-              text="Cancel"
-            />
+            >
+              Yes, Delete
+            </Button>
+            <Button className="cancel-button" size="md" onClick={onOpenChange}>
+              Cancel
+            </Button>
           </div>
         </ModalContent>
       </Modal>

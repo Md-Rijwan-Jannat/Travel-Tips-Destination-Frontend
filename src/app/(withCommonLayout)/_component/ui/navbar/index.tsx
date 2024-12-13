@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -6,16 +6,17 @@ import {
   NavbarMenuToggle,
   NavbarBrand,
   NavbarItem,
-} from "@nextui-org/navbar";
-import NextLink from "next/link";
-import NavLinks from "./navLinks";
-import NavDropdown from "./navDropdown";
-import BrandLogo from "@/src/components/shared/logo";
+} from '@nextui-org/navbar';
+import NextLink from 'next/link';
+import NavLinks from './navLinks';
+import NavDropdown from './navDropdown';
+import BrandLogo from '@/src/components/shared/logo';
+import ThemeDropdown from '@/src/components/modal/themeDropdown';
 
 export default function NavBar() {
   return (
     <NextUINavbar
-      className="border-b border-default-50 bg-opacity-10 shadow"
+      className="border-b border-default-50 bg-opacity-10 backdrop-blur-xl"
       maxWidth="xl"
       position="sticky"
     >
@@ -36,6 +37,9 @@ export default function NavBar() {
         justify="end"
       >
         <NavbarItem className="hidden md:flex gap-4">
+          <ThemeDropdown />
+        </NavbarItem>
+        <NavbarItem className="hidden md:flex gap-4">
           <NavDropdown />
         </NavbarItem>
       </NavbarContent>
@@ -44,8 +48,9 @@ export default function NavBar() {
         className="flex items-center  md:hidden gap-4"
         justify="end"
       >
-        <NavbarMenuToggle />
+        <ThemeDropdown />
         <NavDropdown />
+        <NavbarMenuToggle />
       </NavbarContent>
 
       <NavbarMenu>

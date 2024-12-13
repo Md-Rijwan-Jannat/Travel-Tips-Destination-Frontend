@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "@nextui-org/modal";
-import { TPost } from "@/src/types";
-import { Textarea } from "@nextui-org/input";
-import { useReportPostMutation } from "@/src/redux/features/post/postApi";
-import CButton from "@/src/components/ui/CButton/CButton";
-import { primaryColor } from "@/src/styles/button";
-import GlassLoader from "@/src/components/shared/glassLoader";
-import { toast } from "sonner";
+} from '@nextui-org/modal';
+import { TPost } from '@/src/types';
+import { Textarea } from '@nextui-org/input';
+import { useReportPostMutation } from '@/src/redux/features/post/postApi';
+import CButton from '@/src/components/ui/CButton/CButton';
+import { primaryColor } from '@/src/styles/button';
+import GlassLoader from '@/src/components/shared/glassLoader';
+import { toast } from 'sonner';
+import { Button } from '@nextui-org/button';
 
 interface TReportModalProps {
   post: TPost;
@@ -25,7 +26,7 @@ export default function ReportModal({
   isOpen,
   onOpenChange,
 }: TReportModalProps) {
-  const [reason, setReason] = useState<string>("");
+  const [reason, setReason] = useState<string>('');
   const [reportPost, { isLoading, isError }] = useReportPostMutation();
 
   const handleReportSubmit = async () => {
@@ -33,13 +34,13 @@ export default function ReportModal({
       const res = await reportPost({ postId: post?._id, reason }).unwrap();
 
       if (res.success) {
-        toast.success("Report submitted successfully.");
-        setReason("");
+        toast.success('Report submitted successfully.');
+        setReason('');
       }
 
       onOpenChange();
     } catch (error) {
-      console.error("Failed to submit the report:", error);
+      console.error('Failed to submit the report:', error);
     }
   };
 
@@ -72,11 +73,13 @@ export default function ReportModal({
 
             {/* Submit Button */}
             <ModalFooter>
-              <CButton
+              <Button
+                className="primary-button"
+                type="submit"
                 onClick={handleReportSubmit}
-                bgColor={primaryColor}
-                text="Submit"
-              />
+              >
+                Submit
+              </Button>
             </ModalFooter>
 
             {/* Display success/error messages */}

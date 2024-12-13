@@ -4,6 +4,7 @@ import EssentialAppsSlider from './_component/module/home/essentialAppsSlider';
 import SubscriptionSection from './_component/module/home/subscriptionSection';
 import SocialMediaSolutionSection from './_component/module/home/socialMediaSolutionSection';
 import OurService from './_component/module/home/ourService';
+import Testimonials from './_component/module/home/testimonials';
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <EssentialAppsSlider />
       <SocialMediaSolutionSection />
       <SubscriptionSection />
+      <Testimonials />
     </div>
   );
 }

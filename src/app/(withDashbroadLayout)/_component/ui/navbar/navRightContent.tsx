@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useAppSelector } from '@/src/redux/hook';
 import { getNotifications } from '@/src/redux/features/message/notificationSlice';
 import { motion } from 'framer-motion';
+import ThemeDropdown from '@/src/components/modal/themeDropdown';
 
 export default function NavRightContent() {
   const notifications = useAppSelector(getNotifications);
@@ -16,6 +17,7 @@ export default function NavRightContent() {
     <div className="flex items-center justify-center gap-5">
       {notifications?.length ? (
         <motion.div
+          className="mt-2.5"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: 'spring', stiffness: 400, damping: 15 }}
@@ -23,17 +25,19 @@ export default function NavRightContent() {
           <Badge
             as={Link}
             href="/notifications"
-            size="md"
+            size="sm"
             color="danger"
+            className="text-[8px]"
             content={notifications.length}
             shape="circle"
           >
-            <Bell />
+            <Bell size={18} />
           </Badge>
         </motion.div>
       ) : (
-        <Bell />
+        <Bell size={18} />
       )}
+      <ThemeDropdown />
       <NavDropdown />
     </div>
   );

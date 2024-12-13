@@ -5,12 +5,14 @@ import { Kbd } from '@nextui-org/kbd';
 import React, { useState, useEffect, useRef } from 'react';
 import { SearchIcon } from '@/src/components/ui/icons';
 import { useGetAllPostsQuery } from '@/src/redux/features/post/postApi';
+import { useGetAllUsersQuery } from '@/src/redux/features/adminManagement/manageUserApi';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { TPost } from '@/src/types';
+import { TPost, TUser } from '@/src/types';
 import { FiArrowUpRight } from 'react-icons/fi';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
-import Image from 'next/image';
+import { Avatar } from '@nextui-org/avatar';
+import { Chip } from '@nextui-org/chip';
 
 export default function SearchInput() {
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -18,18 +20,26 @@ export default function SearchInput() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Fetch posts with the searchTerm
-  const { data: allPostsData, refetch } = useGetAllPostsQuery({ searchTerm });
+  // Fetch posts and users with the searchTerm
+  const { data: allPostsData, refetch: refetchPosts } = useGetAllPostsQuery({
+    searchTerm,
+  });
+  const { data: allUsersData, refetch: refetchUsers } = useGetAllUsersQuery({
+    searchTerm,
+  });
 
   const posts = allPostsData?.data as TPost[];
+  const users = allUsersData?.data as TUser[];
 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      refetch();
+      refetchPosts();
+      refetchUsers();
     }, 500);
 
     return () => clearTimeout(debounce);
-  }, [searchTerm, refetch]);
+  }, [searchTerm, refetchPosts, refetchUsers]);
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -80,7 +90,7 @@ export default function SearchInput() {
           </Kbd>
         }
         labelPlacement="outside"
-        placeholder="Search..."
+        placeholder="Search posts and users..."
         radius="full"
         size="md"
         startContent={
@@ -98,34 +108,79 @@ export default function SearchInput() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="absolute w-full mt-2 bg-default-50 border border-default-200 rounded-lg shadow-lg z-50 max-h-60 overflow-auto scrollbar-hide"
+            className="absolute w-full mt-2 bg-default-50 border border-default-200 rounded-lg z-50 h-[300px] overflow-auto scrollbar-hide"
           >
-            {posts?.length > 0 ? (
-              <div className="grid grid-cols-1 gap-3 p-2">
-                {posts.map((post: TPost) => (
-                  <Link
-                    key={post._id}
-                    onClick={() => setIsDropdownOpen(false)}
-                    className="py-2 px-4 text-sm cursor-pointer hover:bg-default-100 rounded-md border border-default-100 flex justify-between gap-3 items-center"
-                    href={`/news-feed/posts/${post?._id}`}
-                  >
-                    <FiArrowUpRight size={20} />
-
-                    <div className="flex flex-col items-start gap-0.5">
-                      <p className="font-semibold">{post.title.slice(0, 15)}</p>
-                      <p
-                        dangerouslySetInnerHTML={{
-                          __html: post.description.slice(0, 25) + '...',
-                        }}
-                      ></p>
-                    </div>
-                    <MdOutlineKeyboardArrowRight size={20} />
-                  </Link>
-                ))}
+            {/* Posts Section */}
+            {posts && posts.length > 0 && (
+              <div className="p-2">
+                <h3 className="text-sm font-semibold text-default-700 mb-2">
+                  Posts
+                </h3>
+                <div className="grid grid-cols-1 gap-3">
+                  {posts.map((post: TPost) => (
+                    <Link
+                      key={post._id}
+                      onClick={() => setIsDropdownOpen(false)}
+                      className="py-2 px-4 text-sm cursor-pointer hover:bg-default-100 rounded-md border border-default-100 flex gap-3 items-center"
+                      href={`/news-feed/posts/${post?._id}`}
+                    >
+                      <FiArrowUpRight size={20} />
+                      <div className="flex flex-col items-start gap-0.5 w-full">
+                        <p className="font-semibold">
+                          {post.title.slice(0, 30)}
+                        </p>
+                        <p
+                          className="text-default-500"
+                          dangerouslySetInnerHTML={{
+                            __html: post.description.slice(0, 50) + '...',
+                          }}
+                        ></p>
+                      </div>
+                      <MdOutlineKeyboardArrowRight size={22} />
+                    </Link>
+                  ))}
+                </div>
               </div>
-            ) : (
-              <div className="p-4 text-sm text-default-500">No posts found</div>
             )}
+
+            {/* Users Section */}
+            {users && users.length > 0 && (
+              <div className="p-2">
+                <h3 className="text-sm font-semibold text-default-700 mb-2">
+                  Users
+                </h3>
+                <div className="grid grid-cols-1 gap-3">
+                  {users.map((user: TUser) => (
+                    <Link
+                      key={user._id}
+                      onClick={() => setIsDropdownOpen(false)}
+                      className="py-2 px-4 text-sm cursor-pointer hover:bg-default-100 rounded-md border border-default-100 flex gap-3 items-center"
+                      href={`/profile/${user?._id}`}
+                    >
+                      <div className="flex flex-col items-start gap-0.5 w-full">
+                        <p className="font-semibold">{user.name}</p>
+                        <p className="text-default-500">{user.email}</p>
+                      </div>
+                      <Chip
+                        size="sm"
+                        color={user.role === 'ADMIN' ? 'danger' : 'default'}
+                      >
+                        {user.role}
+                      </Chip>
+                      <MdOutlineKeyboardArrowRight size={22} />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* No Results */}
+            {(!posts || posts.length === 0) &&
+              (!users || users.length === 0) && (
+                <div className="p-4 text-sm text-default-500">
+                  No results found
+                </div>
+              )}
           </motion.div>
         )}
       </AnimatePresence>

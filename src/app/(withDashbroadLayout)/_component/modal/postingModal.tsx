@@ -21,12 +21,9 @@ import { Button } from '@nextui-org/button';
 import { useCreatePostMutation } from '@/src/redux/features/post/postApi';
 import { TUser } from '@/src/types';
 import GlassLoader from '@/src/components/shared/glassLoader';
-import CButton from '@/src/components/ui/CButton/CButton';
-import { primaryColor } from '@/src/styles/button';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import Quill's styles
 import { GoVerified } from 'react-icons/go';
-import { useUser } from '@/src/hooks/useUser';
 import Link from 'next/link';
 
 interface PostData {
@@ -336,7 +333,9 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
               </div>
             </ModalBody>
             <ModalFooter>
-              <CButton bgColor={primaryColor} type="submit" text="Post" />
+              <Button className="primary-button" type="submit">
+                Post
+              </Button>
             </ModalFooter>
           </form>
         </ModalContent>

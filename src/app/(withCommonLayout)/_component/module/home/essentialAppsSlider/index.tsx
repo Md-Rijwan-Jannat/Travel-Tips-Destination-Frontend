@@ -116,7 +116,7 @@ const EssentialDestinationsSlider: FC = () => {
           <Button
             as={Link}
             href="/destinations"
-            className="bg-default-50 border border-pink-500 text-pink-500 font-semibold px-8 py-3 rounded-full transition duration-300 ease-in-out hover:bg-pink-500 hover:text-white mt-10"
+            className="secondary-button mt-10"
           >
             Explore All
           </Button>
