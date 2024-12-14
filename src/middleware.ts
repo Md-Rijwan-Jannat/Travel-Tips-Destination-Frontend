@@ -15,8 +15,8 @@ type TRoleProps = keyof typeof RoleBasedRoutes;
 
 // Role-based routing: USER and ADMIN
 const RoleBasedRoutes = {
-  USER: ['/profile', /^\/profile\/[a-zA-Z0-9]+$/],
-  ADMIN: ['/admin-dashboard'],
+  USER: ['/profile', 'add-connections', /^\/profile\/[a-zA-Z0-9]+$/],
+  ADMIN: ['/admin-dashboard', 'add-connections'],
 };
 
 const AuthPathname = ['/login', '/register'];
@@ -30,6 +30,8 @@ const PublicRoutes = [
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const user = (await currentUser()) as TDecodeUser | undefined;
+
+  console.log('user=>>', user);
   const accessToken = cookies().get('accessToken');
 
   // Allow access to public routes for both roles
@@ -48,6 +50,14 @@ export async function middleware(request: NextRequest) {
     }
 
     return NextResponse.next();
+  }
+
+  // Redirect authenticated users after login based on role
+  if (pathname === '/login' && user?.role) {
+    const redirectTo =
+      user.role === 'ADMIN' ? '/admin-dashboard/analytics' : '/news-feed/posts';
+
+    return NextResponse.redirect(new URL(redirectTo, request.url));
   }
 
   // Handle role-based routing

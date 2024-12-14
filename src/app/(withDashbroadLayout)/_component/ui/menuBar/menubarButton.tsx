@@ -1,14 +1,16 @@
 // src/components/CustomButton.tsx
-import React from "react";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import React from 'react';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 
 interface MenubarButtonProps {
-  href: string;
+  href?: string;
   title: string;
   icon: React.ReactNode;
   delay?: number;
+  className?: string;
+  onClick?: () => void;
 }
 
 const MenubarButton: React.FC<MenubarButtonProps> = ({
@@ -16,6 +18,8 @@ const MenubarButton: React.FC<MenubarButtonProps> = ({
   title,
   icon,
   delay = 0,
+  className,
+  onClick,
 }) => {
   const itemVariants = {
     hidden: { opacity: 0, y: 10 },
@@ -29,6 +33,8 @@ const MenubarButton: React.FC<MenubarButtonProps> = ({
 
   return (
     <motion.div
+      onClick={onClick}
+      className={`${className}`}
       initial="hidden"
       animate="visible"
       whileHover={{ scale: 1.05 }}
@@ -36,12 +42,12 @@ const MenubarButton: React.FC<MenubarButtonProps> = ({
       variants={itemVariants}
     >
       <Link
-        className={`flex items-center justify-start gap-3 border border-default-200 rounded-full p-2 transition-colors-opacity duration-300 cursor-pointer ${
+        className={`flex items-center justify-start gap-3 border border-default-200 rounded-md p-2 transition-colors-opacity duration-300 cursor-pointer ${
           isActive
-            ? "bg-gradient-to-br from-pink-500 to-pink-400 text-white border-pink-500"
-            : "bg-default-50 hover:bg-default-200" // Default styles
+            ? 'bg-gradient-to-br from-pink-500 to-pink-400 text-white border-pink-500'
+            : 'bg-default-50 hover:bg-default-200' // Default styles
         }`}
-        href={href}
+        href={href ? href : '#'}
         title={title}
       >
         <div className="flex items-center gap-2">

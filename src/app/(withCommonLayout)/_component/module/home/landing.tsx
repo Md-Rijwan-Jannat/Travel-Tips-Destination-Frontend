@@ -8,17 +8,17 @@ import SocialLinks from '../../ui/socialLinks';
 import { Button } from '@nextui-org/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useGetAllUsersQuery } from '@/src/redux/features/adminManagement/manageUserApi';
 import { TUser } from '@/src/types';
 import { Avatar } from '@nextui-org/avatar';
+import { useGetAllUsersQuery } from '@/src/redux/features/user/userApi';
 
 type TLandingBannerProps = object;
 
 const LandingBanner: FC<TLandingBannerProps> = () => {
-  const { data: usersData } = useGetAllUsersQuery(undefined);
+  const { data: usersData } = useGetAllUsersQuery({ sort: 'createdAt' });
   const users = usersData?.data as TUser[];
   return (
-    <section className="relative flex flex-col items-center justify-center gap-4 py-8 md:py-10 overflow-hidden h-[600px] md:h-[65vh]">
+    <section className="relative top-[50px] flex flex-col items-center justify-center gap-4 py-8 md:py-10 overflow-hidden h-[600px] md:h-[65vh]">
       {/* Main Content */}
       <div className="flex text-pink-500">
         <GoHeart className="animate-pulse duration-500" size={35} />
@@ -61,11 +61,8 @@ const LandingBanner: FC<TLandingBannerProps> = () => {
         className="absolute top-1/3 size-[240px] right-0 object-cover hidden md:block"
       />
 
-      {/* Social Media Icons */}
-      <SocialLinks />
-
       {/* Snippet */}
-      <div className="mt-8 z-10 animate-fade-in-up">
+      <div className="mt-12 z-10 animate-fade-in-up">
         <div className="flex items-center gap-2 w-full border p-2 rounded-md border-default-200">
           {/* User Avatars */}
           <div className="flex -space-x-3 -mr-1">
@@ -76,7 +73,7 @@ const LandingBanner: FC<TLandingBannerProps> = () => {
                   <Avatar
                     key={user?._id}
                     alt={user?.name}
-                    className="w-6 h-6 rounded-full border-2 border-white"
+                    className="size-8 rounded-full border-2 border-white"
                     name={user?.name.charAt(0).toUpperCase()}
                     src={user?.image || undefined}
                   />

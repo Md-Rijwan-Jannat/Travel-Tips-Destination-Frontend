@@ -30,9 +30,9 @@ const MyDashboard = () => {
   }, []);
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 p-4 col-span-full space-y-5">
+    <div className="bg-default-50 border border-default-200 p-4 col-span-full space-y-5 rounded-md">
       {/* Exchange Section */}
-      <Card className="bg-zinc-900 border border-zinc-800 p-4">
+      <Card className="bg-default-50 border border-default-200 p-4">
         <h2 className="text-xl font-semibold">Exchange</h2>
         {/* Exchange Details */}
         <Button className="w-full bg-pink-500 text-white hover:bg-pink-600 mt-3 ">
@@ -41,13 +41,13 @@ const MyDashboard = () => {
       </Card>
 
       {/* Calendar Section */}
-      <Card className="bg-zinc-900 border border-zinc-800 p-4">
+      <Card className="bg-default-50 border border-default-200 p-4">
         <h2 className="text-xl font-semibold">{format(new Date(), 'MMM d')}</h2>
         {/* Calendar Grid */}
       </Card>
 
       {/* Portfolio Section */}
-      <Card className="bg-zinc-900 border border-zinc-800 p-4">
+      <Card className="bg-default-50 border border-default-200 p-4">
         <h2 className="text-xl font-semibold">My Portfolio</h2>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={lineChartData}>

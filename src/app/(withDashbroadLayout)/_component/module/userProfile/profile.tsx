@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { TUser } from "@/src/types";
-import React from "react";
-import { GoVerified } from "react-icons/go";
-import { Avatar } from "@nextui-org/avatar";
-import { Divider } from "@nextui-org/divider";
-import { motion } from "framer-motion";
-import UpdateNameImageModal from "../../modal/updateUserModal";
-import UserProfileTabs from "./userProfileTabs";
-import { useUser } from "@/src/hooks/useUser";
-import Follow from "./follow";
-import PostModal from "../../modal/postingModal";
-import VerifiedForPayment from "./VerifiedForPayment.tsx";
+import { TUser } from '@/src/types';
+import React from 'react';
+import { GoVerified } from 'react-icons/go';
+import { Avatar } from '@nextui-org/avatar';
+import { Divider } from '@nextui-org/divider';
+import { motion } from 'framer-motion';
+import UpdateNameImageModal from '../../modal/updateUserModal';
+import UserProfileTabs from './userProfileTabs';
+import { useUser } from '@/src/hooks/useUser';
+import Follow from './follow';
+import PostModal from '../../modal/postingModal';
+import VerifiedForPayment from './VerifiedForPayment.tsx';
 
 interface TUserProps {
   user: TUser | undefined;
@@ -24,6 +24,7 @@ export default function Profile({ user }: TUserProps) {
     _id,
     email,
     role,
+    bio,
     name,
     image,
     follower,
@@ -35,10 +36,10 @@ export default function Profile({ user }: TUserProps) {
 
   return (
     <motion.div
-      className="w-full md:w-[500px] xl:w-[600px] mx-auto"
+      className="w-full"
       initial={{ opacity: 0, y: 20 }} // Animating container on load
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       {/* Profile Section */}
       <div className="flex flex-col items-center relative">
@@ -47,6 +48,7 @@ export default function Profile({ user }: TUserProps) {
             <UpdateNameImageModal
               defaultImage={image}
               defaultName={name}
+              bio={bio}
               country={country}
               address={address}
               userId={_id}
@@ -63,11 +65,11 @@ export default function Profile({ user }: TUserProps) {
           />
         </div>
 
-        <h2 className="text-lg font-bold mt-2 flex items-center gap-2">
+        <h2 className="text-lg font-bold flex items-center gap-2">
           {name} {verified && <GoVerified className="text-primaryColor" />}
-          {role === "ADMIN" && "(Admin)"}
+          {role === 'ADMIN' && '(Admin)'}
         </h2>
-        {!verified && <VerifiedForPayment user={user} />}
+        {bio && <p className="text-default-600 text-xs">( {bio} ) </p>}
 
         {/* Follower and Following Count */}
         <motion.div
@@ -90,17 +92,23 @@ export default function Profile({ user }: TUserProps) {
           </div>
         </motion.div>
 
+        {!verified && <VerifiedForPayment user={user} />}
+
         <div className="flex items-center gap-3 mt-3 text-start">
-          <h2 className="text-default-500 text-xs rounded-full px-2 py-1 border border-default-100">
-            {address && address}
-          </h2>
-          <h2 className="text-default-500 text-xs rounded-full px-2 py-1 border border-default-100">
-            {country && country}
-          </h2>
+          {address && (
+            <h2 className="text-default-500 text-xs rounded-full px-2 py-1 border border-default-100">
+              {address}
+            </h2>
+          )}
+          {country && (
+            <h2 className="text-default-500 text-xs rounded-full px-2 py-1 border border-default-100">
+              {country}
+            </h2>
+          )}
         </div>
 
         {/* Follow Buttons */}
-        {currentUser?.email === email ? "" : <Follow userId={_id} />}
+        {currentUser?.email === email ? '' : <Follow userId={_id} />}
 
         <Divider className="my-4 text-default-100" />
 

@@ -11,7 +11,7 @@ import PostModal from '../../modal/postingModal';
 import { categoriesList } from '@/src/constants';
 import { MdLockReset } from 'react-icons/md';
 import DropdownFilter from './postFilter/dropdownFilter';
-import PremiumPostsMarquee from '../premiumPost/premiumPostsMarquee';
+import PremiumPostsMarquee from '../dashboardSuggessions/premiumPostsMarquee';
 import PostDetailsSkeleton from '@/src/components/ui/skeleton/postDetailsSkeleton';
 
 export default function Post() {
@@ -90,7 +90,7 @@ export default function Post() {
   };
 
   return (
-    <div className="w-full md:w-[500px] xl:w-[600px] md:mx-auto">
+    <div className="w-full mx-auto">
       {/* Post Modal */}
       <div>
         <PostModal userInfo={userInfo as TUser | undefined} />

@@ -16,7 +16,7 @@ export default function Following() {
       {' '}
       {following?.length === 0 && <Empty message="You have no following" />}
       {isLoading && <FollowerSkeleton />}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full md:w-[500px] xl:w-[600px] mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mx-auto ">
         {following?.map((follower: TUser) => (
           <FollowingCard key={follower?._id} user={follower} />
         ))}

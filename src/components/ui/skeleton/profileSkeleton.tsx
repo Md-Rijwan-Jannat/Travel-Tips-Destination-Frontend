@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { Skeleton } from "@nextui-org/skeleton";
-import { motion } from "framer-motion";
-import { Divider } from "@nextui-org/divider";
+import { Skeleton } from '@nextui-org/skeleton';
+import { motion } from 'framer-motion';
+import { Divider } from '@nextui-org/divider';
 
 export default function ProfileSkeleton() {
   return (
     <motion.div
-      className="w-full md:w-[500px] xl:w-[600px] mx-auto"
+      className="w-full w-full md:w-[550px] xl:w-[640px] mx-auto mx-auto"
       initial={{ opacity: 0, y: 20 }} // Animating container on load
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       {/* Skeleton Profile Section */}
       <div className="flex flex-col items-center relative">

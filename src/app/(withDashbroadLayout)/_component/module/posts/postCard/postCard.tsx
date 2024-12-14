@@ -24,7 +24,7 @@ export default function PostCard({ post }: TPostCardProps) {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.7 }}
-      className="w-full md:w-[500px] xl:w-[580px] mx-auto"
+      className="w-full"
     >
       <article className="group/post space-y-4 rounded-lg border border-default-200 bg-default-50 p-2 md:p-6 duration-300 ease-in-out">
         {/* Post Header */}

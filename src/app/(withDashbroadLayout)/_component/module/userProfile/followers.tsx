@@ -16,9 +16,13 @@ export default function Followers() {
       {' '}
       {followers?.length === 0 && <Empty message="You have no followers" />}
       {isLoading && <FollowerSkeleton />}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-center w-full md:w-[500px] xl:w-[600px] mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full justify-center mx-auto">
         {followers?.map((follower: TUser) => (
-          <FollowerCard key={follower?._id} user={follower} />
+          <FollowerCard
+            key={follower?._id}
+            follower={follower}
+            followers={followers}
+          />
         ))}
       </div>
     </>

@@ -150,7 +150,7 @@ export default function ChatContainer({ chatId }: { chatId: string }) {
   const selectedUser = getSender(selectedChat, user);
 
   return (
-    <div className="w-full md:w-[500px] xl:w-[600px] mx-auto">
+    <div className="w-full w-full md:w-[550px] xl:w-[640px] mx-auto mx-auto">
       {isLoading && <TableSkeleton />}
       <ScrollableChat
         messages={messages}

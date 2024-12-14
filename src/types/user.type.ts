@@ -7,6 +7,7 @@ export interface TPersistUser {
 export interface TUser {
   name: string;
   email: string;
+  bio: string;
   image?: string;
   password: string;
   role: string;

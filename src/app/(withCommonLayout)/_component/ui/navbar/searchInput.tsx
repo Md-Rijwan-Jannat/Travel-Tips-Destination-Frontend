@@ -81,8 +81,8 @@ export default function SearchInput() {
         }}
         onFocus={() => setIsDropdownOpen(true)}
         classNames={{
-          inputWrapper: 'bg-default-100',
-          input: 'text-sm',
+          inputWrapper: 'bg-default-100 p-2 md:p-4',
+          input: 'text-xs md:text-sm lg:text-base',
         }}
         endContent={
           <Kbd className="hidden md:flex" keys={['command']}>
@@ -94,7 +94,7 @@ export default function SearchInput() {
         radius="full"
         size="md"
         startContent={
-          <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
+          <SearchIcon className="text-xs md:text-base lg:text-lg text-default-400 pointer-events-none flex-shrink-0" />
         }
         type="search"
       />
@@ -108,15 +108,15 @@ export default function SearchInput() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="absolute w-full mt-2 bg-default-50 border border-default-200 rounded-lg z-50 h-[300px] overflow-auto scrollbar-hide"
+            className="absolute w-[250px] md:w-full left-0 mt-2 bg-default-50 border border-default-200 rounded-lg backdrop-blur-2xl h-[200px] md:h-[300px] overflow-auto scrollbar-hide"
           >
             {/* Posts Section */}
             {posts && posts.length > 0 && (
               <div className="p-2">
-                <h3 className="text-sm font-semibold text-default-700 mb-2">
+                <h3 className="text-[10px] md:text-[14px] lg:text-[16px] font-semibold text-default-700 mb-2">
                   Posts
                 </h3>
-                <div className="grid grid-cols-1 gap-3">
+                <div className="grid grid-cols-1">
                   {posts.map((post: TPost) => (
                     <Link
                       key={post._id}
@@ -124,19 +124,19 @@ export default function SearchInput() {
                       className="py-2 px-4 text-sm cursor-pointer hover:bg-default-100 rounded-md border border-default-100 flex gap-3 items-center"
                       href={`/news-feed/posts/${post?._id}`}
                     >
-                      <FiArrowUpRight size={20} />
+                      <FiArrowUpRight className="text-[16px] md:text-[22px] lg:text-[27px] " />
                       <div className="flex flex-col items-start gap-0.5 w-full">
-                        <p className="font-semibold">
+                        <p className="font-semibold text-[10px] md:text-[14px] lg:text-[16px]">
                           {post.title.slice(0, 30)}
                         </p>
                         <p
-                          className="text-default-500"
+                          className="text-default-500 text-[10px] md:text-[14px] lg:text-[16px]"
                           dangerouslySetInnerHTML={{
-                            __html: post.description.slice(0, 50) + '...',
+                            __html: post.description.slice(0, 50),
                           }}
                         ></p>
                       </div>
-                      <MdOutlineKeyboardArrowRight size={22} />
+                      <MdOutlineKeyboardArrowRight className="text-[18px] md:text-[22px] lg:text-[30px]" />
                     </Link>
                   ))}
                 </div>
@@ -146,7 +146,7 @@ export default function SearchInput() {
             {/* Users Section */}
             {users && users.length > 0 && (
               <div className="p-2">
-                <h3 className="text-sm font-semibold text-default-700 mb-2">
+                <h3 className="text-[10px] md:text-[14px] lg:text-[16px] font-semibold text-default-700 mb-2">
                   Users
                 </h3>
                 <div className="grid grid-cols-1 gap-3">
@@ -157,11 +157,11 @@ export default function SearchInput() {
                       className="py-2 px-4 text-sm cursor-pointer hover:bg-default-100 rounded-md border border-default-100 flex gap-3 items-center"
                       href={`/profile/${user?._id}`}
                     >
-                      <div className="flex flex-col items-start gap-0.5 w-full">
+                      <div className="flex flex-col items-start md:gap-0.5 w-full text-[10px] md:text-[14px] lg:text-[16px]">
                         <p className="font-semibold">{user.name}</p>
-                        <p className="text-default-500">{user.email}</p>
                       </div>
                       <Chip
+                        className="text-[10px] md:text-[14px] lg:text-[16px]"
                         size="sm"
                         color={user.role === 'ADMIN' ? 'danger' : 'default'}
                       >

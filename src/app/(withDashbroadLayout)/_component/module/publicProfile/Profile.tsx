@@ -28,6 +28,7 @@ export default function Profile({ user }: TUserProps) {
     email,
     name,
     image,
+    bio,
     follower,
     following,
     verified,
@@ -37,7 +38,7 @@ export default function Profile({ user }: TUserProps) {
 
   return (
     <motion.div
-      className="w-full md:w-[500px] xl:w-[580px] mx-auto"
+      className="w-full"
       initial={{ opacity: 0, y: 20 }} // Animating container on load
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
@@ -52,6 +53,7 @@ export default function Profile({ user }: TUserProps) {
               country={country}
               address={address}
               userId={_id}
+              bio={bio}
             />
           </div>
         )}
@@ -68,7 +70,7 @@ export default function Profile({ user }: TUserProps) {
         <h2 className="text-lg font-bold mt-2 flex items-center gap-2">
           {name} {verified && <GoVerified className="text-primaryColor" />}
         </h2>
-        {!verified && <VerifiedForPayment user={user} />}
+        {bio && <p className="text-default-600 text-xs">( {bio} ) </p>}
 
         {/* Follower and Following Count */}
         <motion.div
@@ -81,28 +83,32 @@ export default function Profile({ user }: TUserProps) {
             <h3 className="text-xs text-primaryColor">
               {follower?.length || 0}
             </h3>
-            <p className="text-default-500 text-sm">Followers</p>
+            <p className="text-gray-500 text-sm">Followers</p>
           </div>
           <div className="text-center">
             <h3 className="text-xs text-primaryColor">
               {following?.length || 0}
             </h3>
-            <p className="text-default-500 text-sm">Following</p>
+            <p className="text-gray-500 text-sm">Following</p>
           </div>
         </motion.div>
-        <div className="flex flex-col items-center justify-center gap-3 w-full">
-          {/* Follow and Message Buttons */}
-          {currentUser?.email === email ? '' : <Follow userId={_id} />}
-          <div className="flex items-center gap-2">
-            <h2 className="text-default-500 text-xs rounded-full px-2 py-1 border border-default-100">
-              {address && address}
-            </h2>
-            <h2 className="text-default-500 text-xs rounded-full px-2 py-1 border border-default-100">
-              {country && country}
-            </h2>
-          </div>
-        </div>
 
+        {!verified && user.email === currentUser?.email && (
+          <VerifiedForPayment user={user} />
+        )}
+
+        <div className="flex items-center gap-3 mt-5 text-start">
+          {address && (
+            <h2 className="text-default-500 text-xs rounded-full px-2 py-1 border border-default-100">
+              {address}
+            </h2>
+          )}
+          {country && (
+            <h2 className="text-default-500 text-xs rounded-full px-2 py-1 border border-default-100">
+              {country}
+            </h2>
+          )}
+        </div>
         <Divider className="my-4 text-default-100" />
 
         {/* Tab Navigation */}

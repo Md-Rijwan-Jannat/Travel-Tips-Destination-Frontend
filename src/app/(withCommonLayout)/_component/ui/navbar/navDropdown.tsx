@@ -15,7 +15,6 @@ import { useUser } from '@/src/hooks/useUser';
 import { toast } from 'sonner';
 import { Logout } from '@/src/service/logout';
 import { useDisclosure } from '@nextui-org/modal';
-import { ThemeSwitch } from '@/src/components/ui/theme-switch';
 import CreateGroupModal from '@/src/app/(withDashbroadLayout)/_component/modal/createGroupModal';
 import Link from 'next/link';
 import { Button } from '@nextui-org/button';
@@ -27,7 +26,10 @@ import {
   MessageCircle,
   LogOut,
   UserPlus,
+  Bell,
 } from 'lucide-react';
+import { FaConnectdevelop } from 'react-icons/fa';
+import { TbPremiumRights } from 'react-icons/tb';
 
 const NavDropdown: FC = () => {
   const dispatch = useAppDispatch();
@@ -55,7 +57,6 @@ const NavDropdown: FC = () => {
 
   return (
     <>
-      {!userExists?.email && <ThemeSwitch />}
       {userExists?.email ? (
         <Dropdown>
           <DropdownTrigger>
@@ -69,27 +70,29 @@ const NavDropdown: FC = () => {
           <DropdownMenu aria-label="User Actions">
             <DropdownItem
               as={Link}
-              href="/profile"
+              href="/news-feed/premium-posts"
+              className={`block lg:hidden ${userInfo?.role === 'USER' ? 'block' : 'hidden'} ${dropdownItemClass}`}
+              startContent={<TbPremiumRights className="w-4 h-4" />}
+            >
+              Premium Posts
+            </DropdownItem>
+            <DropdownItem
+              as={Link}
+              href={
+                userInfo?.role === 'ADMIN' ? '/admin-dashboard' : '/profile'
+              }
               className={`${userInfo?.role === 'USER' ? 'block' : 'hidden'} ${dropdownItemClass}`}
               startContent={<UserCircle className="w-4 h-4" />}
             >
               Profile
             </DropdownItem>
-
             <DropdownItem
               as={Link}
-              href="/admin-dashboard"
-              className={`${userInfo?.role === 'ADMIN' ? 'block' : 'hidden'} ${dropdownItemClass}`}
-              startContent={<Settings className="w-4 h-4" />}
+              href="/add-connections"
+              className={`block lg:hidden ${userInfo?.role === 'USER' ? 'block' : 'hidden'} ${dropdownItemClass}`}
+              startContent={<FaConnectdevelop className="w-4 h-4" />}
             >
-              Admin Profile
-            </DropdownItem>
-            <DropdownItem
-              onClick={onGroupOpen}
-              className={dropdownItemClass}
-              startContent={<Users className="w-4 h-4" />}
-            >
-              Create Group
+              Add Connection
             </DropdownItem>
             <DropdownItem
               as={Link}
@@ -99,6 +102,23 @@ const NavDropdown: FC = () => {
             >
               Chat
             </DropdownItem>
+            <DropdownItem
+              as={Link}
+              href="/notifications"
+              className={`block lg:hidden ${userInfo?.role === 'USER' ? 'block' : 'hidden'} ${dropdownItemClass}`}
+              startContent={<Bell className="w-4 h-4" />}
+            >
+              Notifications
+            </DropdownItem>
+
+            <DropdownItem
+              onClick={onGroupOpen}
+              className={dropdownItemClass}
+              startContent={<Users className="w-4 h-4" />}
+            >
+              Create Group
+            </DropdownItem>
+
             <DropdownItem
               onClick={handleLogout}
               className={dropdownItemClass2}
@@ -113,7 +133,7 @@ const NavDropdown: FC = () => {
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               size="sm"
-              className="secondary-button flex items-center gap-2 transition-all duration-300 hover:bg-primary hover:text-white"
+              className="secondary-button"
               as={Link}
               href="/register"
             >

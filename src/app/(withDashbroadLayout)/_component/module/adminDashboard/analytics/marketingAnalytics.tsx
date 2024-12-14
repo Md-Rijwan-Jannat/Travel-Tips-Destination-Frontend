@@ -16,6 +16,7 @@ import { useGetAllPaymentsDatForAnalyticsQuery } from '@/src/redux/features/admi
 import { FaMoneyBillWave } from 'react-icons/fa';
 import { TPayment } from '@/src/types';
 import TableSkeleton from '@/src/components/ui/skeleton/tableSkeleton';
+import ResentPaymentTable from './resentPaymentTable';
 
 ChartJS.register(
   CategoryScale,
@@ -72,36 +73,48 @@ export default function MarketingAnalytics() {
   );
 
   return (
-    <div className="bg-default-50 p-3 rounded-lg mt-5">
-      <h3 className="text-xl font-bold mb-4 text-pink-400">
-        Marketing Analytics
-      </h3>
-      {loadingPayments && <TableSkeleton />}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:5 mb-5">
-        <div className="bg-gradient-to-br from-pink-600/90 to-pink-300/90 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
-          <FaMoneyBillWave className="text-lg md:text-3xl mr-1" />
-          <p className="text-s">Total Sales: ${totalSales}</p>
+    <div className="space-y-5">
+      <div className="bg-default-50 p-3 rounded-lg mt-5">
+        <h3 className="text-xl font-bold mb-4 text-pink-400">
+          Marketing Analytics
+        </h3>
+        {loadingPayments && <TableSkeleton />}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:5 mb-5">
+          <div className="bg-gradient-to-br from-pink-600/90 to-pink-300/90 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+            <FaMoneyBillWave className="text-lg md:text-3xl mr-1" />
+            <p className="text-s">Total Sales: ${totalSales}</p>
+          </div>
+          <div className="bg-gradient-to-br from-blue-600/90 to-blue-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
+            <FaMoneyBillWave className="text-lg md:text-3xl mr-1" />
+            <p className="text-s"> Total Profit: ${totalProfit}</p>
+          </div>
         </div>
-        <div className="bg-gradient-to-br from-blue-600/90 to-blue-300/80 px-5 py-6 text-center text-lg font-semibold rounded-xl shadow-md text-white flex items-center justify-center">
-          <FaMoneyBillWave className="text-lg md:text-3xl mr-1" />
-          <p className="text-s"> Total Profit: ${totalProfit}</p>
+        <div className="chart-container mt-4">
+          <Line
+            data={chartData}
+            options={{
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: 'top',
+                },
+                title: {
+                  display: true,
+                  text: 'Sales and Profit Overview',
+                },
+              },
+            }}
+          />
         </div>
       </div>
-      <div className="chart-container mt-4">
-        <Line
-          data={chartData}
-          options={{
-            responsive: true,
-            plugins: {
-              legend: {
-                position: 'top',
-              },
-              title: {
-                display: true,
-                text: 'Sales and Profit Overview',
-              },
-            },
-          }}
+      <div className="bg-default-50 p-3 rounded-lg mt-5">
+        <h3 className="text-xl font-bold mb-4 text-pink-400">
+          Recent Payments
+        </h3>
+        {loadingPayments && <TableSkeleton />}
+        <ResentPaymentTable
+          payments={paymentsData?.data.slice(0, 5) || []}
+          isLoading={loadingPayments}
         />
       </div>
     </div>

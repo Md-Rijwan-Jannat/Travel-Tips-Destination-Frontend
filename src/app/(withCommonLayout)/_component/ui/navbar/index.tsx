@@ -16,7 +16,7 @@ import ThemeDropdown from '@/src/components/modal/themeDropdown';
 export default function NavBar() {
   return (
     <NextUINavbar
-      className="border-b border-default-50 bg-opacity-10 backdrop-blur-xl"
+      className="shadow-sm bg-default-50/20 backdrop-blur-xl fixed"
       maxWidth="xl"
       position="sticky"
     >

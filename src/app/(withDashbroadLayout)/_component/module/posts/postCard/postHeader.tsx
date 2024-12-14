@@ -1,9 +1,11 @@
-import { Avatar } from "@nextui-org/avatar";
-import Link from "next/link";
+import { Avatar } from '@nextui-org/avatar';
+import Link from 'next/link';
 
-import { TPost } from "@/src/types";
-import PostDropdown from "../postActions/postDropdown";
-import { GoVerified } from "react-icons/go";
+import { TPost } from '@/src/types';
+import PostDropdown from '../postActions/postDropdown';
+import { GoVerified } from 'react-icons/go';
+import FollowForPost from '../../userProfile/followForPost';
+import { format, formatDistanceToNow } from 'date-fns';
 
 interface PostHeaderProps {
   post: TPost;
@@ -20,23 +22,25 @@ export default function PostHeader({ post }: PostHeaderProps) {
             src={post?.user?.image || undefined}
           />
         </Link>
-        <div>
-          <Link
-            className="font-semibold text-default-900 hover:underline flex items-center gap-1 mt-0.5"
-            href={`/profile/${post?.user?._id}`}
-          >
-            {post?.user?.name}{" "}
-            {post?.user?.verified && (
-              <GoVerified className="text-primaryColor" />
-            )}
-          </Link>
-          <Link
-            suppressHydrationWarning
-            className="block text-xs text-default-500 hover:underline"
-            href={`/news-feed/posts/${post?._id}`}
-          >
-            {new Date(post?.createdAt).toLocaleDateString()}
-          </Link>
+        <div className="flex flex-col items-start -mt-2">
+          <div className="flex flex-row gap-1 items-center">
+            <Link
+              className="font-semibold text-default-900 flex items-center gap-1 mt-0.5 whitespace-nowrap"
+              href={`/profile/${post?.user?._id}`}
+            >
+              {post?.user?.name}{' '}
+              {post?.user?.verified && (
+                <GoVerified className="text-primaryColor" />
+              )}
+            </Link>
+            <div className="-mt-3">
+              <FollowForPost userId={post?.user?._id} />
+            </div>
+          </div>
+          <p className="block text-xs text-default-500">
+            {formatDistanceToNow(post?.createdAt, { addSuffix: true })} (
+            {format(post?.createdAt, 'MMMM do, yyyy')})
+          </p>
         </div>
       </div>
       <PostDropdown postData={post} userInfo={post?.user} />

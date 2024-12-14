@@ -1,14 +1,15 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { motion } from 'framer-motion';
 import {
   useFollowMutation,
   useGetSingleUserQuery,
   useUnFollowMutation,
-} from "@/src/redux/features/user/userApi";
-import { Button } from "@nextui-org/button";
-import { useUser } from "@/src/hooks/useUser";
+} from '@/src/redux/features/user/userApi';
+import { Button } from '@nextui-org/button';
+import { useUser } from '@/src/hooks/useUser';
+import { UserPlus, X } from 'lucide-react';
 
 interface TFollowProps {
   userId: string;
@@ -21,13 +22,13 @@ export default function Follow({ userId }: TFollowProps) {
   const user = userData?.data;
   const { userInfo: currentUser } = useUser();
   const currentUserId = currentUser?._id;
-  const exists = user.follower.includes(currentUserId);
+  const exists = user?.follower?.includes(currentUserId);
 
   const followHandler = async () => {
     try {
       await followFn(userId);
     } catch (error) {
-      console.error("Follow failed===>", error);
+      console.error('Follow failed===>', error);
     }
   };
 
@@ -35,7 +36,7 @@ export default function Follow({ userId }: TFollowProps) {
     try {
       await unFollowFn(userId);
     } catch (error) {
-      console.error("Unfollow failed===>", error);
+      console.error('Unfollow failed===>', error);
     }
   };
 
@@ -48,23 +49,29 @@ export default function Follow({ userId }: TFollowProps) {
     >
       {exists ? (
         <Button
-          className="px-5 py-1 bg-default-50 text-default-700"
+          className="flex-1 secondary-button"
           radius="full"
           size="sm"
+          variant="flat"
+          isLoading={unFollowIsLoading}
           onClick={unFollowHandler}
           disabled={unFollowIsLoading}
+          startContent={<X size={18} />}
         >
-          {unFollowIsLoading ? "Unfollowing..." : "Unfollow"}
+          Disconnect
         </Button>
       ) : (
         <Button
-          className="px-5 py-1 bg-pink-500 text-white"
+          className="flex-1 primary-button"
           radius="full"
           size="sm"
+          variant="flat"
+          isLoading={followIsLoading}
           onClick={followHandler}
           disabled={followIsLoading}
+          startContent={<UserPlus size={18} />}
         >
-          {followIsLoading ? "Following..." : "Follow"}
+          Connect
         </Button>
       )}
     </motion.div>

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import React from "react";
-import clsx from "clsx";
-import { NavbarItem } from "@nextui-org/navbar";
-import { link as linkStyles } from "@nextui-org/theme";
-import { NavRoutes } from "./navRoute";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import React from 'react';
+import clsx from 'clsx';
+import { NavbarItem } from '@nextui-org/navbar';
+import { link as linkStyles } from '@nextui-org/theme';
+import { NavRoutes } from './navRoute';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function NavLinks() {
   const pathname = usePathname();
@@ -20,10 +20,11 @@ export default function NavLinks() {
           <NavbarItem key={item.href}>
             <Link
               href={item.href}
-              className={clsx(
-                linkStyles({ color: "foreground" }),
-                isActive ? "text-pink-400 font-medium" : "text-default-800"
-              )}
+              className={`${
+                isActive
+                  ? 'text-pink-400 font-medium text-[14px]'
+                  : 'text-default-800 text-[14px]'
+              }`}
             >
               {item.label}
             </Link>

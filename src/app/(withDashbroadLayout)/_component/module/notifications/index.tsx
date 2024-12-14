@@ -13,7 +13,7 @@ export default function Notification() {
   const notifications = useAppSelector(getNotifications);
 
   return (
-    <div className="flex flex-col items-center space-y-4 p-4 w-full md:w-[500px] xl:w-[600px] mx-auto">
+    <div className="flex flex-col items-center space-y-4 p-4 w-full w-full md:w-[550px] xl:w-[640px] mx-auto mx-auto">
       {notifications.length === 0 ? (
         <Empty message="No Notification" />
       ) : (

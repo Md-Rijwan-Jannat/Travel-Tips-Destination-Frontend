@@ -64,7 +64,7 @@ export default function MiniDashboard() {
 
   return (
     <div
-      className={`${isAdminPage && 'hidden'} md:sticky top-20 h-screen mt-20 lg:w-1/4`}
+      className={`${isAdminPage && 'hidden'} md:sticky top-20 h-screen mt-20 lg:w-1/4 overflow-y-auto scrollbar-hide`}
     >
       <div className="flex-col gap-6 hidden lg:flex">
         {/* Profile Overview Card */}
@@ -138,7 +138,7 @@ export default function MiniDashboard() {
               size="sm"
               as={Link}
               href="/news-feed/posts"
-              className="w-full bg-pink-500 text-white hover:bg-pink-600"
+              className="w-full primary-button"
             >
               View All Tips
             </Button>

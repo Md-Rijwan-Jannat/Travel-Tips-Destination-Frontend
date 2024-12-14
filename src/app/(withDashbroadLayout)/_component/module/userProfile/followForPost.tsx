@@ -9,13 +9,12 @@ import {
 } from '@/src/redux/features/user/userApi';
 import { Button } from '@nextui-org/button';
 import { useUser } from '@/src/hooks/useUser';
-import { UserPlusIcon, X } from 'lucide-react';
 
 interface TFollowProps {
   userId: string | undefined;
 }
 
-export default function Follow({ userId }: TFollowProps) {
+export default function FollowForPost({ userId }: TFollowProps) {
   const [followFn, { isLoading: followIsLoading }] = useFollowMutation();
   const [unFollowFn, { isLoading: unFollowIsLoading }] = useUnFollowMutation();
   const { data: userData } = useGetSingleUserQuery(userId);
@@ -49,27 +48,23 @@ export default function Follow({ userId }: TFollowProps) {
     >
       {exists ? (
         <Button
-          className="secondary-button"
+          className="bg-transparent text-pink-500"
           radius="full"
           size="sm"
-          isLoading={unFollowIsLoading}
           onClick={unFollowHandler}
           disabled={unFollowIsLoading}
-          startContent={<X className="size-4" />}
         >
           {unFollowIsLoading ? 'Unfollowing...' : 'Unfollow'}
         </Button>
       ) : (
         <Button
-          className="primary-button"
+          className="bg-transparent text-pink-500"
           radius="full"
           size="sm"
-          isLoading={followIsLoading}
           onClick={followHandler}
           disabled={followIsLoading}
-          startContent={<UserPlusIcon className="size-4" />}
         >
-          {followIsLoading ? 'Following...' : 'Follow Back'}
+          {followIsLoading ? 'Following...' : 'Follow'}
         </Button>
       )}
     </motion.div>

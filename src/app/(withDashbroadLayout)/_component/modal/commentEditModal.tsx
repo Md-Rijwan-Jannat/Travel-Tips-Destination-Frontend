@@ -67,7 +67,7 @@ export default function CommentEditModal({
             className="w-full p-2 border rounded-md border-default-100 text-xs focus:border-default-300 focus:outline-none"
           />
         </ModalBody>
-        <ModalFooter className="flex items-center gap-8 my-3">
+        <ModalFooter className="flex items-center gap-8 my-3 justify-end">
           <Button className="primary-button" onClick={handleEdit}>
             Save
           </Button>

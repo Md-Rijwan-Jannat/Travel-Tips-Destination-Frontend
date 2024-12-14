@@ -1,13 +1,26 @@
-import { baseApi } from "../../api/baseApi";
+import { baseApi } from '../../api/baseApi';
 
 export const PremiumPostApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllPremiumPosts: builder.query({
-      query: () => ({
-        url: "/posts/premium",
-        method: "GET",
-      }),
-      providesTags: ["posts"],
+      query: (args) => {
+        const params = new URLSearchParams();
+
+        console.log(args, params);
+
+        if (args) {
+          Object.entries(args).forEach(([name, value]) => {
+            params.append(name, value as string);
+          });
+        }
+
+        return {
+          url: `/posts/premium`,
+          method: 'GET',
+          params,
+        };
+      },
+      providesTags: ['posts'],
     }),
   }),
 });

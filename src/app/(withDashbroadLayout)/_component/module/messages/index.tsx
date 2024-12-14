@@ -40,7 +40,7 @@ const MessageCardList: React.FC = () => {
   }, [socket, dispatch]);
 
   return (
-    <div className="w-full md:w-[500px] xl:w-[600px] mx-auto">
+    <div className="w-full w-full md:w-[550px] xl:w-[640px] mx-auto mx-auto">
       <div className="p-0">
         <div className="flex items-center justify-between gap-3 mb-2 border-b border-default-200">
           <h3 className="p-4 text-lg font-semibold text-default-800">

@@ -15,8 +15,6 @@ import { Input } from '@nextui-org/input';
 import { IoIosImages } from 'react-icons/io';
 import GlassLoader from '@/src/components/shared/glassLoader';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import CButton from '@/src/components/ui/CButton/CButton';
-import { primaryColor } from '@/src/styles/button';
 
 interface CloudinaryResponse {
   secure_url: string;
@@ -26,6 +24,7 @@ interface UpdateUserModalProps {
   defaultName: string;
   defaultImage: string | undefined;
   userId: string;
+  bio: string;
   country: string;
   address: string;
 }
@@ -33,6 +32,7 @@ interface UpdateUserModalProps {
 interface FormInputs {
   name: string;
   imageFile: File | null;
+  bio: string;
   country: string;
   address: string;
 }
@@ -41,6 +41,7 @@ export default function UpdateUserModal({
   defaultName,
   defaultImage,
   country,
+  bio,
   address,
   userId,
 }: UpdateUserModalProps) {
@@ -61,6 +62,7 @@ export default function UpdateUserModal({
     defaultValues: {
       name: defaultName,
       imageFile: null,
+      bio: bio || '',
       country: country || '',
       address: address || '',
     },
@@ -72,12 +74,13 @@ export default function UpdateUserModal({
       reset({
         name: defaultName,
         imageFile: null,
+        bio,
         country, // Keep the country value
         address, // Keep the address value
       });
       setImage(defaultImage || '');
     }
-  }, [isOpen, defaultName, defaultImage, country, address, reset]);
+  }, [isOpen, defaultName, defaultImage, bio, country, address, reset]);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0];
@@ -133,6 +136,7 @@ export default function UpdateUserModal({
 
     const updateData = {
       name: data.name,
+      bio: data.bio,
       country: data.country,
       address: data.address,
       image: uploadedImageUrl,
@@ -193,6 +197,14 @@ export default function UpdateUserModal({
                   label="Name"
                   className="bg-opacity-0"
                   placeholder="Enter your name"
+                />
+                <Input
+                  type="text"
+                  {...register('bio')}
+                  variant="flat"
+                  label="Bio"
+                  className="bg-opacity-0"
+                  placeholder="Enter your bio"
                 />
                 <Input
                   type="text"

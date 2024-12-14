@@ -1,58 +1,82 @@
-"use client";
+'use client';
 
-import { TUser } from "@/src/types";
-import { Avatar } from "@nextui-org/avatar";
-import React from "react";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import Follow from "../follow";
-import { useUser } from "@/src/hooks/useUser";
+import { TUser } from '@/src/types';
+import { Avatar } from '@nextui-org/avatar';
+import React from 'react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import Follow from '../follow';
+import { useUser } from '@/src/hooks/useUser';
+import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card';
+import { Tooltip } from '@nextui-org/tooltip';
+import { GoVerified } from 'react-icons/go';
+import { FaUserFriends } from 'react-icons/fa';
 
 interface TFollowerProps {
   user: TUser;
 }
 
 export default function FollowingCard({ user }: TFollowerProps) {
-  const { image, name, _id } = (user as unknown as TUser) || {};
+  const { image, name, bio, verified, follower, _id } =
+    (user as unknown as TUser) || {};
 
   const { userInfo } = useUser();
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.7 }}
-      className="bg-default-50 border border-default-200 rounded-md p-2 duration-300 ease-in-out"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
     >
-      <div className="flex flex-col items-center justify-center gap-3">
-        <Avatar
-          as={Link}
-          href={`/profile/${_id}`}
-          alt="premium post"
-          className="text-[20px] text-primaryColor"
-          name={name.charAt(0).toUpperCase()}
-          size="md"
-          src={image || undefined}
-        />
-        <div className="flex flex-col items-center justify-center gap-2">
-          <Link
-            href={`/profile/${_id}`}
-            className="font-semibold text-default-900 text-[12px] whitespace-nowrap
-            "
-          >
-            {name}
-          </Link>
-          <p className="text-default-500 text-[10px] bg-pink-500/10 rounded-full px-2">
-            Friends
+      <Card className="max-w-[340px] w-full mx-auto transition-all duration-300">
+        <CardHeader className="justify-between pb-0">
+          <div className="flex items-center gap-3">
+            <Link href={`/profile/${_id}`}>
+              <Avatar
+                size="lg"
+                src={image || undefined}
+                name={name?.charAt(0).toUpperCase()}
+                className="w-14 h-14 text-large"
+              />
+            </Link>
+            <div className="flex flex-col">
+              <Link
+                className="text-md font-semibold text-default-700 flex items-center gap-1"
+                href={`/profile/${_id}`}
+              >
+                {name}{' '}
+                {verified && (
+                  <Tooltip content="Verified User">
+                    <GoVerified className="text-pink-500" />
+                  </Tooltip>
+                )}
+              </Link>
+              <p className="text-small text-default-500">
+                {bio
+                  ? bio.slice(0, 30) + (bio.length > 30 ? '...' : '')
+                  : 'No bio available'}
+              </p>
+            </div>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <div className="flex items-center justify-center">
+            <motion.div
+              className="w-full h-1 bg-gradient-to-r from-pink-300 to-purple-300 dark:from-pink-700 dark:to-purple-700 rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: '100%' }}
+              transition={{ duration: 1, delay: 0.5 }}
+            />
+          </div>
+        </CardBody>
+        <CardFooter className="flex-col items-center pt-0">
+          <p className="text-default-500 text-sm flex items-center gap-2">
+            <FaUserFriends className="text-pink-500" />
+            <span>{follower?.length || 0} followers</span>
           </p>
-        </div>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          className={` flex items-center gap-1 rounded-full px-3 py-1 border border-default-200 hover:bg-default-100 transition-colors-opacity duration-500 ease-in-out text-xs text-default-500`}
-        >
-          Followed by you
-        </motion.button>
-      </div>
+          <Follow userId={_id} />
+        </CardFooter>
+      </Card>
     </motion.div>
   );
 }

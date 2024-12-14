@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React from "react";
-import PostActions from "../posts/postActions/postActions";
-import { useGetSinglePostQuery } from "@/src/redux/features/post/postApi";
-import PostDetailsHeader from "./postDetailsHeader";
-import PostDetailsContent from "./postDetailsContent";
-import DetailsCommentCard from "../posts/postActions/postComments/detailsCommentCard";
-import PostImages from "./postImages";
-import PostDetailsSkeleton from "@/src/components/ui/skeleton/postDetailsSkeleton";
+import React from 'react';
+import PostActions from '../posts/postActions/postActions';
+import { useGetSinglePostQuery } from '@/src/redux/features/post/postApi';
+import PostDetailsHeader from './postDetailsHeader';
+import PostDetailsContent from './postDetailsContent';
+import DetailsCommentCard from '../posts/postActions/postComments/detailsCommentCard';
+import PostImages from './postImages';
+import PostDetailsSkeleton from '@/src/components/ui/skeleton/postDetailsSkeleton';
 
 interface TPostDetailsProps {
   postId: string;
@@ -31,7 +31,7 @@ export default function PostDetails({ postId }: TPostDetailsProps) {
   const post = postData?.data;
 
   return (
-    <div className="w-full md:w-[500px] xl:w-[600px] mx-auto bg-default-50 rounded-md p-2 md:p-6">
+    <div className="w-full w-full md:w-[550px] xl:w-[640px] mx-auto mx-auto bg-default-50 rounded-md p-2 md:p-6">
       <PostDetailsHeader post={post} />
       <PostDetailsContent post={post} />
       {post?.images?.length > 0 && <PostImages post={post} />}

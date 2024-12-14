@@ -14,12 +14,15 @@ import { Avatar } from '@nextui-org/avatar';
 import { Tooltip } from '@nextui-org/tooltip';
 import { TPayment } from '@/src/types';
 
-type PaymentTableProps = {
+type ResentPaymentTableProps = {
   payments: TPayment[];
   isLoading: boolean;
 };
 
-const PaymentTable: React.FC<PaymentTableProps> = ({ payments, isLoading }) => {
+const ResentPaymentTable: React.FC<ResentPaymentTableProps> = ({
+  payments,
+  isLoading,
+}) => {
   return (
     <>
       <Table className="overflow-x-auto" aria-label="Payment Table">
@@ -74,4 +77,4 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, isLoading }) => {
   );
 };
 
-export default PaymentTable;
+export default ResentPaymentTable;

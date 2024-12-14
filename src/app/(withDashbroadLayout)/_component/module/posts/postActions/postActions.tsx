@@ -1,26 +1,27 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { AiOutlineDislike, AiOutlineLike } from "react-icons/ai";
+import React, { useState } from 'react';
+import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
 import {
   FaRegComment,
   FaShare,
   FaThumbsDown,
   FaThumbsUp,
-} from "react-icons/fa";
-import { MdOutlineContentCopy } from "react-icons/md"; // Copy icon
+} from 'react-icons/fa';
+import { MdOutlineContentCopy } from 'react-icons/md'; // Copy icon
 import {
   useLikeMutation,
   useUnLikeMutation,
   useDisLikeMutation,
   useUnDislikeMutation,
-} from "@/src/redux/features/post/postApi";
-import { useUser } from "@/src/hooks/useUser";
-import { TPost } from "@/src/types";
-import { motion } from "framer-motion";
-import Comment from "./postComments/comment";
-import { copyToClipboard } from "@/src/utils/copyToClipboard";
-import { RiShareForwardLine } from "react-icons/ri";
+} from '@/src/redux/features/post/postApi';
+import { useUser } from '@/src/hooks/useUser';
+import { TPost } from '@/src/types';
+import { motion } from 'framer-motion';
+import Comment from './postComments/comment';
+import { copyToClipboard } from '@/src/utils/copyToClipboard';
+import { RiShareForwardLine } from 'react-icons/ri';
+import PostShare from './postShare';
 
 interface PostActionsProps {
   post: TPost;
@@ -69,7 +70,7 @@ export default function PostActions({ post }: PostActionsProps) {
         }
       }
     } catch (error) {
-      console.error("Error liking the post:", error);
+      console.error('Error liking the post:', error);
     }
   };
 
@@ -90,9 +91,11 @@ export default function PostActions({ post }: PostActionsProps) {
         }
       }
     } catch (error) {
-      console.error("Error disliking the post:", error);
+      console.error('Error disliking the post:', error);
     }
   };
+
+  const currentUrl = window.location.href;
 
   return (
     <div className="flex flex-col items-start">
@@ -128,8 +131,8 @@ export default function PostActions({ post }: PostActionsProps) {
           whileTap={{ scale: 0.95 }}
           className={`flex items-center text-xs md:text-sm gap-1 rounded py-1 transition-colors ${
             likeExists
-              ? "text-blue-500"
-              : "text-default-600 hover:text-blue-500"
+              ? 'text-blue-500'
+              : 'text-default-600 hover:text-blue-500'
           }`}
           onClick={handleLike}
         >
@@ -143,8 +146,8 @@ export default function PostActions({ post }: PostActionsProps) {
           whileTap={{ scale: 0.95 }}
           className={`flex items-center text-xs md:text-sm gap-1 rounded py-1 transition-colors ${
             dislikeExists
-              ? "text-red-500"
-              : "text-default-600 hover:text-red-500"
+              ? 'text-red-500'
+              : 'text-default-600 hover:text-red-500'
           }`}
           onClick={handleDislike}
         >
@@ -167,14 +170,7 @@ export default function PostActions({ post }: PostActionsProps) {
         </motion.button>
 
         {/* Share Button */}
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          className="flex items-center text-xs md:text-sm text-default-600 hover:text-blue-500 gap-1 rounded py-1"
-        >
-          <RiShareForwardLine size={18} />
-          Share
-        </motion.button>
+        <PostShare url={currentUrl} title={post?.title} />
       </div>
     </div>
   );

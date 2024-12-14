@@ -2,7 +2,7 @@ import { Skeleton } from '@nextui-org/skeleton';
 
 export default function PostDetailsSkeleton() {
   return (
-    <div className="w-full md:w-[500px] xl:w-[600px] mx-auto bg-default-50 rounded-md p-2 md:p-6">
+    <div className="w-full w-full md:w-[550px] xl:w-[640px] mx-auto mx-auto bg-default-50 rounded-md p-2 md:p-6">
       {/* Post Header Skeleton */}
       <div className="flex justify-between items-center gap-2">
         <div className="flex items-center space-x-4">

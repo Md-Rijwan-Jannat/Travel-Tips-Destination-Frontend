@@ -130,7 +130,7 @@ export default function CreateGroupModal({
               </div>
 
               {/* Create Group Button */}
-              <div className="my-8">
+              <div className="my-8 flex justify-end">
                 <Button className="primary-button" onClick={createGroupHandler}>
                   Create group
                 </Button>

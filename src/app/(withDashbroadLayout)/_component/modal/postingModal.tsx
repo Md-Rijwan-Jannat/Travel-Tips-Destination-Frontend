@@ -162,7 +162,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
   return (
     <>
       {isLoading && <GlassLoader />}
-      <div className="flex items-center gap-4 w-full md:w-[490px] xl:w-[590px] mx-auto">
+      <div className="flex items-center gap-4 w-full">
         <div className="flex items-center gap-2">
           <Avatar
             as={Link}
@@ -188,7 +188,7 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
           </div>
         </div>
         <input
-          className="cursor-pointer w-full px-3 py-2 border border-default-100 rounded-full text-xs focus:border-default-300 focus:outline-none"
+          className="cursor-pointer w-full px-3 py-2 border border-default-300 rounded-full text-xs focus:border-default-300 focus:outline-none"
           placeholder={`${userInfo?.role === 'USER' ? `What's on your mind, ${userInfo?.name}?` : `Admin announcement`}`}
           type="text"
           onClick={onOpen}
