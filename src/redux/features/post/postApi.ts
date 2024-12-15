@@ -1,24 +1,24 @@
-import { baseApi } from "../../api/baseApi";
+import { baseApi } from '../../api/baseApi';
 
 export const PostApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Create post
     createPost: builder.mutation({
       query: (postData) => ({
-        url: "/posts",
-        method: "POST",
+        url: '/posts',
+        method: 'POST',
         body: postData,
       }),
-      invalidatesTags: ["posts"],
+      invalidatesTags: ['posts'],
     }),
     // Update post
     updatePost: builder.mutation({
       query: (args) => ({
         url: `/posts/${args.id}`,
-        method: "PATCH",
+        method: 'PATCH',
         body: args.data,
       }),
-      invalidatesTags: ["posts"],
+      invalidatesTags: ['posts'],
     }),
 
     // Get all premium users query
@@ -34,101 +34,101 @@ export const PostApi = baseApi.injectEndpoints({
 
         return {
           url: `/posts`,
-          method: "GET",
+          method: 'GET',
           params,
         };
       },
-      providesTags: ["posts"],
+      providesTags: ['posts'],
     }),
 
     // Get all post
     getSinglePost: builder.query({
       query: (postId) => ({
         url: `/posts/${postId}`,
-        method: "GET",
+        method: 'GET',
       }),
-      providesTags: ["posts", "comments"],
+      providesTags: ['posts', 'comments'],
     }),
     // Get my all post
     getMyPosts: builder.query({
       query: () => ({
-        url: "/profile/my-posts",
-        method: "GET",
+        url: '/profile/my-posts',
+        method: 'GET',
       }),
-      providesTags: ["posts", "comments", "users"],
+      providesTags: ['posts', 'comments', 'users'],
     }),
     // Get my all premium post
     getMyPremiumPosts: builder.query({
       query: () => ({
-        url: "/profile/my-premium-posts",
-        method: "GET",
+        url: '/profile/my-premium-posts',
+        method: 'GET',
       }),
-      providesTags: ["posts"],
+      providesTags: ['posts'],
     }),
     // Soft Delete post
     softDeletePost: builder.mutation({
       query: (postId) => ({
         url: `/posts/${postId}`,
-        method: "DELETE",
+        method: 'DELETE',
       }),
-      invalidatesTags: ["posts"],
+      invalidatesTags: ['posts'],
     }),
 
     reportPost: builder.mutation({
       query: ({ postId, reason }) => ({
         url: `/posts/report/${postId}`,
-        method: "PUT",
+        method: 'PUT',
         body: { reason },
       }),
-      invalidatesTags: ["users", "posts", "comments", "reacts"],
+      invalidatesTags: ['users', 'posts', 'comments', 'reacts'],
     }),
     like: builder.mutation({
       query: (userId) => {
         return {
           url: `/react/post/${userId}/like`,
-          method: "POST",
+          method: 'POST',
         };
       },
-      invalidatesTags: ["users", "posts", "comments", "reacts"],
+      invalidatesTags: ['users', 'posts', 'comments', 'reacts'],
     }),
 
     getAllReacts: builder.query({
       query: () => {
         return {
           url: `/react`,
-          method: "GET",
+          method: 'GET',
         };
       },
-      providesTags: ["users", "posts", "comments", "reacts"],
+      providesTags: ['users', 'posts', 'comments', 'reacts'],
     }),
     unLike: builder.mutation({
       query: (userId) => {
         return {
           url: `/react/post/${userId}/unlike`,
-          method: "POST",
+          method: 'POST',
         };
       },
-      invalidatesTags: ["users", "posts", "comments", "reacts"],
+      invalidatesTags: ['users', 'posts', 'comments', 'reacts'],
     }),
 
     disLike: builder.mutation({
       query: (userId) => {
         return {
           url: `/react/post/${userId}/dislike`,
-          method: "POST",
+          method: 'POST',
         };
       },
-      invalidatesTags: ["users", "posts", "comments", "reacts"],
+      invalidatesTags: ['users', 'posts', 'comments', 'reacts'],
     }),
 
     unDislike: builder.mutation({
       query: (userId) => {
         return {
           url: `/react/post/${userId}/undislike`,
-          method: "POST",
+          method: 'POST',
         };
       },
-      invalidatesTags: ["users", "posts", "comments", "reacts"],
+      invalidatesTags: ['users', 'posts', 'comments', 'reacts'],
     }),
   }),
 });

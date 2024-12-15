@@ -13,6 +13,7 @@ import { MdLockReset } from 'react-icons/md';
 import DropdownFilter from './postFilter/dropdownFilter';
 import PremiumPostsMarquee from '../dashboardSuggessions/premiumPostsMarquee';
 import PostDetailsSkeleton from '@/src/components/ui/skeleton/postDetailsSkeleton';
+import Stories from '../story';
 
 export default function Post() {
   const [page, setPage] = useState(1);
@@ -95,6 +96,9 @@ export default function Post() {
       <div>
         <PostModal userInfo={userInfo as TUser | undefined} />
       </div>
+
+      {/* Story List */}
+      <Stories />
 
       {/* Category Buttons */}
       <div className="mt-4 mb-6 flex flex-wrap gap-3">

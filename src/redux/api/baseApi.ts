@@ -32,6 +32,7 @@ export const baseApi = createApi({
     'payment',
     'messages',
     'chats',
+    'stories',
   ],
   endpoints: (builder) => ({}),
 });
