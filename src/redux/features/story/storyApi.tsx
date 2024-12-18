@@ -1,4 +1,4 @@
-import { ReactionType, TStory } from '@/src/types';
+import { ReactionType, TAllUserStory, TStory } from '@/src/types';
 import { baseApi } from '../../api/baseApi';
 
 interface UpdateStoryArgs {
@@ -28,7 +28,15 @@ export const StoryApi = baseApi.injectEndpoints({
         url: '/stories',
         method: 'GET',
       }),
-      providesTags: ['stories'],
+      providesTags: (result) =>
+        result?.data
+          ? [
+              ...result.data.map(
+                ({ _id }: any) => ({ type: 'stories', _id }) as const
+              ),
+              { type: 'stories', _id: 'LIST' },
+            ]
+          : [{ type: 'stories', _id: 'LIST' }],
     }),
 
     // Get user stories
@@ -37,7 +45,15 @@ export const StoryApi = baseApi.injectEndpoints({
         url: '/stories/all-users-stories',
         method: 'GET',
       }),
-      providesTags: ['stories'],
+      providesTags: (result) =>
+        result?.data
+          ? [
+              ...result.data.map(
+                ({ _id }: any) => ({ type: 'stories', _id }) as const
+              ),
+              { type: 'stories', _id: 'LIST' },
+            ]
+          : [{ type: 'stories', _id: 'LIST' }],
     }),
 
     // Get single story
@@ -84,7 +100,10 @@ export const StoryApi = baseApi.injectEndpoints({
         url: `/stories/${storyId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['stories'],
+      invalidatesTags: (result, error, storyId) => [
+        { type: 'stories', _id: storyId },
+        { type: 'stories', _id: 'LIST' },
+      ],
     }),
   }),
 });

@@ -9,7 +9,7 @@ import WhyWeAre from './_component/module/home/whyWeAre';
 
 export default function Home() {
   return (
-    <div className="px-2 md:px-6 max-w-7xl mx-auto">
+    <div className="px-2 md:px-6 max-w-7xl mx-auto overflow-x-hidden">
       <LandingBanner />
       {/* <WhyWeAre /> */}
       <FeaturesSection />
@@ -17,7 +17,7 @@ export default function Home() {
       <EssentialAppsSlider />
       <SocialMediaSolutionSection />
       <SubscriptionSection />
-      <Testimonials />
+      {/* <Testimonials /> */}
     </div>
   );
 }

@@ -33,7 +33,7 @@ export default function PostHeader({ post }: PostHeaderProps) {
                 <GoVerified className="text-primaryColor" />
               )}
             </Link>
-            <div className="-mt-3">
+            <div className="-mt-2 mx-2">
               <FollowForPost userId={post?.user?._id} />
             </div>
           </div>

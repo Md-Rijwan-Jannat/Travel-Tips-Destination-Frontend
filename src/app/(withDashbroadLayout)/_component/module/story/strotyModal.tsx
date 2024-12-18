@@ -1,8 +1,6 @@
 'use client';
 
-import { ReactionType, TAllUserStory, TStory } from '@/src/types';
-import { Avatar } from '@nextui-org/avatar';
-import { Button } from '@nextui-org/button';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Modal,
   ModalContent,
@@ -11,10 +9,8 @@ import {
   ModalHeader,
   useDisclosure,
 } from '@nextui-org/modal';
-import {
-  useAddReactionMutation,
-  useDeleteStoryMutation,
-} from '@/src/redux/features/story/storyApi';
+import { Avatar } from '@nextui-org/avatar';
+import { Button } from '@nextui-org/button';
 import {
   ThumbsUp,
   Heart,
@@ -22,22 +18,20 @@ import {
   Frown,
   Angry,
   Trash2,
-  Eye,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { useUser } from '@/src/hooks/useUser';
+import {
+  useAddReactionMutation,
+  useDeleteStoryMutation,
+} from '@/src/redux/features/story/storyApi';
 import Link from 'next/link';
+import Image from 'next/image';
 import { GoVerified } from 'react-icons/go';
 import FollowForPost from '../userProfile/followForPost';
-import Image from 'next/image';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import { Pagination } from 'swiper/modules';
-import {
-  differenceInSeconds,
-  formatDuration,
-  intervalToDuration,
-} from 'date-fns';
+import { ReactionType, TAllUserStory } from '@/src/types';
+import { StoryProgress } from './storyProgress';
 
 interface StoryModalProps {
   story: TAllUserStory | null;
@@ -45,7 +39,9 @@ interface StoryModalProps {
   onOpenChange: () => void;
 }
 
-export function StoryModal({ story, isOpen, onOpenChange }: StoryModalProps) {
+const STORY_DURATION = 5000; // 5 seconds per story
+
+export function StoryModal({ story, onOpenChange, isOpen }: StoryModalProps) {
   const { userInfo } = useUser();
   const [addReactionFn] = useAddReactionMutation();
   const [deleteStoryFn] = useDeleteStoryMutation();
@@ -55,44 +51,131 @@ export function StoryModal({ story, isOpen, onOpenChange }: StoryModalProps) {
     onClose: onDeleteModalClose,
   } = useDisclosure();
 
+  const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const progressInterval = useRef<NodeJS.Timeout | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const startProgressTimer = useCallback(() => {
+    if (progressInterval.current) {
+      clearInterval(progressInterval.current);
+    }
+    progressInterval.current = setInterval(() => {
+      setProgress((prevProgress) => {
+        if (prevProgress >= 100) {
+          if (!isTransitioning) {
+            setIsTransitioning(true);
+            goToNextStory();
+          }
+          return 100;
+        }
+        return prevProgress + (100 / STORY_DURATION) * 100;
+      });
+    }, 100);
+  }, [isTransitioning]);
+
+  const stopProgressTimer = useCallback(() => {
+    if (progressInterval.current) {
+      clearInterval(progressInterval.current);
+    }
+  }, []);
+
+  const goToNextStory = useCallback(() => {
+    if (story && currentStoryIndex < story.stories.length - 1) {
+      setCurrentStoryIndex((prev) => prev + 1);
+      setProgress(0);
+      setIsTransitioning(false);
+      startProgressTimer();
+    } else {
+      onOpenChange();
+    }
+  }, [story, currentStoryIndex, onOpenChange, startProgressTimer]);
+
+  const goToPreviousStory = useCallback(() => {
+    if (currentStoryIndex > 0) {
+      setCurrentStoryIndex((prev) => prev - 1);
+      setProgress(0);
+      setIsTransitioning(false);
+      startProgressTimer();
+    }
+  }, [currentStoryIndex, startProgressTimer]);
+
+  useEffect(() => {
+    if (isOpen && story) {
+      setCurrentStoryIndex(0);
+      setProgress(0);
+      setIsTransitioning(false);
+      startProgressTimer();
+    } else {
+      stopProgressTimer();
+    }
+
+    return () => {
+      stopProgressTimer();
+    };
+  }, [isOpen, story, startProgressTimer, stopProgressTimer]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        goToPreviousStory();
+      } else if (e.key === 'ArrowRight') {
+        goToNextStory();
+      } else if (e.key === 'Escape') {
+        onOpenChange();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [goToPreviousStory, goToNextStory, onOpenChange]);
+
   if (!story) return null;
 
-  const reactionIcons: Record<ReactionType, JSX.Element> = {
-    like: <ThumbsUp size={20} />,
-    love: <Heart size={20} />,
-    laugh: <Laugh size={20} />,
-    sad: <Frown size={20} />,
-    angry: <Angry size={20} />,
-  };
-
   const handleReaction = async (reaction: ReactionType) => {
-    await addReactionFn({ storyId: story.stories[0]._id, reaction });
+    const currentStory = story.stories[currentStoryIndex];
+    if (!currentStory || !currentStory.reactions) {
+      return;
+    }
+
+    try {
+      await addReactionFn({
+        storyId: currentStory._id,
+        reaction,
+      }).unwrap();
+    } catch (error) {
+      console.error('Error adding reaction:', error);
+    }
   };
 
   const handleDelete = async () => {
-    await deleteStoryFn(story.stories[0]._id);
-    onDeleteModalClose();
-    onOpenChange();
+    try {
+      const currentStoryId = story.stories[currentStoryIndex]._id;
+      await deleteStoryFn(currentStoryId).unwrap();
+      onDeleteModalClose();
+      onOpenChange();
+    } catch (error) {
+      console.error('Error deleting story:', error);
+    }
+  };
+
+  const formatTimeAgo = (date: string): string => {
+    const now = new Date();
+    const storyDate = new Date(date);
+    const diffInSeconds = Math.floor(
+      (now.getTime() - storyDate.getTime()) / 1000
+    );
+
+    if (diffInSeconds < 60) return 'Just now'; // less than 1 minute
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`; // less than 1 hour
+    if (diffInSeconds < 86400)
+      return `${Math.floor(diffInSeconds / 3600)}h ago`; // less than 1 day
+    if (diffInSeconds < 172800) return '1d ago'; // less than 2 days
+    return `${Math.floor(diffInSeconds / 86400)}d ago`; // more than 2 days
   };
 
   const isOwnStory = userInfo?._id === story.user._id;
-
-  console.log(story, userInfo?._id);
-
-  const formatTimeRemaining = (expiresAt: string): string => {
-    const currentTime = new Date();
-    const expiresTime = new Date(expiresAt);
-
-    const diffInSeconds = differenceInSeconds(expiresTime, currentTime);
-
-    if (diffInSeconds <= 0) return 'Expired';
-
-    const duration = intervalToDuration({
-      start: 0,
-      end: diffInSeconds * 1000,
-    });
-    return formatDuration(duration, { format: ['hours', 'minutes'] });
-  };
+  const currentStory = story.stories[currentStoryIndex];
 
   return (
     <>
@@ -100,124 +183,176 @@ export function StoryModal({ story, isOpen, onOpenChange }: StoryModalProps) {
         placement="center"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        size="2xl"
+        size="xl"
+        hideCloseButton
       >
         <ModalContent>
-          <ModalBody className="p-0">
-            <ModalHeader className="flex justify-between mt-5">
-              <div className="flex items-center space-x-2">
-                <Link href={`/profile/${story.stories[0]?.user?._id}`}>
-                  <Avatar
-                    className="w-12 h-12 rounded-full object-cover text-[22px] border-2 border-pink-500"
-                    name={story.stories[0]?.user?.name?.charAt(0).toUpperCase()}
-                    src={story?.user?.image || undefined}
-                  />
-                </Link>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <Link
-                      className="font-semibold text-default-700 text-lg flex items-center gap-1 whitespace-nowrap"
-                      href={`/profile/${story?.user?._id}`}
-                    >
-                      {story?.user?.name}{' '}
-                      {story?.user?.verified && (
-                        <GoVerified className="text-pink-500" />
-                      )}
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col p-0">
+                <StoryProgress
+                  totalStories={story.stories.length}
+                  currentStory={currentStoryIndex}
+                  progress={progress}
+                />
+                <div className="flex justify-between items-center p-4">
+                  <div className="flex items-center space-x-2">
+                    <Link href={`/profile/${story?.user?._id}`}>
+                      <Avatar
+                        className="w-10 h-10 border-2 border-pink-500"
+                        name={story.user?.name?.[0]?.toUpperCase()}
+                        src={story.user?.image || undefined}
+                      />
                     </Link>
-                    {!isOwnStory && <FollowForPost userId={story?.user?._id} />}
+                    <div>
+                      <div className="flex items-center gap-2 w-full">
+                        <Link
+                          className="text-sm font-semibold flex items-center gap-1 whitespace-nowrap"
+                          href={`/profile/${story?.user?._id}`}
+                        >
+                          {story.user.name}
+                          {story.user.verified && (
+                            <GoVerified className="text-pink-500" size={14} />
+                          )}
+                        </Link>
+                        {!isOwnStory && (
+                          <div className="-mt-3">
+                            {' '}
+                            <FollowForPost userId={story.user._id} />
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-xs text-default-500">
+                        {formatTimeAgo(currentStory?.createdAt)}
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-sm text-default-500">
-                    {formatTimeRemaining(story.stories[0]?.expiresAt)} ago
-                  </p>
+                  {isOwnStory && (
+                    <Button
+                      isIconOnly
+                      color="danger"
+                      variant="light"
+                      size="sm"
+                      onClick={onDeleteModalOpen}
+                    >
+                      <Trash2 size={18} />
+                    </Button>
+                  )}
                 </div>
-              </div>
-              {isOwnStory && (
+              </ModalHeader>
+              <ModalBody className="p-0 relative">
+                {currentStory?.media?.endsWith('.mp4') ||
+                currentStory?.media?.endsWith('.webm') ||
+                currentStory?.media?.endsWith('.ogg') ? (
+                  <video
+                    key={currentStory._id}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    src={currentStory.media}
+                    className="w-full h-[500px] object-cover"
+                  />
+                ) : (
+                  <Image
+                    key={currentStory._id}
+                    width={700}
+                    height={700}
+                    src={currentStory.media}
+                    alt={story.user.name}
+                    className="w-full h-[500px] object-cover"
+                  />
+                )}
                 <Button
                   isIconOnly
-                  color="danger"
-                  variant="flat"
-                  aria-label="Delete"
-                  onClick={onDeleteModalOpen}
-                  className="bg-default-700/20 hover:bg-red-500/50"
+                  variant="light"
+                  className="absolute top-1/2 left-2 -translate-y-1/2 bg-default-200 text-pink-500"
+                  onClick={goToPreviousStory}
+                  disabled={currentStoryIndex === 0}
+                  aria-label="Previous story"
                 >
-                  <Trash2 size={20} />
+                  <ChevronLeft size={24} />
                 </Button>
-              )}
-            </ModalHeader>
-            <div>
-              <Swiper
-                modules={[Pagination]}
-                pagination={{ clickable: true }}
-                spaceBetween={10}
-                slidesPerView={1}
-              >
-                {story.stories.map((singleStory) => (
-                  <SwiperSlide key={singleStory._id}>
-                    <Image
-                      width={700}
-                      height={700}
-                      src={singleStory.media}
-                      alt={story.user.name}
-                      className="w-full h-[400px] object-cover"
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
-            <ModalFooter className="flex justify-center">
-              <div className="flex justify-center space-x-4">
+                <Button
+                  isIconOnly
+                  variant="light"
+                  className="absolute top-1/2 right-2 -translate-y-1/2 bg-default-200 text-pink-500"
+                  onClick={goToNextStory}
+                  disabled={currentStoryIndex === story.stories.length - 1}
+                  aria-label="Next story"
+                >
+                  <ChevronRight size={24} />
+                </Button>
+              </ModalBody>
+              <ModalFooter className="flex justify-start">
                 {isOwnStory ? (
-                  <p className="text-pink-500 text-lg font-semibold text-center">
-                    Total Reactions: {story.stories[0].reactions?.length || 0}
+                  <p className="text-start">
+                    {' '}
+                    {currentStory?.reactions?.length || 0}{' '}
+                    <span className="text-pink-500">Reactions</span>
                   </p>
                 ) : (
-                  <>
-                    {Object.entries(reactionIcons).map(([key, icon]) => (
-                      <Button
-                        key={key}
-                        isIconOnly
-                        color="default"
-                        variant="flat"
-                        aria-label={key}
-                        className="text-pink-500 bg-transparent"
-                        onClick={() => handleReaction(key as ReactionType)}
-                      >
-                        {icon}
-                        <span className="ml-1 text-sm">
-                          {story.stories[0].reactions?.find(
-                            (r) => r.reaction === key
-                          )?.count || 0}
-                        </span>
-                      </Button>
-                    ))}
-                  </>
+                  <div className="flex gap-5">
+                    {Object.entries({
+                      like: <ThumbsUp size={20} />,
+                      love: <Heart size={20} />,
+                      laugh: <Laugh size={20} />,
+                      sad: <Frown size={20} />,
+                      angry: <Angry size={20} />,
+                    }).map(([key, icon]) => {
+                      const isActive = currentStory?.reactions?.some(
+                        (r) => r.type === key
+                      );
+
+                      return (
+                        <Button
+                          key={key}
+                          isIconOnly
+                          color="default"
+                          variant="light"
+                          size="sm"
+                          className={`${isActive ? 'text-pink-500' : ''}`} // Change the color based on whether it's active
+                          onClick={() => handleReaction(key as ReactionType)}
+                        >
+                          {icon}
+                          <span className="ml-1 text-xs">
+                            {currentStory?.reactions?.filter(
+                              (r) => r.type === key
+                            ).length || 0}
+                          </span>
+                        </Button>
+                      );
+                    })}
+                  </div>
                 )}
-              </div>
-            </ModalFooter>
-          </ModalBody>
+              </ModalFooter>
+            </>
+          )}
         </ModalContent>
       </Modal>
 
-      <Modal isOpen={isDeleteModalOpen} onOpenChange={onDeleteModalClose}>
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onOpenChange={onDeleteModalClose}
+        size="sm"
+      >
         <ModalContent>
-          <ModalHeader className="flex flex-col gap-1">
-            Confirm Deletion
-          </ModalHeader>
-          <ModalBody>
-            <p>
-              Are you sure you want to delete this story? This action cannot be
-              undone.
-            </p>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              className="delete-button"
-              color="danger"
-              onPress={handleDelete}
-            >
-              Delete
-            </Button>
-          </ModalFooter>
+          {(onClose) => (
+            <>
+              <ModalHeader>Confirm Deletion</ModalHeader>
+              <ModalBody>
+                <p>
+                  Are you sure you want to delete this story? This action cannot
+                  be undone.
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" onClick={handleDelete}>
+                  Delete
+                </Button>
+              </ModalFooter>
+            </>
+          )}
         </ModalContent>
       </Modal>
     </>

@@ -118,6 +118,13 @@ const NavDropdown: FC = () => {
             >
               Create Group
             </DropdownItem>
+            <DropdownItem
+              href="/settings"
+              className={dropdownItemClass}
+              startContent={<Settings className="w-4 h-4" />}
+            >
+              Setting
+            </DropdownItem>
 
             <DropdownItem
               onClick={handleLogout}

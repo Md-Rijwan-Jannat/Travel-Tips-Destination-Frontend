@@ -7,7 +7,7 @@ import { IoIosCheckmarkCircle } from 'react-icons/io';
 import { TbArrowAutofitContentFilled, TbPremiumRights } from 'react-icons/tb';
 import { RiSecurePaymentFill } from 'react-icons/ri';
 import { FaFacebookMessenger } from 'react-icons/fa6';
-import { MdAddHome, MdAnalytics, MdDynamicFeed } from 'react-icons/md';
+import { MdAnalytics, MdDynamicFeed } from 'react-icons/md';
 import { useAppSelector } from '@/src/redux/hook';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/src/hooks/useUser';

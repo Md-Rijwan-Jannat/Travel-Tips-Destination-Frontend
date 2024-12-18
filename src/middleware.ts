@@ -15,8 +15,21 @@ type TRoleProps = keyof typeof RoleBasedRoutes;
 
 // Role-based routing: USER and ADMIN
 const RoleBasedRoutes = {
-  USER: ['/profile', 'add-connections', /^\/profile\/[a-zA-Z0-9]+$/],
-  ADMIN: ['/admin-dashboard', 'add-connections'],
+  USER: [
+    '/profile',
+    '/dd-connections',
+    '/news-feed/posts/:postId*',
+    '/profile/:profileId*',
+    '/settings',
+  ],
+  ADMIN: [
+    '/admin-dashboard',
+    '/admin-dashboard/:page*',
+    '/news-feed/posts/:postId*',
+    '/profile/:profileId*',
+    '/settings',
+    '/add-connections',
+  ],
 };
 
 const AuthPathname = ['/login', '/register'];
@@ -86,6 +99,7 @@ export const config = {
     '/admin-dashboard/:page*',
     '/news-feed/posts/:postId*',
     '/profile/:profileId*',
+    '/settings',
     '/login',
     '/register',
   ],

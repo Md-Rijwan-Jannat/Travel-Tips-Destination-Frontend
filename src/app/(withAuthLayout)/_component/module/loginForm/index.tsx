@@ -24,6 +24,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import BackButton from '../../ui/backButton';
 import DemoCredential from '../../ui/demoCredential';
 import { Button } from '@nextui-org/button';
+import { useUser } from '@/src/hooks/useUser';
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 interface TDecodedData {
@@ -44,6 +45,7 @@ export default function LoginForm() {
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect');
   const router = useRouter();
+  const { userInfo } = useUser();
 
   // Form handling
   const {
@@ -87,7 +89,13 @@ export default function LoginForm() {
         // Set token in cookies
         Cookies.set('accessToken', res?.data?.data?.accessToken);
 
-        router.push(redirect ? redirect : '/news-feed/posts');
+        router.push(
+          redirect
+            ? redirect
+            : userInfo?.role === 'USER'
+              ? '/news-feed/posts'
+              : 'admin-dashboard/analytics'
+        );
         // Show success toast
         toast.success('Login successful');
 
@@ -119,7 +127,7 @@ export default function LoginForm() {
           <BackButton />
           <DemoCredential onDemoClick={setDemoCredentials} />
         </div>
-        <div className="flex flex-col-reverse md:flex-row bg-default-100 rounded-lg w-full overflow-hidden my-5">
+        <div className="flex flex-col md:flex-row bg-default-100 rounded-lg w-full overflow-hidden my-5">
           {/* Left side - Form Section */}
           <LoginRightContent />
 
@@ -197,7 +205,7 @@ export default function LoginForm() {
                 <div className="flex my-1 items-center justify-end text-xs relative">
                   <Link
                     className="text-blue-500 hover:underline"
-                    href={'/forgot-password'}
+                    href={'/forget-password'}
                   >
                     Forgot password
                   </Link>

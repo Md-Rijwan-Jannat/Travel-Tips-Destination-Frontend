@@ -26,7 +26,6 @@ interface ShareButtonProps {
 }
 
 const PostShare: React.FC<ShareButtonProps> = ({ url, title }) => {
-  console.log(url, title);
   return (
     <Dropdown>
       <DropdownTrigger>

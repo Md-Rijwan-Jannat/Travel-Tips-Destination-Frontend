@@ -7,7 +7,6 @@ import {
   useGetSingleUserQuery,
   useUnFollowMutation,
 } from '@/src/redux/features/user/userApi';
-import { Button } from '@nextui-org/button';
 import { useUser } from '@/src/hooks/useUser';
 
 interface TFollowProps {
@@ -41,31 +40,27 @@ export default function FollowForPost({ userId }: TFollowProps) {
 
   return (
     <motion.div
-      className="flex gap-4 mt-4 justify-center w-full"
+      className="flex gap-4 mt-3 justify-center w-full"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3, duration: 0.4 }}
     >
       {exists ? (
-        <Button
-          className="bg-transparent text-pink-500"
-          radius="full"
-          size="sm"
+        <button
+          className="bg-transparent text-pink-500 text-sm mx-2"
           onClick={unFollowHandler}
           disabled={unFollowIsLoading}
         >
           {unFollowIsLoading ? 'Unfollowing...' : 'Unfollow'}
-        </Button>
+        </button>
       ) : (
-        <Button
-          className="bg-transparent text-pink-500"
-          radius="full"
-          size="sm"
+        <button
+          className="bg-transparent text-pink-500 text-sm"
           onClick={followHandler}
           disabled={followIsLoading}
         >
           {followIsLoading ? 'Following...' : 'Follow'}
-        </Button>
+        </button>
       )}
     </motion.div>
   );

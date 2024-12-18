@@ -18,6 +18,7 @@ import { useCreateStoryMutation } from '@/src/redux/features/story/storyApi';
 export function CreateStoryModal() {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const [createStoryFn, { isLoading }] = useCreateStoryMutation();
+  const [uploading, setUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -44,12 +45,14 @@ export function CreateStoryModal() {
     if (selectedFile) {
       try {
         setUploadProgress(0);
+        setUploading(true);
         const cloudinaryUrl = await uploadToCloudinary(selectedFile);
         setUploadProgress(100);
 
         await createStoryFn({ media: cloudinaryUrl });
         onClose();
         handleRemoveFile();
+        setUploading(false);
       } catch (error) {
         console.error('Error creating story:', error);
         setUploadProgress(0);
@@ -62,6 +65,7 @@ export function CreateStoryModal() {
       <Button
         onPress={onOpen}
         isIconOnly
+        size="sm"
         radius="full"
         startContent={<PlusIcon className="size-5 text-white" />}
         className="-mt-4 size-8 rounded-full flex items-center justify-center bg-pink-500 border-2 border-secondary-50"
@@ -85,14 +89,22 @@ export function CreateStoryModal() {
                         alt="Preview"
                         width={600}
                         height={600}
-                        className="w-full h-[60vh] object-cover rounded-lg"
+                        className="w-full h-[50vh] object-cover rounded-lg"
                       />
                     ) : (
                       <video
                         src={previewUrl}
-                        className="w-full h-[60vh] object-cover rounded-lg"
+                        className="w-full h-[50vh] object-cover rounded-lg"
                         controls
-                      />
+                      >
+                        <track
+                          kind="captions"
+                          srcLang="en"
+                          src=""
+                          label="English captions"
+                          default
+                        />
+                      </video>
                     )}
                     <Button
                       isIconOnly
@@ -105,7 +117,7 @@ export function CreateStoryModal() {
                     </Button>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-[60vh] border-2 border-dashed border-default-300 rounded-lg">
+                  <div className="flex flex-col items-center justify-center h-[40vh] border-2 border-dashed border-default-300 rounded-lg">
                     <input
                       ref={fileInputRef}
                       type="file"
@@ -143,10 +155,13 @@ export function CreateStoryModal() {
                   className="primary-button"
                   onClick={handleCreateStory}
                   isLoading={
-                    isLoading || (uploadProgress > 0 && uploadProgress < 100)
+                    isLoading ||
+                    uploading ||
+                    (uploadProgress > 0 && uploadProgress < 100)
                   }
                   isDisabled={
                     !selectedFile ||
+                    uploading ||
                     isLoading ||
                     (uploadProgress > 0 && uploadProgress < 100)
                   }

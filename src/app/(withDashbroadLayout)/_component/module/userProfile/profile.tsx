@@ -2,7 +2,7 @@
 
 import { TUser } from '@/src/types';
 import React from 'react';
-import { GoVerified } from 'react-icons/go';
+import { GoPencil, GoVerified } from 'react-icons/go';
 import { Avatar } from '@nextui-org/avatar';
 import { Divider } from '@nextui-org/divider';
 import { motion } from 'framer-motion';
@@ -12,6 +12,8 @@ import { useUser } from '@/src/hooks/useUser';
 import Follow from './follow';
 import PostModal from '../../modal/postingModal';
 import VerifiedForPayment from './VerifiedForPayment.tsx';
+import Link from 'next/link';
+import { Button } from '@nextui-org/button';
 
 interface TUserProps {
   user: TUser | undefined;
@@ -44,15 +46,16 @@ export default function Profile({ user }: TUserProps) {
       {/* Profile Section */}
       <div className="flex flex-col items-center relative">
         {currentUser?.email === email && (
-          <div className="absolute right-2 top-0">
-            <UpdateNameImageModal
-              defaultImage={image}
-              defaultName={name}
-              bio={bio}
-              country={country}
-              address={address}
-              userId={_id}
-            />
+          <div className="absolute md:top-2 md:right-2">
+            <Button
+              as={Link}
+              href={'/settings'}
+              size="sm"
+              radius="full"
+              isIconOnly
+              className="hover:bg-default-50 p-2 rounded-full bg-default-100 hover:text-pink-500 transition-colors-opacity"
+              startContent={<GoPencil />}
+            ></Button>
           </div>
         )}
 

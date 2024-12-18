@@ -32,20 +32,12 @@ const MenubarButton: React.FC<MenubarButtonProps> = ({
   const isActive = pathname === href;
 
   return (
-    <motion.div
-      onClick={onClick}
-      className={`${className}`}
-      initial="hidden"
-      animate="visible"
-      whileHover={{ scale: 1.05 }}
-      transition={{ duration: 0.3, delay }}
-      variants={itemVariants}
-    >
+    <motion.div onClick={onClick} className={`${className}`}>
       <Link
         className={`flex items-center justify-start gap-3 border border-default-200 rounded-md p-2 transition-colors-opacity duration-300 cursor-pointer ${
           isActive
-            ? 'bg-gradient-to-br from-pink-500 to-pink-400 text-white border-pink-500'
-            : 'bg-default-50 hover:bg-default-200' // Default styles
+            ? 'bg-gradient-to-br from-pink-500 to-pink-400 text-white border-pink-500 rounded-md'
+            : 'bg-default-50 hover:bg-default-200 rounded-md'
         }`}
         href={href ? href : '#'}
         title={title}

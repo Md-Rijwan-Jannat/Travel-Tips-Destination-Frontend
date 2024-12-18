@@ -8,39 +8,38 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import React from 'react';
 import GlassLoader from '@/src/components/shared/glassLoader';
-import { secondaryColor } from '@/src/styles/button';
-import { useForgotPasswordMutation } from '@/src/redux/features/auth/authApi';
+import { Button } from '@nextui-org/button';
+import { useResetLinkMutation } from '@/src/redux/features/auth/authApi';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
-import { Button } from '@nextui-org/button';
 
 // Define schema using Zod for validation
 const forgotPasswordSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
 });
 
-type ForgotPasswordFormInputs = z.infer<typeof forgotPasswordSchema>;
+type ResetLinkSendFormInputs = z.infer<typeof forgotPasswordSchema>;
 
-export default function ForgotPasswordForm() {
-  const [forgotPasswordFn, { isLoading: forgotPasswordIsLoading }] =
-    useForgotPasswordMutation();
+export default function ResetLinkSendForm() {
+  const [sendResetLink, { isLoading: forgotPasswordIsLoading }] =
+    useResetLinkMutation();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ForgotPasswordFormInputs>({
-    resolver: zodResolver(forgotPasswordSchema), // Apply validation with Zod
+  } = useForm<ResetLinkSendFormInputs>({
+    resolver: zodResolver(forgotPasswordSchema),
   });
 
-  const onSubmit = async (data: ForgotPasswordFormInputs) => {
+  const onSubmit = async (data: ResetLinkSendFormInputs) => {
     try {
-      const res = await forgotPasswordFn(data);
+      const res = await sendResetLink(data);
 
-      if (res?.data?.success) {
+      if ('data' in res && res.data.success) {
         toast.success('Password reset email sent. Please check your inbox.');
       } else {
-        const error = res?.error;
+        const error = res.error;
 
         if (error) {
           if ('data' in (error as FetchBaseQueryError)) {
@@ -61,13 +60,13 @@ export default function ForgotPasswordForm() {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error); // Updated to use console.error
       toast.error('An error occurred. Please try again.');
     }
   };
 
   return (
-    <div className=" w-full md:min-h-screen flex items-center justify-center max-w-7xl">
+    <div className="w-full md:min-h-screen flex items-center justify-center max-w-7xl">
       {forgotPasswordIsLoading && <GlassLoader />}
       <div className="flex max-w-xl mx-auto bg-default-100 rounded-lg shadow-lg w-full overflow-hidden my-5">
         <div className="w-full flex flex-col justify-center">

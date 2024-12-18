@@ -5,16 +5,17 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
+  ModalHeader,
 } from '@nextui-org/modal';
 import { toast } from 'sonner';
 import Image from 'next/image';
 import { Button } from '@nextui-org/button';
 import { useUpdateMyProfileMutation } from '@/src/redux/features/user/userApi';
-import { GoPencil } from 'react-icons/go';
 import { Input } from '@nextui-org/input';
 import { IoIosImages } from 'react-icons/io';
 import GlassLoader from '@/src/components/shared/glassLoader';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { FaUser } from 'react-icons/fa';
 
 interface CloudinaryResponse {
   secure_url: string;
@@ -57,7 +58,7 @@ export default function UpdateUserModal({
     setValue,
     watch,
     reset,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isDirty },
   } = useForm<FormInputs>({
     defaultValues: {
       name: defaultName,
@@ -75,8 +76,8 @@ export default function UpdateUserModal({
         name: defaultName,
         imageFile: null,
         bio,
-        country, // Keep the country value
-        address, // Keep the address value
+        country,
+        address,
       });
       setImage(defaultImage || '');
     }
@@ -151,6 +152,7 @@ export default function UpdateUserModal({
       if (res?.success) {
         toast.success('Profile updated successfully!');
         onOpenChange();
+        reset(updateData); // Reset form to updated values
       }
     } catch (error) {
       toast.error('Failed to update profile');
@@ -160,13 +162,12 @@ export default function UpdateUserModal({
   return (
     <>
       <Button
-        isIconOnly
-        size="sm"
-        radius="full"
-        className="bg-default-50 hover:bg-default-100"
-        startContent={<GoPencil size={18} />}
+        className="w-full primary-button"
         onPress={onOpen}
-      />
+        startContent={<FaUser />}
+      >
+        Edit Profile
+      </Button>
       <Modal
         size="md"
         placement="center"
@@ -176,10 +177,13 @@ export default function UpdateUserModal({
       >
         {(isLoading || isUploading) && <GlassLoader />}
         <ModalContent className="m-2">
+          <ModalHeader>
+            <h1 className="text-xl font-bold text-pink-500">Update Profile</h1>
+          </ModalHeader>
           <form onSubmit={handleSubmit(onSubmit)}>
             <ModalBody>
-              <div className="flex flex-col gap-4 mt-3">
-                <div className="flex items-center justify-center mt-3">
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center justify-center">
                   {image && (
                     <Image
                       src={image}
@@ -222,12 +226,16 @@ export default function UpdateUserModal({
                   className="bg-opacity-0"
                   placeholder="Enter your country"
                 />
-                <div className="mt-3">
-                  <label htmlFor="image">
+                <div className="">
+                  <label
+                    className="border border-default-100 border-dashed rounded-md flex items-center justify-center py-2 cursor-pointer w-full"
+                    htmlFor="image"
+                  >
                     <IoIosImages
-                      className="text-pink-500 cursor-pointer"
+                      className="text-pink-500 cursor-pointer mr-2"
                       size={32}
                     />
+                    Upload Photo
                   </label>
                   <input
                     className="hidden"
@@ -240,7 +248,11 @@ export default function UpdateUserModal({
               </div>
             </ModalBody>
             <ModalFooter className="flex items-center gap-8">
-              <Button className="primary-button" type="submit">
+              <Button
+                className="primary-button"
+                type="submit"
+                isDisabled={!isDirty}
+              >
                 Save
               </Button>
             </ModalFooter>

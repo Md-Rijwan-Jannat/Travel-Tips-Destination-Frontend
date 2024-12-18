@@ -40,7 +40,7 @@ const MessageCardList: React.FC = () => {
   }, [socket, dispatch]);
 
   return (
-    <div className="w-full w-full md:w-[550px] xl:w-[640px] mx-auto mx-auto">
+    <div className="w-full md:w-[550px] xl:w-[640px] mx-auto">
       <div className="p-0">
         <div className="flex items-center justify-between gap-3 mb-2 border-b border-default-200">
           <h3 className="p-4 text-lg font-semibold text-default-800">
@@ -61,19 +61,15 @@ const MessageCardList: React.FC = () => {
             <MessageCardSkeleton />
           ) : userChats && userChats.length > 0 ? (
             userChats.some((chat: TChat) => chat.latestMessage) ? (
-              userChats.map((chat: TChat) =>
-                chat.latestMessage ? (
-                  <MessageCard
-                    key={chat._id}
-                    chat={chat}
-                    newMessage={
-                      newMessage?.chat._id === chat?._id
-                        ? newMessage
-                        : undefined
-                    }
-                  />
-                ) : null
-              )
+              userChats.map((chat: TChat) => (
+                <MessageCard
+                  key={chat._id}
+                  chat={chat}
+                  newMessage={
+                    newMessage?.chat._id === chat?._id ? newMessage : undefined
+                  }
+                />
+              ))
             ) : (
               <Empty message="No chat available" />
             )

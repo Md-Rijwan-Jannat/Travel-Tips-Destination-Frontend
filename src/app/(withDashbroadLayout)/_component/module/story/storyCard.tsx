@@ -6,8 +6,8 @@ import { Card, CardBody } from '@nextui-org/card';
 import Image from 'next/image';
 import { useAddViewMutation } from '@/src/redux/features/story/storyApi';
 import { useDisclosure } from '@nextui-org/modal';
-import { StoryModal } from './strotyModal';
 import { Button } from '@nextui-org/button';
+import { StoryModal } from './strotyModal';
 
 interface StoryCardProps {
   story: TAllUserStory;
@@ -18,50 +18,44 @@ export function StoryCard({ story }: StoryCardProps) {
   const [addView] = useAddViewMutation();
 
   const handleClick = async () => {
-    const response = await addView({ storyId: story?.stories?.[0]._id });
+    await addView({ storyId: story?.stories?.[0]._id });
     onOpen();
-
-    console.log(response, 'story view response');
   };
 
   return (
     <>
       <Button
         onClick={handleClick}
-        id="story"
+        id={`story-${story?.stories?.[0]._id}`}
         className="hidden"
-        onPress={onOpen}
       >
         View
       </Button>
-      <label htmlFor="story">
-        {' '}
+      <label htmlFor={`story-${story?.stories?.[0]._id}`}>
         <Card className="w-28 h-48 cursor-pointer overflow-hidden border border-default-100">
           <CardBody className="p-0 relative">
             <Image
-              width={600}
-              height={600}
+              width={700}
+              height={700}
               src={story?.stories?.[0].media}
               alt={story?.user.name}
-              className="w-full h-full object-cover"
+              className="w-28 h-48 object-cover"
             />
-            <div className="absolute inset-0" />
-            <p className="absolute bottom-2 left-2 text-white text-xs font-semibold">
+            <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-black/30" />
+            <p className="absolute bottom-1 left-1 right-1 text-white text-[10px] font-semibold truncate">
               {story?.user?.name}
             </p>
           </CardBody>
           <Avatar
             name={story?.user?.name?.charAt(0).toUpperCase()}
             src={story?.user?.image || undefined}
-            className="absolute top-2 left-2 border-2 border-pink-500"
+            className="absolute top-1 left-1 border-2 border-pink-500"
             size="sm"
           />
         </Card>
       </label>
 
-      <div className="z-[99999]">
-        <StoryModal story={story} isOpen={isOpen} onOpenChange={onOpenChange} />
-      </div>
+      <StoryModal story={story} isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   );
 }

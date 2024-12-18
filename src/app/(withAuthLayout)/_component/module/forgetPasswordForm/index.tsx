@@ -9,15 +9,15 @@ import { toast } from 'sonner';
 import React from 'react';
 import GlassLoader from '@/src/components/shared/glassLoader';
 import { secondaryColor } from '@/src/styles/button';
-import { useResetPasswordMutation } from '@/src/redux/features/auth/authApi';
 import { resetPasswordSchema } from '@/src/schema/auth';
 import { Button } from '@nextui-org/button';
+import { useForgetPasswordMutation } from '@/src/redux/features/auth/authApi';
 
-type ResetPasswordFormInputs = z.infer<typeof resetPasswordSchema>;
+type TForgetPasswordFormInputs = z.infer<typeof resetPasswordSchema>;
 
-export default function ResetPasswordForm() {
-  const [resetPassword, { isLoading: resetPasswordIsLoading }] =
-    useResetPasswordMutation();
+export default function ForgetPasswordForm() {
+  const [forgetPasswordFn, { isLoading: forgetPasswordIsLoading }] =
+    useForgetPasswordMutation();
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get('email');
@@ -27,13 +27,13 @@ export default function ResetPasswordForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ResetPasswordFormInputs>({
+  } = useForm<TForgetPasswordFormInputs>({
     resolver: zodResolver(resetPasswordSchema),
   });
 
-  const onSubmit = async (data: ResetPasswordFormInputs) => {
+  const onSubmit = async (data: TForgetPasswordFormInputs) => {
     try {
-      const res = await resetPassword({
+      const res = await forgetPasswordFn({
         email: email,
         newPassword: data.password,
         token: resetToken,
@@ -53,7 +53,7 @@ export default function ResetPasswordForm() {
 
   return (
     <div className="w-full md:min-h-screen flex items-center justify-center max-w-7xl">
-      {resetPasswordIsLoading && <GlassLoader />}
+      {forgetPasswordIsLoading && <GlassLoader />}
       <div className="flex max-w-xl mx-auto bg-default-100 rounded-lg shadow-lg w-full overflow-hidden my-5">
         <div className="w-full flex flex-col justify-center">
           <div className="flex flex-col gap-6 p-2 md:p-16">

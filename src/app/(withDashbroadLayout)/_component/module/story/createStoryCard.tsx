@@ -10,7 +10,7 @@ export function CreateStoryCard() {
 
   return (
     <>
-      <Card className="w-28 h-48 cursor-pointer relative group hover:opacity-95 transition-opacity overflow-y-hidden">
+      <Card className="w-28 h-48 cursor-pointer relative group hover:opacity-95 transition-opacity overflow-y-hidden border border-default-100">
         <CardBody className="p-0 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-transparent z-10" />
           {userInfo?.image ? (
@@ -29,7 +29,7 @@ export function CreateStoryCard() {
             </div>
           )}
 
-          <div className="flex flex-col items-center justify-center mb-2 z-10 w-full">
+          <div className="flex flex-col items-center justify-center z-10 w-full bg-default-50 absolute bottom-0 pb-2">
             <CreateStoryModal />
             <p className="text-xs font-medium text-default-700 whitespace-nowrap">
               Create story
