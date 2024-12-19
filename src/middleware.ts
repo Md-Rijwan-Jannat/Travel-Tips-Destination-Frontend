@@ -43,8 +43,6 @@ const PublicRoutes = [
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const user = (await currentUser()) as TDecodeUser | undefined;
-
-  console.log('user=>>', user);
   const accessToken = cookies().get('accessToken');
 
   // Allow access to public routes for both roles

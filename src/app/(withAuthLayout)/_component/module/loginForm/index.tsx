@@ -205,7 +205,7 @@ export default function LoginForm() {
                 <div className="flex my-1 items-center justify-end text-xs relative">
                   <Link
                     className="text-blue-500 hover:underline"
-                    href={'/forget-password'}
+                    href={'/reset-link-send'}
                   >
                     Forgot password
                   </Link>

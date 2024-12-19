@@ -38,8 +38,6 @@ export default function PremiumPosts() {
     refetch,
   } = useGetAllPremiumPostsQuery(postParams);
 
-  console.log(myPremiumPostsData, 'myPremiumPostsData');
-
   const myPremiumPosts = myPremiumPostsData?.data as TPost[];
   const postsLength = posts.length;
   const totalPosts = myPremiumPostsData?.meta?.total || 0;

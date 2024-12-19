@@ -20,8 +20,6 @@ const MessageCard = ({
   const [createChatFn] = useCreateChatMutation();
   const { userInfo: user } = useUser();
 
-  console.log('newMessage', newMessage);
-
   const createChatHandler = async (userId: string | undefined) => {
     if (!userId) return;
     try {

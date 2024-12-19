@@ -6,8 +6,6 @@ export const PremiumPostApi = baseApi.injectEndpoints({
       query: (args) => {
         const params = new URLSearchParams();
 
-        console.log(args, params);
-
         if (args) {
           Object.entries(args).forEach(([name, value]) => {
             params.append(name, value as string);

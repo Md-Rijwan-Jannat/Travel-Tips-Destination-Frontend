@@ -37,7 +37,6 @@ export default function ChatContainer({ chatId }: { chatId: string }) {
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const lastTypingTime = useRef<number>(0); // Use ref to store last typing time
 
-  console.log('Massages: ', messages);
   // Fetch socket from context
   const socket = useSocket();
   const dispatch = useAppDispatch();
@@ -56,7 +55,6 @@ export default function ChatContainer({ chatId }: { chatId: string }) {
   } = useGetUserMessagesQuery(chatId);
   const selectedChat = selectedChatsData?.data;
   const userMessages = userMessagesData?.data;
-  console.log('userMessages: ', userMessagesData);
 
   const [createMessageFn] = useCreateMessageMutation();
 

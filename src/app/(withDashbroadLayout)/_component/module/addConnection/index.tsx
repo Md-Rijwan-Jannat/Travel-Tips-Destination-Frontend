@@ -22,7 +22,7 @@ const AddConnections: React.FC = () => {
   );
 
   const handleConnect = (userId: string) => {
-    console.log(`Connect with user ID: ${userId}`);
+    // console.log(`Connect with user ID: ${userId}`);
     // Implement connection logic here
   };
 
