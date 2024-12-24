@@ -77,6 +77,7 @@ export default function ReportModal({
                 className="primary-button"
                 type="submit"
                 onClick={handleReportSubmit}
+                disabled={!reason.trim()} // Disable when reason is empty
               >
                 Submit
               </Button>

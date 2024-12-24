@@ -1,4 +1,4 @@
-import Container from "@/src/components/shared/container";
+import Container from '@/src/components/shared/container';
 
 export default function AboutLayout({
   children,

@@ -1,12 +1,14 @@
+'use client';
+
 import React, {
   createContext,
   useContext,
   useState,
   ReactNode,
   useEffect,
-} from "react";
-import { useUser } from "../hooks/useUser";
-import { TUser, TChat, TNotification } from "../types";
+} from 'react';
+import { useUser } from '../hooks/useUser';
+import { TUser, TChat, TNotification } from '../types';
 
 // Define the type for the chat context
 interface ChatContextType {
@@ -62,7 +64,7 @@ export const useChat = (): ChatContextType => {
   const context = useContext(ChatContext);
 
   if (!context) {
-    throw new Error("useChat must be used within a ChatProvider");
+    throw new Error('useChat must be used within a ChatProvider');
   }
 
   return context;

@@ -6,6 +6,7 @@ import PostDropdown from '../postActions/postDropdown';
 import { GoVerified } from 'react-icons/go';
 import FollowForPost from '../../userProfile/followForPost';
 import { format, formatDistanceToNow } from 'date-fns';
+import { ActiveAvatar } from '@/src/app/(withCommonLayout)/_component/ui/navbar/activeAvatar';
 
 interface PostHeaderProps {
   post: TPost;
@@ -16,8 +17,9 @@ export default function PostHeader({ post }: PostHeaderProps) {
     <div className="flex justify-between items-center mb-3">
       <div className="flex items-center gap-3">
         <Link href={`/profile/${post?.user?._id}`}>
-          <Avatar
-            className="w-10 h-10 rounded-full object-cover text-[22px]"
+          <ActiveAvatar
+            className="cursor-pointer"
+            size="md"
             name={post?.user?.name?.charAt(0).toUpperCase()}
             src={post?.user?.image || undefined}
           />

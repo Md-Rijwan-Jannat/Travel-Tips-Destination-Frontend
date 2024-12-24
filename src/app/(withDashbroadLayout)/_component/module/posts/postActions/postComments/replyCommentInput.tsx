@@ -1,8 +1,8 @@
-import React from "react";
-import { Avatar } from "@nextui-org/avatar";
-import { IoSend } from "react-icons/io5";
-import { Button } from "@nextui-org/button";
-import { useUser } from "@/src/hooks/useUser";
+import React from 'react';
+import { Avatar } from '@nextui-org/avatar';
+import { IoSend } from 'react-icons/io5';
+import { Button } from '@nextui-org/button';
+import { useUser } from '@/src/hooks/useUser';
 
 interface ReplyCommentInputProps {
   value: string;
@@ -58,7 +58,7 @@ export default function ReplyCommentInput({
         <Button
           size="sm"
           color="default"
-          className="text-xs h-5 text-primaryColor"
+          className="text-[8px] h-4 px-2 bg-primaryColor text-white"
           onPress={onCancel}
         >
           Cancel

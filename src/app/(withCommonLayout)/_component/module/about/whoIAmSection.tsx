@@ -38,7 +38,7 @@ const WhoIAmSection: React.FC = () => {
       viewport={{ once: true, amount: 0.2 }}
       variants={containerVariants}
     >
-      <div className="container mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4">
         <motion.div
           className="flex flex-col lg:flex-row lg:items-center gap-6 bg-default-50 bg-opacity-80 p-6 rounded-lg shadow-lg"
           variants={containerVariants}

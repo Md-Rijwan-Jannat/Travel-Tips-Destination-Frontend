@@ -1,20 +1,21 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   useAddCommentsForPostsMutation,
   useGetCommentsForPostsQuery,
   useReplayCommentsForPostsMutation,
-} from "@/src/redux/features/post/commentApi";
-import { TComment } from "@/src/types";
-import "react-comments-section/dist/index.css";
-import CommentInput from "./commentInput";
-import ReplyCommentInput from "./replyCommentInput";
-import { Avatar } from "@nextui-org/avatar";
-import { GoVerified } from "react-icons/go";
-import CommentDropdown from "./commentDropdown";
-import { useUser } from "@/src/hooks/useUser";
-import Link from "next/link";
+} from '@/src/redux/features/post/commentApi';
+import { TComment } from '@/src/types';
+import 'react-comments-section/dist/index.css';
+import CommentInput from './commentInput';
+import ReplyCommentInput from './replyCommentInput';
+import { Avatar } from '@nextui-org/avatar';
+import { GoVerified } from 'react-icons/go';
+import CommentDropdown from './commentDropdown';
+import { useUser } from '@/src/hooks/useUser';
+import Link from 'next/link';
+import { ActiveAvatar } from '@/src/app/(withCommonLayout)/_component/ui/navbar/activeAvatar';
 
 // Component Props
 interface DetailsCommentCardProps {
@@ -63,7 +64,7 @@ const DetailsCommentCard: React.FC<DetailsCommentCardProps> = ({ postId }) => {
         userId: reply.user?._id,
         comId: reply._id,
         verified: reply?.user?.verified,
-        fullName: reply.user?.name || "Anonymous",
+        fullName: reply.user?.name || 'Anonymous',
         avatarUrl: reply.user?.image || undefined,
         text: reply.text,
       })),
@@ -75,8 +76,8 @@ const DetailsCommentCard: React.FC<DetailsCommentCardProps> = ({ postId }) => {
   const [replyComment] = useReplayCommentsForPostsMutation();
 
   // State management
-  const [newComment, setNewComment] = useState<string>("");
-  const [replyCommentText, setReplyCommentText] = useState<string>("");
+  const [newComment, setNewComment] = useState<string>('');
+  const [replyCommentText, setReplyCommentText] = useState<string>('');
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
 
   // New Comment Submission Handler
@@ -85,9 +86,9 @@ const DetailsCommentCard: React.FC<DetailsCommentCardProps> = ({ postId }) => {
       const commentData = { post: postId, text: newComment };
 
       await addComment(commentData);
-      setNewComment("");
+      setNewComment('');
     } catch (error) {
-      console.error("Error submitting new comment:", error);
+      console.error('Error submitting new comment:', error);
     }
   };
 
@@ -102,16 +103,16 @@ const DetailsCommentCard: React.FC<DetailsCommentCardProps> = ({ postId }) => {
       };
 
       await replyComment(replyData);
-      setReplyCommentText("");
+      setReplyCommentText('');
       setReplyingTo(null);
     } catch (error) {
-      console.error("Error submitting reply:", error);
+      console.error('Error submitting reply:', error);
     }
   };
 
   // Handle canceling reply action
   const handleReplyCancel = () => {
-    setReplyCommentText("");
+    setReplyCommentText('');
     setReplyingTo(null);
   };
 
@@ -122,15 +123,16 @@ const DetailsCommentCard: React.FC<DetailsCommentCardProps> = ({ postId }) => {
         <div key={comment.comId} className="space-y-2">
           <div className="flex items-start justify-between space-x-3">
             <div className="flex items-start space-x-3">
-              <Avatar
-                as={Link}
-                href={`/profile/${comment?.userId}`}
-                src={comment.avatarUrl}
-                name={comment.fullName.charAt(0).toUpperCase()}
-                alt={`${comment.fullName}'s avatar`}
-                size="sm"
-                className="cursor-pointer"
-              />
+              <Link href={`/profile/${comment?.userId}`}>
+                {' '}
+                <ActiveAvatar
+                  src={comment.avatarUrl}
+                  name={comment.fullName.charAt(0).toUpperCase()}
+                  alt={`${comment.fullName}'s avatar`}
+                  size="sm"
+                  className="cursor-pointer"
+                />
+              </Link>
               <div>
                 <Link
                   href={`/profile/${comment?.userId}`}
@@ -139,7 +141,7 @@ const DetailsCommentCard: React.FC<DetailsCommentCardProps> = ({ postId }) => {
                   {comment.fullName}
                   {comment?.verified! && (
                     <GoVerified className="text-primaryColor" />
-                  )}{" "}
+                  )}{' '}
                 </Link>
                 <div className="text-xs">{comment.text}</div>
 
@@ -175,20 +177,21 @@ const DetailsCommentCard: React.FC<DetailsCommentCardProps> = ({ postId }) => {
                   className="flex items-start justify-between space-x-3"
                 >
                   <div className="flex items-start space-x-3">
-                    <Avatar
-                      as={Link}
-                      href={`/profile/${reply?.userId}`}
-                      src={reply.avatarUrl}
-                      name={reply.fullName.charAt(0).toUpperCase()}
-                      alt={`${reply.fullName}'s avatar`}
-                      size="sm"
-                    />
+                    <Link href={`/profile/${reply?.userId}`}>
+                      <ActiveAvatar
+                        src={reply.avatarUrl}
+                        name={reply.fullName.charAt(0).toUpperCase()}
+                        alt={`${reply.fullName}'s avatar`}
+                        size="sm"
+                        className="cursor-pointer"
+                      />
+                    </Link>
                     <div>
                       <Link
                         href={`/profile/${comment?.userId}`}
                         className="font-semibold text-sm flex items-center gap-1 text-default-700"
                       >
-                        {reply.fullName}{" "}
+                        {reply.fullName}{' '}
                         {reply?.verified! && (
                           <GoVerified className="text-primaryColor" />
                         )}

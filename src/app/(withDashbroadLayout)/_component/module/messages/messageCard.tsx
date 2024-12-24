@@ -47,7 +47,7 @@ const MessageCard = ({
     ? formatDistanceToNow(new Date(latestMessage.createdAt), {
         addSuffix: true, // Adds "ago" to relative times
       })
-    : 'Unknown time';
+    : "Let's start a Chat";
 
   return (
     <Card

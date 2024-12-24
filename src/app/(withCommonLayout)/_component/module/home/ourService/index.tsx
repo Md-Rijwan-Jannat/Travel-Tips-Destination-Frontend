@@ -114,7 +114,7 @@ const OurService: React.FC = () => {
           {cardsData.map((card, index) => (
             <motion.div
               key={index}
-              className="bg-default-50 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col items-center text-center border border-default-200/90"
+              className="bg-default-50 p-6 rounded-lg hover:shadow-xl transition-shadow duration-300 flex flex-col items-center text-center border border-default-200/90"
               initial="hidden"
               animate={controls}
               variants={cardVariants}

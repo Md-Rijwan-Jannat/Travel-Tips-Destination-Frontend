@@ -1,15 +1,29 @@
 import React, { useState } from 'react';
-import { Select, SelectItem } from '@nextui-org/select';
-import { Modal, ModalContent, ModalHeader, ModalBody } from '@nextui-org/modal';
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from '@nextui-org/modal';
 import { Chip } from '@nextui-org/chip';
-import { Avatar } from '@nextui-org/avatar';
-import { GoVerified } from 'react-icons/go';
-import { TUser } from '@/src/types'; // Assuming you have a TUser type
-import { useGetAllNormalForAnalyticsUsersQuery } from '@/src/redux/features/user/userApi';
-import { useCreateGroupChatMutation } from '@/src/redux/features/message/groupChatApi';
-import { useChat } from '@/src/context/chatContext';
 import { Input } from '@nextui-org/input';
 import { Button } from '@nextui-org/button';
+import Select from 'react-select';
+import { Avatar } from '@nextui-org/avatar';
+import { useChat } from '@/src/context/chatContext';
+import { useGetAllNormalForAnalyticsUsersQuery } from '@/src/redux/features/user/userApi';
+import { useCreateGroupChatMutation } from '@/src/redux/features/message/groupChatApi';
+import { TUser } from '@/src/types';
+import { useTheme } from 'next-themes';
+
+// Checkbox Component
+const Checkbox = ({ children, ...props }: JSX.IntrinsicElements['input']) => (
+  <label style={{ marginRight: '1em' }}>
+    <input type="checkbox" {...props} />
+    {children}
+  </label>
+);
 
 interface TCreateGroupModalProps {
   isOpen: boolean;
@@ -21,51 +35,120 @@ export default function CreateGroupModal({
   onOpenChange,
 }: TCreateGroupModalProps) {
   const [chatName, setChatName] = useState<string>('');
-  const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
+  const [selectedUsers, setSelectedUsers] = useState<TUser[]>([]);
+  const [isClearable, setIsClearable] = useState(true);
+  const [isSearchable, setIsSearchable] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { theme } = useTheme();
+  const isDarkTheme = theme === 'dark';
+
   const { chats, setChats, setSelectedChat } = useChat();
   const { data: allUsersData } =
     useGetAllNormalForAnalyticsUsersQuery(undefined);
   const [createGroupChatFn] = useCreateGroupChatMutation();
 
   const allUsers = allUsersData?.data || [];
+  const userOptions = allUsers.map((user: TUser) => ({
+    value: user,
+    label: (
+      <div className="flex items-center gap-2">
+        <Avatar
+          className="w-6 h-6 rounded-full object-cover text-[14px]"
+          name={user?.name?.charAt(0).toUpperCase()}
+          src={user?.image || undefined}
+        />
+        {user.name}
+      </div>
+    ),
+  }));
 
-  // Handler for selection change
-  const handleSelectionChange = (keys: Iterable<string>) => {
-    setSelectedKeys(new Set(keys)); // Update selected users
-  };
-
-  // Create group chat handler
   const createGroupHandler = async () => {
-    if (!chatName || selectedKeys.size === 0) return;
-
-    const requestData = {
-      chatName,
-      users: Array.from(selectedKeys),
-    };
+    if (!chatName || selectedUsers.length === 0) return;
 
     try {
       const res = await createGroupChatFn({
-        users: requestData.users,
-        chatName: requestData.chatName,
+        users: selectedUsers.map((user) => user._id),
+        chatName,
         isGroup: true,
       });
 
       if (res?.data?.success) {
         const newChat = res.data.data;
-
         setSelectedChat(newChat);
         if (chats && !chats.find((c) => c._id === newChat._id)) {
           setChats([newChat, ...chats]);
         }
-        // Reset input and selected users
         onOpenChange();
-        setSelectedKeys(new Set());
+        setSelectedUsers([]);
         setChatName('');
       }
     } catch (error) {
       console.error(error);
     }
   };
+
+  const customStyles = (isDarkTheme: boolean) => ({
+    control: (provided: any, state: any) => ({
+      ...provided,
+      backgroundColor: isDarkTheme ? '#1E1E1E' : '#FFFFFF',
+      borderColor: state.isFocused
+        ? isDarkTheme
+          ? '#AAAAAA'
+          : '#DDDDDD'
+        : '#CCCCCC',
+      borderRadius: '50px',
+      padding: '5px',
+      boxShadow: state.isFocused
+        ? isDarkTheme
+          ? '0 0 0 2px #AAAAAA'
+          : '0 0 0 2px #DDDDDD'
+        : 'none',
+      '&:hover': {
+        borderColor: isDarkTheme ? '#DDDDDD' : '#DDDDDD',
+      },
+    }),
+    menu: (provided: any) => ({
+      ...provided,
+      backgroundColor: isDarkTheme ? '#2E2E2E' : '#F9F9F9',
+      borderRadius: '8px',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    }),
+    option: (provided: any, state: any) => ({
+      ...provided,
+      backgroundColor: state.isFocused
+        ? isDarkTheme
+          ? '#3A3A3A'
+          : '#F2F2F2'
+        : isDarkTheme
+          ? '#2E2E2E'
+          : '#FFFFFF',
+      color: state.isFocused ? '#FFFFFF' : isDarkTheme ? '#333333' : '#333333',
+      cursor: 'pointer',
+      padding: '10px 20px',
+      '&:active': {
+        backgroundColor: isDarkTheme ? '#444444' : '#E6E6E6',
+      },
+    }),
+    multiValue: (provided: any) => ({
+      ...provided,
+      backgroundColor: isDarkTheme ? '#444444' : '#E6E6E6',
+      color: isDarkTheme ? '#FFFFFF' : '#333333',
+      borderRadius: '15px',
+    }),
+    multiValueLabel: (provided: any) => ({
+      ...provided,
+      color: isDarkTheme ? '#FFFFFF' : '#333333',
+    }),
+    multiValueRemove: (provided: any) => ({
+      ...provided,
+      color: isDarkTheme ? '#FFFFFF' : '#333333',
+      '&:hover': {
+        backgroundColor: isDarkTheme ? '#555555' : '#DDDDDD',
+        color: isDarkTheme ? '#FFFFFF' : '#000000',
+      },
+    }),
+  });
 
   return (
     <Modal
@@ -83,58 +166,87 @@ export default function CreateGroupModal({
               </Chip>
             </ModalHeader>
             <ModalBody>
-              {/* Group Name Input */}
+              <Input
+                label="Chat Name"
+                variant="bordered"
+                placeholder="Enter group name..."
+                size="md"
+                radius="full"
+                value={chatName}
+                onChange={(e) => setChatName(e.target.value)}
+              />
               <div className="mt-4">
-                <Input
-                  label="Chat Name"
-                  variant="bordered"
-                  placeholder="Enter group name..."
-                  size="md"
-                  radius="full"
-                  value={chatName}
-                  onChange={(e) => setChatName(e.target.value)}
-                />
-              </div>
-
-              {/* Multi-Select Users */}
-              <div className="mt-4">
-                <Select
-                  label="Select Users"
-                  variant="bordered"
-                  selectionMode="multiple"
-                  radius="full"
-                  placeholder="Select users"
-                  selectedKeys={selectedKeys}
-                  onSelectionChange={(keys) =>
-                    handleSelectionChange(keys as Iterable<string>)
-                  } // Ensure correct type
+                <label
+                  htmlFor="user-select"
+                  className="block text-sm font-medium text-default-600 mb-2"
                 >
-                  {allUsers.map((user: TUser) => (
-                    <SelectItem key={user._id} textValue={user.name}>
+                  Select Users
+                </label>
+                <Select
+                  id="user-select"
+                  options={userOptions}
+                  isMulti
+                  placeholder="Search and select users"
+                  isClearable={isClearable}
+                  isSearchable={isSearchable}
+                  isDisabled={isDisabled}
+                  isLoading={isLoading}
+                  styles={customStyles(isDarkTheme)}
+                  onChange={(selected) =>
+                    setSelectedUsers(
+                      selected ? selected.map((opt) => opt.value) : []
+                    )
+                  }
+                  value={selectedUsers.map((user) => ({
+                    value: user,
+                    label: (
                       <div className="flex items-center gap-2">
                         <Avatar
                           className="w-6 h-6 rounded-full object-cover text-[14px]"
                           name={user?.name?.charAt(0).toUpperCase()}
                           src={user?.image || undefined}
                         />
-                        <div className="flex items-center gap-1">
-                          {user?.name}{' '}
-                          {user?.verified && (
-                            <GoVerified className="text-primaryColor" />
-                          )}
-                        </div>
+                        {user.name}
                       </div>
-                    </SelectItem>
-                  ))}
-                </Select>
+                    ),
+                  }))}
+                />
               </div>
-
-              {/* Create Group Button */}
-              <div className="my-8 flex justify-end">
-                <Button className="primary-button" onClick={createGroupHandler}>
+              <div className="mt-4">
+                <Checkbox
+                  checked={isClearable}
+                  onChange={() => setIsClearable(!isClearable)}
+                >
+                  Clearable
+                </Checkbox>
+                <Checkbox
+                  checked={isSearchable}
+                  onChange={() => setIsSearchable(!isSearchable)}
+                >
+                  Searchable
+                </Checkbox>
+                <Checkbox
+                  checked={isDisabled}
+                  onChange={() => setIsDisabled(!isDisabled)}
+                >
+                  Disabled
+                </Checkbox>
+                <Checkbox
+                  checked={isLoading}
+                  onChange={() => setIsLoading(!isLoading)}
+                >
+                  Loading
+                </Checkbox>
+              </div>
+              <ModalFooter>
+                <Button
+                  radius="full"
+                  className="primary-button"
+                  onClick={createGroupHandler}
+                >
                   Create group
                 </Button>
-              </div>
+              </ModalFooter>
             </ModalBody>
           </>
         )}

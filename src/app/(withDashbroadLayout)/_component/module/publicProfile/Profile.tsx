@@ -11,6 +11,7 @@ import UserProfileTabs from './userProfileTabs';
 import { useUser } from '@/src/hooks/useUser';
 import Follow from './follow';
 import VerifiedForPayment from '../userProfile/VerifiedForPayment.tsx';
+import { ActiveAvatar } from '@/src/app/(withCommonLayout)/_component/ui/navbar/activeAvatar';
 
 interface TUserProps {
   user: TUser | undefined;
@@ -59,7 +60,7 @@ export default function Profile({ user }: TUserProps) {
         )}
 
         <div>
-          <Avatar
+          <ActiveAvatar
             className={`cursor-pointer text-[24px] font-bold z-20`}
             name={name?.charAt(0)?.toUpperCase()}
             size="lg"

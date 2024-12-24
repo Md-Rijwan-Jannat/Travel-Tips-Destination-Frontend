@@ -1,7 +1,5 @@
 'use client';
 
-import { Button } from '@nextui-org/button';
-import { Link } from '@nextui-org/link';
 import {
   FaGoogle,
   FaShopify,
@@ -29,7 +27,7 @@ export default function FeaturesSection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.3, ease: 'easeOut', delay: 0.1 }}
             whileHover={{ scale: 1.05 }}
-            className="bg-default-50 rounded-lg p-6 shadow-md text-center"
+            className="bg-background/30 hover:shadow-xl backdrop-blur-xl border border-default-100 rounded-lg p-6 text-center"
           >
             <div className="flex justify-center gap-4 mb-4">
               <motion.div whileHover={{ scale: 1.05 }}>
@@ -54,7 +52,7 @@ export default function FeaturesSection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.3, ease: 'easeOut', delay: 0.3 }}
             whileHover={{ scale: 1.05 }}
-            className="bg-default-50 rounded-lg p-6 shadow-md text-center"
+            className="bg-background/30 hover:shadow-xl backdrop-blur-xl border border-default-100 rounded-lg p-6 text-center"
           >
             <div className="flex flex-col items-center gap-2 mb-4">
               <motion.div
@@ -91,7 +89,7 @@ export default function FeaturesSection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.3, ease: 'easeOut', delay: 0.6 }}
             whileHover={{ scale: 1.05 }}
-            className="bg-default-50 rounded-lg p-6 shadow-md text-center"
+            className="bg-background/30 hover:shadow-xl backdrop-blur-md border border-default-100 rounded-lg p-6 text-center"
           >
             <div className="flex justify-center gap-4 mb-4">
               <motion.div

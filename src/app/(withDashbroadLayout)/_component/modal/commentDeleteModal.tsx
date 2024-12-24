@@ -1,6 +1,12 @@
 'use client';
 
-import { Modal, ModalContent, ModalHeader, ModalBody } from '@nextui-org/modal';
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from '@nextui-org/modal';
 import { toast } from 'sonner';
 import GlassLoader from '@/src/components/shared/glassLoader';
 import { useState } from 'react';
@@ -49,7 +55,8 @@ export default function CommentDeleteModal({
           {isError && <p className="text-center text-red-500">{isError}</p>}
           <p>Are you sure you want to delete this comment?</p>
         </ModalBody>
-        <div className="flex items-center gap-3 justify-end mt-10 mb-5">
+
+        <ModalFooter>
           <Button
             className="delete-button"
             isLoading={isLoading}
@@ -61,7 +68,7 @@ export default function CommentDeleteModal({
           <Button className="cancel-button" size="md" onClick={onOpenChange}>
             Cancel
           </Button>
-        </div>
+        </ModalFooter>
       </ModalContent>
     </Modal>
   );

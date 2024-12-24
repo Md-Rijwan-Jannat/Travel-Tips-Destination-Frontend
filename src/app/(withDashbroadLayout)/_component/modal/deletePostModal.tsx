@@ -52,13 +52,13 @@ const DeletePostModal = ({
         onOpenChange={onOpenChange}
       >
         {isLoading && <GlassLoader />}
-        <ModalContent className="m-2">
+        <ModalContent className="overflow-hidden">
           <ModalHeader>Confirm Delete</ModalHeader>
           <ModalBody>
             {isError && <p className="text-center text-red-500">{isError}</p>}
             <p>Are you sure you want to delete this post?</p>
           </ModalBody>
-          <div className="flex items-center gap-3 justify-end mt-10 mb-5">
+          <ModalFooter>
             <Button
               className="delete-button"
               isLoading={isLoading}
@@ -70,7 +70,7 @@ const DeletePostModal = ({
             <Button className="cancel-button" size="md" onClick={onOpenChange}>
               Cancel
             </Button>
-          </div>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </>

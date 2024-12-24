@@ -6,7 +6,6 @@ import { GoPencil, GoVerified } from 'react-icons/go';
 import { Avatar } from '@nextui-org/avatar';
 import { Divider } from '@nextui-org/divider';
 import { motion } from 'framer-motion';
-import UpdateNameImageModal from '../../modal/updateUserModal';
 import UserProfileTabs from './userProfileTabs';
 import { useUser } from '@/src/hooks/useUser';
 import Follow from './follow';
@@ -14,6 +13,7 @@ import PostModal from '../../modal/postingModal';
 import VerifiedForPayment from './VerifiedForPayment.tsx';
 import Link from 'next/link';
 import { Button } from '@nextui-org/button';
+import { ActiveAvatar } from '@/src/app/(withCommonLayout)/_component/ui/navbar/activeAvatar';
 
 interface TUserProps {
   user: TUser | undefined;
@@ -60,7 +60,7 @@ export default function Profile({ user }: TUserProps) {
         )}
 
         <div>
-          <Avatar
+          <ActiveAvatar
             className={`cursor-pointer text-[24px] font-bold z-20`}
             name={name?.charAt(0)?.toUpperCase()}
             size="lg"

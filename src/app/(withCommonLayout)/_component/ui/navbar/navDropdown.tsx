@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import { FaConnectdevelop } from 'react-icons/fa';
 import { TbPremiumRights } from 'react-icons/tb';
+import { ActiveAvatar } from './activeAvatar';
 
 const NavDropdown: FC = () => {
   const dispatch = useAppDispatch();
@@ -60,12 +61,15 @@ const NavDropdown: FC = () => {
       {userExists?.email ? (
         <Dropdown>
           <DropdownTrigger>
-            <Avatar
-              className="cursor-pointer"
-              name={userInfo?.name.charAt(0).toUpperCase()}
-              size="md"
-              src={userInfo?.image || undefined}
-            />
+            <div>
+              <ActiveAvatar
+                className="cursor-pointer transition-transform hover:scale-105"
+                name={userInfo?.name.charAt(0).toUpperCase()}
+                size="md"
+                src={userInfo?.image || undefined}
+                onClick={(e) => e.stopPropagation()}
+              />
+            </div>
           </DropdownTrigger>
           <DropdownMenu aria-label="User Actions">
             <DropdownItem

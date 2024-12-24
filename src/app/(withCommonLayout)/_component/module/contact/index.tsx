@@ -59,7 +59,7 @@ export default function Contact() {
         />
         <form
           onSubmit={handleSubmit}
-          className="rounded-lg w-full md:w-[500px]"
+          className="rounded-lg w-full md:w-[500px] space-y-7"
         >
           <motion.div
             initial={{ opacity: 0 }}
@@ -75,67 +75,57 @@ export default function Contact() {
           </motion.div>
 
           {/* Name Field */}
-          <motion.div className="mb-6 mt-10" whileHover={{ scale: 1.02 }}>
-            <Input
-              fullWidth
-              variant="bordered"
-              radius="full"
-              label="Your Name"
-              placeholder="Enter your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </motion.div>
+          <Input
+            fullWidth
+            variant="bordered"
+            radius="full"
+            label="Your Name"
+            placeholder="Enter your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
 
           {/* Email Field */}
-          <motion.div className="mb-6" whileHover={{ scale: 1.02 }}>
-            <Input
-              fullWidth
-              variant="bordered"
-              radius="full"
-              label="Your Email"
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </motion.div>
+          <Input
+            fullWidth
+            variant="bordered"
+            radius="full"
+            label="Your Email"
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
           {/* Message Field */}
-          <motion.div className="mb-6" whileHover={{ scale: 1.02 }}>
-            <Textarea
-              fullWidth
-              variant="bordered"
-              radius="full"
-              label="Your Message"
-              placeholder="Write your message here..."
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              required
-            />
-          </motion.div>
+          <Textarea
+            fullWidth
+            variant="bordered"
+            radius="full"
+            label="Your Message"
+            placeholder="Write your message here..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            required
+          />
 
           {/* Submit Button */}
-          <motion.div
-            className="flex justify-end mb-5"
-            whileHover={{ scale: 1.05 }}
+
+          <Button
+            isLoading={isSubmitting}
+            disabled={isSubmitting}
+            className="primary-button"
+            type="submit"
           >
-            <Button
-              isLoading={isSubmitting}
-              disabled={isSubmitting}
-              className="primary-button"
-              type="submit"
-            >
-              Submit
-            </Button>
-          </motion.div>
+            Submit
+          </Button>
         </form>
       </div>
 
       {/* Contact Information Section */}
-      <div className="mt-10 p-5 bg-default-50 rounded-md shadow-lg">
+      <div className="mt-10 p-5 bg-default-50/50 rounded-md shadow-lg backdrop-blur-2xl">
         <motion.div
           className="text-center"
           initial={{ opacity: 0, y: 20 }}

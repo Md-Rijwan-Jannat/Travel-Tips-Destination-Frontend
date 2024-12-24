@@ -25,6 +25,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import Quill's styles
 import { GoVerified } from 'react-icons/go';
 import Link from 'next/link';
+import { ActiveAvatar } from '@/src/app/(withCommonLayout)/_component/ui/navbar/activeAvatar';
 
 interface PostData {
   images: string[];
@@ -163,28 +164,30 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
     <>
       {isLoading && <GlassLoader />}
       <div className="flex items-center gap-4 w-full">
-        <div className="flex items-center gap-2">
-          <Avatar
-            as={Link}
-            href={`/profile/${userInfo?._id}`}
-            alt="User Avatar"
-            className="text-xl"
-            name={userInfo?.name.charAt(0).toUpperCase()}
-            size="md"
-            src={userInfo?.image || undefined}
-          />
-          <div>
+        <div className="flex items-center gap-3">
+          <Link href={`/profile/${userInfo?._id}`}>
+            {' '}
+            <ActiveAvatar
+              className="cursor-pointer"
+              alt="User Avatar"
+              name={userInfo?.name.charAt(0).toUpperCase()}
+              size="md"
+              src={userInfo?.image || undefined}
+            />
+          </Link>
+
+          <div className="flex flex-col">
             <Link href={`/profile/${userInfo?._id}`}>
-              <p className="whitespace-nowrap text-xs flex items-center gap-1 mt-0.5 hover:underline">
+              <p className="whitespace-nowrap text-xs flex items-center gap-1 hover:underline">
                 {userInfo?.name}{' '}
                 {userInfo?.verified! && (
                   <GoVerified className="text-primaryColor" />
                 )}
               </p>
             </Link>
-            <span className="text-xs text-default-400 whitespace-nowrap">
+            <p className="text-xs text-default-400 whitespace-nowrap">
               Create post{' '}
-            </span>
+            </p>
           </div>
         </div>
         <input
@@ -203,24 +206,30 @@ const PostModal = ({ userInfo }: TPostModalProps) => {
       >
         <ModalContent className="m-2">
           <ModalHeader>
-            <div className="flex items-center gap-2">
-              <Avatar
-                alt="User Avatar"
-                className="text-xl"
-                name={userInfo?.name.charAt(0).toUpperCase()}
-                size="md"
-                src={userInfo?.image || undefined}
-              />
-              <div>
-                <p className="whitespace-nowrap text-xs flex items-center gap-1 mt-0.5">
-                  {userInfo?.name}{' '}
-                  {userInfo?.verified! && (
-                    <GoVerified className="text-primaryColor" />
-                  )}
+            <div className="flex items-center gap-3">
+              <Link href={`/profile/${userInfo?._id}`}>
+                {' '}
+                <ActiveAvatar
+                  className="cursor-pointer"
+                  alt="User Avatar"
+                  name={userInfo?.name.charAt(0).toUpperCase()}
+                  size="md"
+                  src={userInfo?.image || undefined}
+                />
+              </Link>
+
+              <div className="flex flex-col">
+                <Link href={`/profile/${userInfo?._id}`}>
+                  <p className="whitespace-nowrap text-xs flex items-center gap-1 hover:underline">
+                    {userInfo?.name}{' '}
+                    {userInfo?.verified! && (
+                      <GoVerified className="text-primaryColor" />
+                    )}
+                  </p>
+                </Link>
+                <p className="text-xs text-default-400 whitespace-nowrap">
+                  Create post{' '}
                 </p>
-                <span className="text-xs text-default-400 whitespace-nowrap">
-                  Public
-                </span>
               </div>
             </div>
           </ModalHeader>
