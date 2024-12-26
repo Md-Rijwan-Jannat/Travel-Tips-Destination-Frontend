@@ -1,17 +1,18 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { NextUIProvider } from '@nextui-org/system';
-import { useRouter } from 'next/navigation';
-import { ThemeProvider as NextThemesProvider } from 'next-themes';
-import { ThemeProviderProps } from 'next-themes/dist/types';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { Toaster } from 'sonner';
+import * as React from "react";
+import { NextUIProvider } from "@nextui-org/system";
+import { useRouter } from "next/navigation";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { ThemeProviderProps } from "next-themes/dist/types";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { Toaster } from "sonner";
 
-import { persistor, store } from '../redux/store';
-import ChatProvider from '../context/chatContext';
-import { SocketProvider } from '../context/socketProvider';
+import { persistor, store } from "../redux/store";
+import ChatProvider from "../context/chatContext";
+import { SocketProvider } from "../context/socketProvider";
+import { IsConnectedProvider } from "../context/isConnectProvider";
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -25,19 +26,21 @@ export function Providers({ children, themeProps }: ProvidersProps) {
     <NextUIProvider navigate={router.push}>
       <Provider store={store}>
         <Toaster />
-        <ChatProvider>
-          <SocketProvider>
-            <PersistGate loading={null} persistor={persistor}>
-              <NextThemesProvider
-                {...themeProps}
-                attribute="class"
-                defaultTheme="system"
-              >
-                {children}
-              </NextThemesProvider>
-            </PersistGate>
-          </SocketProvider>
-        </ChatProvider>
+        <IsConnectedProvider>
+          <ChatProvider>
+            <SocketProvider>
+              <PersistGate loading={null} persistor={persistor}>
+                <NextThemesProvider
+                  {...themeProps}
+                  attribute="class"
+                  defaultTheme="system"
+                >
+                  {children}
+                </NextThemesProvider>
+              </PersistGate>
+            </SocketProvider>
+          </ChatProvider>
+        </IsConnectedProvider>
       </Provider>
     </NextUIProvider>
   );

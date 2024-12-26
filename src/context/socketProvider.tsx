@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { io, Socket } from 'socket.io-client';
-import { useUser } from '@/src/hooks/useUser';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { io, Socket } from "socket.io-client";
+import { useUser } from "@/src/hooks/useUser";
 
 const SocketContext = createContext<Socket | null>(null);
 
@@ -18,10 +18,10 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
       const newSocket = io(endpoint);
       setSocket(newSocket);
 
-      newSocket.emit('setup', user);
+      newSocket.emit("setup", user);
 
-      newSocket.on('connected', () => {
-        console.log('Socket connected');
+      newSocket.on("connected", () => {
+        console.log("Socket connected");
       });
 
       // newSocket.on('connect_error', (error) => {

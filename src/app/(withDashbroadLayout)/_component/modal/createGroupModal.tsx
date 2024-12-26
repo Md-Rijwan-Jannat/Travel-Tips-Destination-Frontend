@@ -157,7 +157,7 @@ export default function CreateGroupModal({
       isOpen={isOpen}
       onOpenChange={onOpenChange}
     >
-      <ModalContent>
+      <ModalContent className="h-auto py-3">
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">

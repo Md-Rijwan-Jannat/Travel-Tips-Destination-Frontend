@@ -1,12 +1,12 @@
-import { Avatar } from '@nextui-org/avatar';
-import Link from 'next/link';
+import { Avatar } from "@nextui-org/avatar";
+import Link from "next/link";
 
-import { TPost } from '@/src/types';
-import PostDropdown from '../postActions/postDropdown';
-import { GoVerified } from 'react-icons/go';
-import FollowForPost from '../../userProfile/followForPost';
-import { format, formatDistanceToNow } from 'date-fns';
-import { ActiveAvatar } from '@/src/app/(withCommonLayout)/_component/ui/navbar/activeAvatar';
+import { TPost } from "@/src/types";
+import PostDropdown from "../postActions/postDropdown";
+import { GoVerified } from "react-icons/go";
+import FollowForPost from "../../userProfile/followForPost";
+import { format, formatDistanceToNow } from "date-fns";
+import { ActiveAvatar } from "@/src/app/(withCommonLayout)/_component/ui/navbar/activeAvatar";
 
 interface PostHeaderProps {
   post: TPost;
@@ -22,6 +22,7 @@ export default function PostHeader({ post }: PostHeaderProps) {
             size="md"
             name={post?.user?.name?.charAt(0).toUpperCase()}
             src={post?.user?.image || undefined}
+            userId={post?.user?._id as string}
           />
         </Link>
         <div className="flex flex-col items-start -mt-2">
@@ -30,7 +31,7 @@ export default function PostHeader({ post }: PostHeaderProps) {
               className="font-semibold text-default-900 flex items-center gap-1 mt-0.5 whitespace-nowrap"
               href={`/profile/${post?.user?._id}`}
             >
-              {post?.user?.name}{' '}
+              {post?.user?.name}{" "}
               {post?.user?.verified && (
                 <GoVerified className="text-primaryColor" />
               )}
@@ -41,7 +42,7 @@ export default function PostHeader({ post }: PostHeaderProps) {
           </div>
           <p className="block text-xs text-default-500">
             {formatDistanceToNow(post?.createdAt, { addSuffix: true })} (
-            {format(post?.createdAt, 'MMMM do, yyyy')})
+            {format(post?.createdAt, "MMMM do, yyyy")})
           </p>
         </div>
       </div>

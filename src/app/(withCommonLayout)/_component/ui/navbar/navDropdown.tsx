@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { Avatar } from '@nextui-org/avatar';
+import { Avatar } from "@nextui-org/avatar";
 import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-} from '@nextui-org/dropdown';
-import { useRouter } from 'next/navigation';
-import { FC } from 'react';
-import { useAppDispatch, useAppSelector } from '@/src/redux/hook';
-import { clearCredentials, getUser } from '@/src/redux/features/auth/authSlice';
-import { useUser } from '@/src/hooks/useUser';
-import { toast } from 'sonner';
-import { Logout } from '@/src/service/logout';
-import { useDisclosure } from '@nextui-org/modal';
-import CreateGroupModal from '@/src/app/(withDashbroadLayout)/_component/modal/createGroupModal';
-import Link from 'next/link';
-import { Button } from '@nextui-org/button';
-import { motion } from 'framer-motion';
+} from "@nextui-org/dropdown";
+import { useRouter } from "next/navigation";
+import { FC } from "react";
+import { useAppDispatch, useAppSelector } from "@/src/redux/hook";
+import { clearCredentials, getUser } from "@/src/redux/features/auth/authSlice";
+import { useUser } from "@/src/hooks/useUser";
+import { toast } from "sonner";
+import { Logout } from "@/src/service/logout";
+import { useDisclosure } from "@nextui-org/modal";
+import CreateGroupModal from "@/src/app/(withDashbroadLayout)/_component/modal/createGroupModal";
+import Link from "next/link";
+import { Button } from "@nextui-org/button";
+import { motion } from "framer-motion";
 import {
   UserCircle,
   Settings,
@@ -27,10 +27,10 @@ import {
   LogOut,
   UserPlus,
   Bell,
-} from 'lucide-react';
-import { FaConnectdevelop } from 'react-icons/fa';
-import { TbPremiumRights } from 'react-icons/tb';
-import { ActiveAvatar } from './activeAvatar';
+} from "lucide-react";
+import { FaConnectdevelop } from "react-icons/fa";
+import { TbPremiumRights } from "react-icons/tb";
+import { ActiveAvatar } from "./activeAvatar";
 
 const NavDropdown: FC = () => {
   const dispatch = useAppDispatch();
@@ -41,8 +41,8 @@ const NavDropdown: FC = () => {
   const handleLogout = async () => {
     dispatch(clearCredentials());
     await Logout();
-    router.push('/');
-    toast.success('Logout successful');
+    router.push("/");
+    toast.success("Logout successful");
   };
 
   const {
@@ -52,9 +52,9 @@ const NavDropdown: FC = () => {
   } = useDisclosure();
 
   const dropdownItemClass =
-    'flex items-center gap-2 transition-all duration-300 hover:bg-default-50 rounded';
+    "flex items-center gap-2 transition-all duration-300 hover:bg-default-50 rounded";
   const dropdownItemClass2 =
-    'flex items-center gap-2 transition-all duration-300 text-red-500 hover:text-red-600 bgt-transparent rounded';
+    "flex items-center gap-2 transition-all duration-300 text-red-500 hover:text-red-600 bgt-transparent rounded";
 
   return (
     <>
@@ -68,6 +68,7 @@ const NavDropdown: FC = () => {
                 size="md"
                 src={userInfo?.image || undefined}
                 onClick={(e) => e.stopPropagation()}
+                userId={userInfo?._id as string}
               />
             </div>
           </DropdownTrigger>
@@ -75,7 +76,7 @@ const NavDropdown: FC = () => {
             <DropdownItem
               as={Link}
               href="/news-feed/premium-posts"
-              className={`block lg:hidden ${userInfo?.role === 'USER' ? 'block' : 'hidden'} ${dropdownItemClass}`}
+              className={`block lg:hidden ${userInfo?.role === "USER" ? "block" : "hidden"} ${dropdownItemClass}`}
               startContent={<TbPremiumRights className="w-4 h-4" />}
             >
               Premium Posts
@@ -83,9 +84,9 @@ const NavDropdown: FC = () => {
             <DropdownItem
               as={Link}
               href={
-                userInfo?.role === 'ADMIN' ? '/admin-dashboard' : '/profile'
+                userInfo?.role === "ADMIN" ? "/admin-dashboard" : "/profile"
               }
-              className={`${userInfo?.role === 'USER' ? 'block' : 'hidden'} ${dropdownItemClass}`}
+              className={`${userInfo?.role === "USER" ? "block" : "hidden"} ${dropdownItemClass}`}
               startContent={<UserCircle className="w-4 h-4" />}
             >
               Profile
@@ -93,7 +94,7 @@ const NavDropdown: FC = () => {
             <DropdownItem
               as={Link}
               href="/add-connections"
-              className={`block lg:hidden ${userInfo?.role === 'USER' ? 'block' : 'hidden'} ${dropdownItemClass}`}
+              className={`block lg:hidden ${userInfo?.role === "USER" ? "block" : "hidden"} ${dropdownItemClass}`}
               startContent={<FaConnectdevelop className="w-4 h-4" />}
             >
               Add Connection
@@ -109,7 +110,7 @@ const NavDropdown: FC = () => {
             <DropdownItem
               as={Link}
               href="/notifications"
-              className={`block lg:hidden ${userInfo?.role === 'USER' ? 'block' : 'hidden'} ${dropdownItemClass}`}
+              className={`block lg:hidden ${userInfo?.role === "USER" ? "block" : "hidden"} ${dropdownItemClass}`}
               startContent={<Bell className="w-4 h-4" />}
             >
               Notifications

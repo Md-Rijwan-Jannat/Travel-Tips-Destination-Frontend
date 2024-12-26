@@ -1,11 +1,11 @@
-import React from 'react';
-import { Avatar } from '@nextui-org/avatar';
-import { IoSend } from 'react-icons/io5';
-import { useUser } from '@/src/hooks/useUser';
-import { Button } from '@nextui-org/button';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { ActiveAvatar } from '@/src/app/(withCommonLayout)/_component/ui/navbar/activeAvatar';
+import React from "react";
+import { Avatar } from "@nextui-org/avatar";
+import { IoSend } from "react-icons/io5";
+import { useUser } from "@/src/hooks/useUser";
+import { Button } from "@nextui-org/button";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { ActiveAvatar } from "@/src/app/(withCommonLayout)/_component/ui/navbar/activeAvatar";
 
 interface CommentInputProps {
   value: string;
@@ -24,13 +24,14 @@ export default function CommentInput({
     <div className="flex items-center justify-between rounded-lg shadow-sm gap-4 w-full mt-3">
       <div className="flex items-center gap-2 w-full">
         {/* Avatar */}
-        <Link className="w-[50px]" href={`/profile/${currentUser?._id}`}>
+        <Link href={`/profile/${currentUser?._id}`}>
           <ActiveAvatar
             name={currentUser?.name.charAt(0).toUpperCase()}
             src={currentUser?.image || undefined}
             size="md"
             alt="Profile Picture"
-            className="cursor-pointer mr-2"
+            className="cursor-pointer"
+            userId={currentUser?._id as string}
           />
         </Link>
         {/* Input Box */}

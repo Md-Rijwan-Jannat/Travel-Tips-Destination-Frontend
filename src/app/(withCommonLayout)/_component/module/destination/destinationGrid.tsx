@@ -26,8 +26,11 @@ type Props = {
 export default function DestinationGrid({ destinations }: Props) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full mx-auto p-4">
-      {destinations.map((destination) => (
-        <Card className="h-full transition-transform duration-200 rounded-md shadow-lg border border-default-200">
+      {destinations.map((destination, index) => (
+        <Card
+          key={index}
+          className="h-full transition-transform duration-200 rounded-md shadow-lg border border-default-200"
+        >
           <CardBody className="p-0">
             <Image
               src={destination.icon}
