@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Image from 'next/image';
-import { Button } from '@nextui-org/button';
-import Link from 'next/link';
-import SectionTitle from '../../../ui/sectionTitle';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import CountUp from 'react-countup';
+import React from "react";
+import Image from "next/image";
+import { Button } from "@nextui-org/button";
+import Link from "next/link";
+import SectionTitle from "../../../ui/sectionTitle";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import CountUp from "react-countup";
 
 const SocialMediaSolutionSection: React.FC = () => {
   // Set up intersection observer for both sides
@@ -30,16 +30,16 @@ const SocialMediaSolutionSection: React.FC = () => {
           ref={leftRef}
           initial={{ opacity: 0, x: -150 }}
           animate={leftInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 1, ease: 'easeOut' }}
+          transition={{ duration: 1, ease: "easeOut" }}
           className="relative w-full lg:w-1/2 flex justify-center lg:justify-start"
         >
           {/* Large Image */}
           <div className="relative w-[300px] lg:w-[400px] overflow-hidden rounded-lg border-[5px]">
             <Image
-              src="https://demo.xperthemes.com/sociohub/wp-content/uploads/sites/10/2024/07/social-media-addiction.jpg"
+              src="https://media.licdn.com/dms/image/v2/D5612AQFsCjDdt3V4vQ/article-cover_image-shrink_600_2000/article-cover_image-shrink_600_2000/0/1655822977116?e=2147483647&v=beta&t=8ZrReW-93gACSNdD34ky-PI0pJOUuOesdNP5hMV9FD8"
               alt="Social Media Platform"
-              width={400}
-              height={500}
+              width={1200}
+              height={1200}
               className="object-cover h-[450px]"
             />
           </div>
@@ -63,10 +63,10 @@ const SocialMediaSolutionSection: React.FC = () => {
           {/* Circular Image Overlay */}
           <div className="absolute bottom-20 right-10 size-32 lg:size-48 rounded-full overflow-hidden border-4 border-white shadow-lg">
             <Image
-              src="https://demo.xperthemes.com/sociohub/wp-content/uploads/sites/10/2024/07/cheerful-man-and-woman-with-laptops-pointing.jpg"
+              src="https://img.freepik.com/free-photo/photo-stunned-young-bearded-man-indicates-right-side-demonstrates-something-amazing-gasps-with-wonder-wears-spectacles-casual-jumper-poses-against-pink-wall-promotion-concept_273609-42822.jpg?t=st=1735496297~exp=1735499897~hmac=c75c8f64fd561b41aa0ae92501046ae5d3b6cd84314148c97a839d8cc3d63c47&w=996"
               alt="Happy Traveler"
-              width={128}
-              height={128}
+              width={1000}
+              height={1000}
               className="object-cover size-32 lg:size-48"
             />
           </div>
@@ -77,12 +77,12 @@ const SocialMediaSolutionSection: React.FC = () => {
           ref={rightRef}
           initial={{ opacity: 0, x: 150 }} // Starts from right
           animate={rightInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 1, ease: 'easeOut' }}
+          transition={{ duration: 1, ease: "easeOut" }}
           className="w-full lg:w-1/2 text-center lg:text-left space-y-6"
         >
           {/* Heading */}
           <h2 className="text-3xl lg:text-4xl font-bold text-default-800">
-            Sharing <span className="text-pink-500">Travel Tips</span> and{' '}
+            Sharing <span className="text-pink-500">Travel Tips</span> and{" "}
             <br />
             Destination Guides!
           </h2>

@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { motion } from "framer-motion";
 import {
   FaUsers,
   FaStar,
   FaPlaneDeparture,
   FaGlobeAmericas,
-} from 'react-icons/fa';
-import Image from 'next/image';
-import { useGetAllUsersQuery } from '@/src/redux/features/adminManagement/manageUserApi';
+} from "react-icons/fa";
+import Image from "next/image";
+import { useGetAllUsersQuery } from "@/src/redux/features/adminManagement/manageUserApi";
 
 const WhyWeAre: React.FC = () => {
   const fadeInLeft = {
@@ -22,7 +22,7 @@ const WhyWeAre: React.FC = () => {
     visible: { opacity: 1, x: 0 },
   };
 
-  const { data } = useGetAllUsersQuery({ sort: 'createdAt' });
+  const { data } = useGetAllUsersQuery({ sort: "-createdAt" });
 
   return (
     <div className="py-10 px-6 grid md:grid-cols-2 gap-12">
@@ -64,7 +64,7 @@ const WhyWeAre: React.FC = () => {
           <FaUsers className="text-darkPink text-3xl mr-4" />
           <div>
             <h4 className="text-3xl font-bold">
-              {data?.data?.length || '25K'}+
+              {data?.data?.length || "25K"}+
             </h4>
             <p className="text-default-600">Active Travelers</p>
           </div>

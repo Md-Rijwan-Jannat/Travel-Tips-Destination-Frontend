@@ -1,11 +1,11 @@
-import React from 'react';
-import { Avatar } from '@nextui-org/avatar';
+import React from "react";
+import { Avatar } from "@nextui-org/avatar";
 
-import { useGetAllUsersQuery } from '@/src/redux/features/user/userApi';
-import { TUser } from '@/src/types';
+import { useGetAllUsersQuery } from "@/src/redux/features/user/userApi";
+import { TUser } from "@/src/types";
 
 export default function LoginRightContent() {
-  const { data: usersData } = useGetAllUsersQuery(undefined);
+  const { data: usersData } = useGetAllUsersQuery({ sort: "-createdAt" });
   const users = usersData?.data as TUser[];
 
   return (
@@ -13,7 +13,7 @@ export default function LoginRightContent() {
       {/* Foreground Content */}
       <div className="relative text-center z-10">
         <h3 className="text-3xl font-bold text-default-900 flex flex-wrap items-center justify-center">
-          Welcome <p className="text-secondaryColor px-1"> Back to Our </p>{' '}
+          Welcome <p className="text-secondaryColor px-1"> Back to Our </p>{" "}
           Travel Community
         </h3>
         <p className="mt-2 text-default-600">
@@ -38,7 +38,7 @@ export default function LoginRightContent() {
                 ))}
           </div>
           <span className="text-default-500 text-sm">
-            Join {users?.length || 'thousands'}+ users
+            Join {users?.length || "thousands"}+ users
           </span>
         </div>
       </div>

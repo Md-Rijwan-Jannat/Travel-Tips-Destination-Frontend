@@ -1,142 +1,160 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import CountUp from 'react-countup';
-import BrandLogo from '@/src/components/shared/logo';
-import { Divider } from '@nextui-org/divider';
-import SocialLinks from '../socialLinks';
-import Link from 'next/link'; // Import Next.js Link component
-import Image from 'next/image';
+import React from "react";
+import { motion } from "framer-motion";
+import { Button } from "@nextui-org/button";
+import { Input } from "@nextui-org/input";
+import { Divider } from "@nextui-org/divider";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedinIn,
+} from "react-icons/fa";
+import CountUp from "react-countup";
+import Link from "next/link";
+import BrandLogo from "@/src/components/shared/logo";
+import SocialLinks from "../socialLinks";
+import Container from "@/src/components/shared/container";
 
-const Footer: React.FC = () => {
+const Footer = () => {
   const date = new Date().getFullYear();
 
   return (
-    <footer className="text-default-900 flex flex-col items-center py-10">
-      <Divider className="my-2" />
-
-      <div className="flex flex-col md:flex-row items-center justify-center md:items-start md:justify-between w-full gap-8 mb-8 max-w-7xl mx-auto px-2 md:px-6">
-        {/* Logo */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="flex flex-col items-center md:items-start text-center justify-center md:justify-center md:text-left w-full md:w-[200px]"
-        >
-          <div className="flex justify-center md:justify-start items-center gap-1">
-            <BrandLogo />
-            <p className="font-bold text-inherit">TT&DG</p>
-          </div>
-          <p className="text-default-900 text-xs">
-            Exploring the World, one adventure at a time. Connecting travelers
-            everywhere and your journey starts here.
-          </p>
-        </motion.div>
-
-        {/* Satisfied Travelers */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="flex flex-col items-center text-center md:text-left mt-2"
-        >
-          <h3 className="text-lg font-semibold mb-2">Satisfied Travelers</h3>
+    <footer className="bg-gradient-to-b from-default-50/80 to-default-100/20 py-12 text-default-800 md:mx-2 mt-5 border-t border-default-100">
+      <Container>
+        {/* Top Section */}
+        <div className="flex flex-wrap justify-between items-start mb-8 space-y-8 md:space-y-0">
+          {/* Logo Section */}
           <motion.div
-            className="text-4xl font-bold text-pink-500 mt-1 flex flex-col gap-1 items-center"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="w-full md:w-1/3 flex flex-col items-start"
           >
-            <CountUp className="mt-3" end={5879} duration={2.5} separator="," />
+            <Link className="flex items-center gap-2" href="/">
+              <BrandLogo />
+              <p className="font-bold text-pink-600 text-xl">TT&DG</p>
+            </Link>
+            <p className="mt-4 text-sm">
+              Exploring the World, one adventure at a time. Connecting travelers
+              everywhere and your journey starts here.
+            </p>
+            {/* Satisfied Travelers */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="w-full md:w-1/3 flex flex-col items-start text-start"
+            >
+              <h3 className="text-sm font-semibold text-default-900 mb-2 mt-5">
+                Satisfied Travelers
+              </h3>
+              <div className="text-4xl font-bold text-pink-500">
+                <CountUp end={5879} duration={2.5} separator="," />
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
 
-        {/* Our Offices - Static Location */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="flex flex-col items-center md:items-start md:text-left mt-2"
-        >
-          <h3 className="text-lg font-semibold mb-2">Our Office Location</h3>
-          <p className="text-default-900 text-xs">Bogura, Bangladesh</p>
-          <p className="text-default-900 text-xs">travel@travel.com</p>
-          <p className="text-default-900 text-xs">+880 1797550947</p>
-          <SocialLinks />
-        </motion.div>
-      </div>
+          {/* Quick Links */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="w-full md:w-1/3"
+          >
+            <h3 className="text-lg font-semibold text-pink-600 mb-4 mt-1">
+              Quick Links
+            </h3>
+            <ul className="flex flex-col gap-4 text-sm text-default-600">
+              <li>
+                <Link href="/" className="hover:text-pink-600">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="hover:text-pink-600">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link href="/features" className="hover:text-pink-600">
+                  Features
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy-policy" className="hover:text-pink-600">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms-of-service" className="hover:text-pink-600">
+                  Terms of Service
+                </Link>
+              </li>
+            </ul>
+          </motion.div>
 
-      {/* Navigation Links */}
-      <div className="flex  items-center flex-wrap md:justify-center mt-4">
-        <Link
-          href="/news-feed/posts"
-          className="mx-2 hover:text-default-900 text-default-800 text-xs"
-        >
-          News Feed
-        </Link>
-        <Link
-          href="/docs"
-          className="mx-2 hover:text-default-900 text-default-800 text-xs"
-        >
-          {' '}
-          Docs
-        </Link>
-        <Link
-          href="/pricing"
-          className="mx-2 hover:text-default-900 text-default-800 text-xs"
-        >
-          Pricing
-        </Link>
-        <Link
-          href="/blog"
-          className="mx-2 hover:text-default-900 text-default-800 text-xs"
-        >
-          Blog
-        </Link>
-        <Link
-          href="/about"
-          className="mx-2 hover:text-default-900 text-default-800 text-xs"
-        >
-          About Us
-        </Link>
-        <Link
-          href="/contact"
-          className="mx-2 hover:text-default-900 text-default-800 text-xs"
-        >
-          Contact Us
-        </Link>
-      </div>
-
-      {/* Footer Bottom */}
-      <motion.div
-        className="mt-2 pt-4 text-sm text-default-900 flex items-center flex-col md:flex-row justify-between w-full max-w-7xl mx-auto px-2 md:px-6"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-      >
-        <span>© Copyright Travel Platform {date}</span>
-        <div className="space-x-4">
-          <Link
-            href="/sitemap"
-            className="hover:text-default-900 text-default-800 text-xs"
+          {/* Stay Connected Section */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="w-full md:w-1/3"
           >
-            Sitemap
-          </Link>
-          <Link
-            href="/terms-and-conditions"
-            className="hover:text-default-900 text-default-800 text-xs"
-          >
-            Terms and Conditions
-          </Link>
-          <Link
-            href="/privacy-policy"
-            className="hover:text-default-900 text-default-800 text-xs"
-          >
-            Privacy Policy
-          </Link>
+            <h3 className="text-lg font-semibold text-pink-600 mb-4 mt-1">
+              Stay Connected
+            </h3>
+            <div className="flex space-x-4 mb-4">
+              <Link href="#" className="text-pink-500 hover:text-pink-600">
+                <FaFacebookF size={24} />
+              </Link>
+              <Link href="#" className="text-pink-500 hover:text-pink-600">
+                <FaTwitter size={24} />
+              </Link>
+              <Link href="#" className="text-pink-500 hover:text-pink-600">
+                <FaInstagram size={24} />
+              </Link>
+              <Link href="#" className="text-pink-500 hover:text-pink-600">
+                <FaLinkedinIn size={24} />
+              </Link>
+            </div>
+            <div className="text-sm text-default-700 space-y-2">
+              <p className="flex items-center gap-1">
+                <p>Email:</p>{" "}
+                <a
+                  href="mailto:info@fitnessgear.com"
+                  className="text-pink-500 hover:text-pink-600"
+                >
+                  info@fitnessgear.com
+                </a>
+              </p>
+              <p className="flex items-center gap-1">
+                <p>Phone:</p>{" "}
+                <a
+                  href="tel:+1234567890"
+                  className="text-pink-500 hover:text-pink-600"
+                >
+                  +1 234 567 890
+                </a>
+              </p>
+              <p className="flex items-center gap-1">
+                <p>Address:</p> 123 Fitness Lane, Wellness City, Fitland 45678
+              </p>
+            </div>
+          </motion.div>
         </div>
-      </motion.div>
+
+        <Divider className="my-8" />
+
+        {/* Bottom Section */}
+        <div className="flex flex-wrap justify-between items-center">
+          {/* Footer Copyright */}
+          <p className="text-sm text-default-500 text-center">
+            © {date} TT&DG. All rights reserved.
+          </p>
+        </div>
+      </Container>
     </footer>
   );
 };

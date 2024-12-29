@@ -5,7 +5,7 @@ import { useGetAllUsersQuery } from "@/src/redux/features/user/userApi";
 import { TUser } from "@/src/types";
 
 export default function RegisterRightContent() {
-  const { data: usersData } = useGetAllUsersQuery(undefined);
+  const { data: usersData } = useGetAllUsersQuery({ sort: "-createdAt" });
   const users = usersData?.data as TUser[];
 
   return (

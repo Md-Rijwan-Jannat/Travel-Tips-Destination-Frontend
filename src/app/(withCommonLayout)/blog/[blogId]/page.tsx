@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { TBlog, blogPosts } from '../../_component/module/blogs';
-import BackButton from '@/src/app/(withAuthLayout)/_component/ui/backButton';
-import { Card, CardBody, CardHeader, CardFooter } from '@nextui-org/card';
-import { Button } from '@nextui-org/button';
-import { Chip } from '@nextui-org/chip';
-import Image from 'next/image';
+import React from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { TBlog, blogPosts } from "../../_component/module/blogs";
+import BackButton from "@/src/app/(withAuthLayout)/_component/ui/backButton";
+import { Card, CardBody, CardHeader, CardFooter } from "@nextui-org/card";
+import { Button } from "@nextui-org/button";
+import { Chip } from "@nextui-org/chip";
+import Image from "next/image";
 
 interface TBlogDetailsProps {
   params: { blogId: string };
@@ -71,11 +71,13 @@ export default function BlogDetailsPage({ params }: TBlogDetailsProps) {
           </div>
         </CardBody>
         <CardFooter>
-          <Link href="/blog" passHref>
-            <Button as="a" className="primary-button" radius="full">
-              Back to Blog
-            </Button>
-          </Link>
+          <Button
+            onClick={() => router.back()}
+            className="primary-button"
+            radius="full"
+          >
+            Back to Blog
+          </Button>
         </CardFooter>
       </Card>
     </div>

@@ -1,6 +1,6 @@
 import Container from "@/src/components/shared/container";
 
-export default function DocsLayout({
+export default function FeaturesLayout({
   children,
 }: {
   children: React.ReactNode;

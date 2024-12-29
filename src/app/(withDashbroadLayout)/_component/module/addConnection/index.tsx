@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import AddConnectionCard from './addConnectionCard';
-import { useGetAllUsersQuery } from '@/src/redux/features/adminManagement/manageUserApi';
-import { TUser } from '@/src/types';
-import { useUser } from '@/src/hooks/useUser';
-import FollowerSkeleton from '@/src/components/ui/skeleton/followerSkeleton';
+import React, { useState } from "react";
+import AddConnectionCard from "./addConnectionCard";
+import { useGetAllUsersQuery } from "@/src/redux/features/adminManagement/manageUserApi";
+import { TUser } from "@/src/types";
+import { useUser } from "@/src/hooks/useUser";
+import FollowerSkeleton from "@/src/components/ui/skeleton/followerSkeleton";
 
 const AddConnections: React.FC = () => {
   const { userInfo: currentUser } = useUser();
-  const { data, isLoading } = useGetAllUsersQuery({ sort: 'createdAt' });
+  const { data, isLoading } = useGetAllUsersQuery({ sort: "-createdAt" });
   const users = data?.data || ([] as TUser[]);
 
   // State to track ignored users
@@ -47,8 +47,8 @@ const AddConnections: React.FC = () => {
             _id={user._id}
             followers={user.follower}
             verified={user.verified}
-            title={user.bio || 'No bio available'}
-            avatarSrc={user?.image || ''}
+            title={user.bio || "No bio available"}
+            avatarSrc={user?.image || ""}
             onConnect={() => handleConnect(user._id)}
             onIgnore={() => handleIgnore(user._id)}
           />

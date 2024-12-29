@@ -63,7 +63,7 @@ const NavDropdown: FC = () => {
           <DropdownTrigger>
             <div>
               <ActiveAvatar
-                className="cursor-pointer transition-transform hover:scale-105"
+                className="cursor-pointer transition-transform hover:scale-105 mt-1"
                 name={userInfo?.name.charAt(0).toUpperCase()}
                 size="md"
                 src={userInfo?.image || undefined}

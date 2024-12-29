@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -6,17 +6,17 @@ import {
   NavbarMenuToggle,
   NavbarBrand,
   NavbarItem,
-} from '@nextui-org/navbar';
-import NextLink from 'next/link';
-import NavLinks from './navLinks';
-import NavDropdown from './navDropdown';
-import BrandLogo from '@/src/components/shared/logo';
-import ThemeDropdown from '@/src/components/modal/themeDropdown';
+} from "@nextui-org/navbar";
+import NextLink from "next/link";
+import NavLinks from "./navLinks";
+import NavDropdown from "./navDropdown";
+import BrandLogo from "@/src/components/shared/logo";
+import ThemeDropdown from "@/src/components/modal/themeDropdown";
 
 export default function NavBar() {
   return (
     <NextUINavbar
-      className="shadow-sm bg-default-50/20 backdrop-blur-xl fixed"
+      className="shadow-sm bg-default-50/20 backdrop-blur-2xl fixed"
       maxWidth="xl"
       position="sticky"
     >

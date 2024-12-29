@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import React, { FC, useState } from 'react';
-import Image from 'next/image';
-import { Button } from '@nextui-org/button';
-import { useInView } from 'react-intersection-observer';
-import { motion } from 'framer-motion';
-import { toast } from 'sonner';
+import React, { FC, useState } from "react";
+import Image from "next/image";
+import { Button } from "@nextui-org/button";
+import { useInView } from "react-intersection-observer";
+import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 const SubscriptionSection: FC = () => {
   // State to manage the email input
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
 
   const { ref: leftRef, inView: leftInView } = useInView({
     triggerOnce: true,
@@ -25,15 +25,15 @@ const SubscriptionSection: FC = () => {
   const handleSubscribe = () => {
     // Simple email validation
     if (!email) {
-      toast.error('Please enter your email address');
+      toast.error("Please enter your email address");
       return;
     }
 
     // Show success toast
-    toast.success('Subscribed successfully!');
+    toast.success("Subscribed successfully!");
 
     // Clear the input field
-    setEmail('');
+    setEmail("");
   };
 
   return (
@@ -43,7 +43,7 @@ const SubscriptionSection: FC = () => {
         ref={leftRef}
         initial={{ opacity: 0, x: -150 }}
         animate={leftInView ? { opacity: 1, x: 0 } : {}}
-        transition={{ duration: 1, ease: 'easeOut' }}
+        transition={{ duration: 1, ease: "easeOut" }}
         className="text-center lg:text-left w-full lg:w-1/2 space-y-4"
       >
         <h2 className="text-3xl lg:text-4xl font-bold text-default-800">
@@ -80,7 +80,7 @@ const SubscriptionSection: FC = () => {
         ref={rightRef}
         initial={{ opacity: 0, x: 150 }}
         animate={leftInView ? { opacity: 1, x: 0 } : {}}
-        transition={{ duration: 1, ease: 'easeOut' }}
+        transition={{ duration: 1, ease: "easeOut" }}
         className="relative w-full lg:w-1/2 flex justify-center lg:justify-end"
       >
         <div className="relative w-[200px] md:w-[300px]">

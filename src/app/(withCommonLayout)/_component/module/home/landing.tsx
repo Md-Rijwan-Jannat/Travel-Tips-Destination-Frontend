@@ -1,21 +1,19 @@
-'use client';
+"use client";
 
-import { FC } from 'react';
-import { Code } from '@nextui-org/code';
-import { Snippet } from '@nextui-org/snippet';
-import { GoHeart } from 'react-icons/go';
-import SocialLinks from '../../ui/socialLinks';
-import { Button } from '@nextui-org/button';
-import Link from 'next/link';
-import Image from 'next/image';
-import { TUser } from '@/src/types';
-import { Avatar } from '@nextui-org/avatar';
-import { useGetAllUsersQuery } from '@/src/redux/features/user/userApi';
+import { FC } from "react";
+import { Code } from "@nextui-org/code";
+import { GoHeart } from "react-icons/go";
+import { Button } from "@nextui-org/button";
+import Link from "next/link";
+import Image from "next/image";
+import { TUser } from "@/src/types";
+import { Avatar } from "@nextui-org/avatar";
+import { useGetAllUsersQuery } from "@/src/redux/features/user/userApi";
 
 type TLandingBannerProps = object;
 
 const LandingBanner: FC<TLandingBannerProps> = () => {
-  const { data: usersData } = useGetAllUsersQuery({ sort: 'createdAt' });
+  const { data: usersData } = useGetAllUsersQuery({ sort: "-createdAt" });
   const users = usersData?.data as TUser[];
   return (
     <section className="relative top-[50px] flex flex-col items-center justify-center gap-4 py-8 md:py-10 overflow-hidden h-[600px] md:h-[65vh]">
@@ -77,7 +75,7 @@ const LandingBanner: FC<TLandingBannerProps> = () => {
                     name={user?.name.charAt(0).toUpperCase()}
                     src={user?.image || undefined}
                   />
-                ))}{' '}
+                ))}{" "}
           </div>
           +<Code color="primary">TT&DG Community</Code>
         </div>

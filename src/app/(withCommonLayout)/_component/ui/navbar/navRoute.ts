@@ -1,26 +1,26 @@
 export const NavRoutes = [
   {
-    label: 'Home',
-    href: '/',
+    label: "Home",
+    href: "/",
   },
   {
-    label: 'News Feed',
-    href: '/news-feed/posts',
+    label: "News Feed",
+    href: "/news-feed/posts",
   },
   {
-    label: 'Docs',
-    href: '/docs',
+    label: "Features",
+    href: "/features",
   },
   {
-    label: 'Blog',
-    href: '/blog',
+    label: "Blogs",
+    href: "/blog",
   },
   {
-    label: 'About-Us',
-    href: '/about',
+    label: "About-Us",
+    href: "/about",
   },
   {
-    label: 'Contact-Us',
-    href: '/contact',
+    label: "Contact-Us",
+    href: "/contact",
   },
 ];
