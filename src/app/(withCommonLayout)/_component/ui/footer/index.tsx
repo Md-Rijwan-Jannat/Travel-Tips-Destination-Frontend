@@ -148,7 +148,7 @@ const Footer = () => {
         <Divider className="my-8" />
 
         {/* Bottom Section */}
-        <div className="flex flex-wrap justify-between items-center">
+        <div className="flex justify-center items-center">
           {/* Footer Copyright */}
           <p className="text-sm text-default-500 text-center">
             © {date} TT&DG. All rights reserved.

@@ -6,7 +6,7 @@ export default function Loader() {
     <div className="flex flex-col items-center justify-center h-screen m-auto">
       <Image
         alt="brand-logo"
-        className="w-12 h-12 animate-pulse duration-500"
+        className="w-10 h-10 animate-pulse duration-500 z-[99999]"
         height={500}
         src={logo}
         width={500}

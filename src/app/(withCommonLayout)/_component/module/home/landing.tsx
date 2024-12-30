@@ -70,8 +70,9 @@ const LandingBanner: FC<TLandingBannerProps> = () => {
                 .map((user) => (
                   <Avatar
                     key={user?._id}
+                    size="sm"
                     alt={user?.name}
-                    className="size-8 rounded-full border-2 border-white"
+                    className="size-5 rounded-full border-2 border-white"
                     name={user?.name.charAt(0).toUpperCase()}
                     src={user?.image || undefined}
                   />

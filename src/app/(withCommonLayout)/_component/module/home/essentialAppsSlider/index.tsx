@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { FC, useRef, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import TravelSlider from '../../../ui/slider/travelSlider';
-import { Button } from '@nextui-org/button';
-import Link from 'next/link';
-import SectionTitle from '../../../ui/sectionTitle';
-import { destinations } from '@/src/lib/data';
+import { FC, useRef, useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import TravelSlider from "../../../ui/slider/travelSlider";
+import { Button } from "@nextui-org/button";
+import Link from "next/link";
+import SectionTitle from "../../../ui/sectionTitle";
+import { destinations } from "@/src/lib/data";
 
 export type TDestinationCard = {
   id: string;
@@ -51,39 +51,41 @@ const EssentialDestinationsSlider: FC = () => {
   }, []);
 
   return (
-    <motion.section
-      ref={sectionRef}
-      initial={{ opacity: 0, y: 50 }}
-      animate={isVisible ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.9, ease: 'easeOut' }}
-      className="bg-default-50 px-3 py-5 md:p-8 rounded-lg w-full my-10"
-    >
+    <>
       <SectionTitle text="Essential destinations" />
-      <div className="flex flex-col lg:flex-row items-center justify-between gap-3">
-        <div className="flex flex-col items-start w-full lg:w-[40%]">
-          <div className="space-y-3">
-            <h2 className="text-default-800 text-2xl font-bold">
-              Top Travel Destinations
-            </h2>
-            <p className="text-default-700">
-              Discover must-visit spots and popular travel destinations
-              worldwide.
-            </p>
+      <motion.section
+        ref={sectionRef}
+        initial={{ opacity: 0, y: 50 }}
+        animate={isVisible ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.9, ease: "easeOut" }}
+        className="bg-gradient-to-b from-default-50/80 to-default-100/30 border border-default-100 px-3 py-3 md:p-5 rounded-lg w-full my-10 "
+      >
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-3">
+          <div className="flex flex-col items-start w-full lg:w-[40%]">
+            <div className="space-y-3">
+              <h2 className="text-default-800 text-2xl font-bold">
+                Top Travel Destinations
+              </h2>
+              <p className="text-default-700">
+                Discover must-visit spots and popular travel destinations
+                worldwide.
+              </p>
+            </div>
+            <Button
+              as={Link}
+              href="/destinations"
+              className="secondary-button mt-10"
+            >
+              Explore All
+            </Button>
           </div>
-          <Button
-            as={Link}
-            href="/destinations"
-            className="secondary-button mt-10"
-          >
-            Explore All
-          </Button>
-        </div>
 
-        <div className="w-full lg:w-[60%]">
-          <TravelSlider destinations={destinations} />
+          <div className="w-full lg:w-[60%]">
+            <TravelSlider destinations={destinations} />
+          </div>
         </div>
-      </div>
-    </motion.section>
+      </motion.section>
+    </>
   );
 };
 

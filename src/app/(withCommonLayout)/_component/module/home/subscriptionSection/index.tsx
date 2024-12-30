@@ -37,7 +37,7 @@ const SubscriptionSection: FC = () => {
   };
 
   return (
-    <motion.section className="flex flex-col lg:flex-row items-center justify-between space-y-8 lg:space-y-0 my-10 bg-default-50 rounded-lg p-3 md:p-8 lg:16">
+    <motion.section className="flex flex-col lg:flex-row items-center justify-between space-y-8 lg:space-y-0 my-10 bg-gradient-to-b from-default-50/80 to-default-100/30 border border-default-100 rounded-lg p-3 md:p-8 lg:16">
       {/* Left Side - Text and Subscription Form */}
       <motion.div
         ref={leftRef}
@@ -57,18 +57,18 @@ const SubscriptionSection: FC = () => {
         </p>
 
         {/* Subscription Form */}
-        <div className="flex flex-col items-center w-full space-y-4">
+        <div className="flex items-center w-full">
           <input
             type="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)} // Update email state
             placeholder="Enter Your Email Address.."
-            className="p-3 rounded-full focus:outline-none bg-white text-gray-700 placeholder:text-gray-700 w-full border border-default-300"
+            className="p-3 rounded-l-full focus:outline-none bg-white text-gray-700 placeholder:text-gray-700 w-full border border-default-300 h-[41px] text-sm"
           />
           <Button
             onClick={handleSubscribe} // Handle subscription on click
-            className="secondary-button"
+            className="bg-default-50/20 border border-l-default-50 border-pink-500 text-pink-500 font-semibold px-4 md:px-6 py-2.5 rounded-r-full transition duration-300 ease-in-out hover:bg-pink-500 hover:text-white"
           >
             Subscribe
           </Button>

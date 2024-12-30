@@ -24,7 +24,7 @@ const SocialMediaSolutionSection: React.FC = () => {
   return (
     <>
       <SectionTitle text="Go On" />
-      <motion.section className="flex flex-col lg:flex-row items-center justify-between bg-gradient-to-r bg-default-50 rounded-lg p-8 lg:p-12 space-y-8 lg:space-y-0 mt-10">
+      <motion.section className="flex flex-col lg:flex-row items-center justify-between bg-gradient-to-b from-default-50/80 to-default-100/30 border border-default-100 rounded-lg p-8 lg:p-12 space-y-8 lg:space-y-0 mt-10">
         {/* Left Side - Large Image with Badge */}
         <motion.div
           ref={leftRef}
