@@ -1,88 +1,62 @@
-'use client';
+"use client";
 
-import { TPost, TUser } from '@/src/types';
-import React, { useEffect, useState } from 'react';
-import { useGetAllPostsQuery } from '@/src/redux/features/post/postApi';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import PostCard from './postCard/postCard';
-import Spinner from '@/src/components/ui/spinner';
-import { useUser } from '@/src/hooks/useUser';
-import PostModal from '../../modal/postingModal';
-import { categoriesList } from '@/src/constants';
-import { MdLockReset } from 'react-icons/md';
-import DropdownFilter from './postFilter/dropdownFilter';
-import PremiumPostsMarquee from '../dashboardSuggessions/premiumPostsMarquee';
-import PostDetailsSkeleton from '@/src/components/ui/skeleton/postDetailsSkeleton';
-import Stories from '../story';
+import React, { useState, useEffect } from "react";
+import { useGetAllPostsQuery } from "@/src/redux/features/post/postApi";
+import InfiniteScroll from "react-infinite-scroll-component";
+import PostCard from "./postCard/postCard";
+import Spinner from "@/src/components/ui/spinner";
+import { useUser } from "@/src/hooks/useUser";
+import PostModal from "../../modal/postingModal";
+import { categoriesList } from "@/src/constants";
+import { MdLockReset } from "react-icons/md";
+import DropdownFilter from "./postFilter/dropdownFilter";
+import PremiumPostsMarquee from "../dashboardSuggessions/premiumPostsMarquee";
+import PostDetailsSkeleton from "@/src/components/ui/skeleton/postDetailsSkeleton";
+import Stories from "../story";
+import { TPost } from "@/src/types";
 
 export default function Post() {
   const [page, setPage] = useState(1);
-  const [posts, setPosts] = useState<TPost[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [filterOption, setFilterOption] = useState<string>('all');
-  const [selectedTab, setSelectedTab] = useState<string>('forYou');
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [filterOption, setFilterOption] = useState<string>("all");
+  const [selectedTab, setSelectedTab] = useState<string>("forYou");
 
   // Current user info
   const { userInfo } = useUser();
 
+  // Fetching posts with Redux Query
   const postParams = {
     page: page.toString(),
-    limit: '5',
+    limit: "5",
     ...(selectedCategory && { category: selectedCategory }),
   };
 
-  // Fetching posts with Redux Query
   const {
     data: postData,
     isLoading,
     refetch,
-  } = useGetAllPostsQuery(postParams);
+  } = useGetAllPostsQuery(postParams, {
+    refetchOnMountOrArgChange: true, // Ensures data refetch when params change
+  });
 
   const allPosts = postData?.data || [];
-  const postsLength = posts.length;
   const totalPosts = postData?.meta?.total || 0;
-
-  // Reset posts for selectedCategory
-  useEffect(() => {
-    setPosts([]);
-    setPage(1);
-    refetch();
-  }, [selectedCategory, refetch]);
-
-  // Append new posts when postData changes
-  useEffect(() => {
-    if (allPosts.length > 0) {
-      setPosts((prevPosts) => [...prevPosts, ...allPosts]);
-    }
-  }, [postData]);
-
-  // Fetch more data for infinite scroll
-  const fetchData = () => {
-    setTimeout(() => {
-      if (postsLength < totalPosts) {
-        setPage((prevPage) => prevPage + 1);
-        refetch();
-      }
-    }, 1000);
-  };
-  // HasMore for infinite scroll
-  const hasMore = postsLength < totalPosts;
 
   // Filter posts based on selected filter option and tab
   const filteredPosts = () => {
-    let filtered = posts;
+    let filtered = allPosts;
 
-    if (filterOption === 'popular') {
+    if (filterOption === "popular") {
       filtered = filtered
-        .filter((post) => post.likes.length > 0)
-        .sort((a, b) => b.likes.length - a.likes.length);
+        .filter((post: TPost) => post.likes.length > 0)
+        .sort((a: TPost, b: TPost) => b.likes.length - a.likes.length);
     }
-    if (filterOption === 'poor') {
-      filtered = filtered.filter((post) => post.likes.length === 0);
+    if (filterOption === "poor") {
+      filtered = filtered.filter((post: TPost) => post.likes.length === 0);
     }
 
-    if (selectedTab === 'following') {
-      filtered = filtered.filter((post) =>
+    if (selectedTab === "following") {
+      filtered = filtered.filter((post: TPost) =>
         userInfo?.following.includes(post?.user?._id)
       );
     }
@@ -90,11 +64,18 @@ export default function Post() {
     return filtered;
   };
 
+  // Fetch more data for infinite scroll
+  const fetchData = () => {
+    if (allPosts.length < totalPosts) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
   return (
     <div className="w-full mx-auto">
       {/* Post Modal */}
       <div>
-        <PostModal userInfo={userInfo as TUser | undefined} />
+        <PostModal userInfo={userInfo} />
       </div>
 
       {/* Story List */}
@@ -107,11 +88,11 @@ export default function Post() {
             key={category}
             className={`px-4 text-xs py-1 rounded-full border border-default-200 focus:outline-none ${
               selectedCategory === category
-                ? 'bg-default-100 text-primaryColor'
-                : 'bg-default-50'
+                ? "bg-default-100 text-primaryColor"
+                : "bg-default-50"
             } hover:bg-default-100 hover:text-primaryColor hover:transition-colors duration-500`}
             onClick={() =>
-              setSelectedCategory(category === selectedCategory ? '' : category)
+              setSelectedCategory(category === selectedCategory ? "" : category)
             }
           >
             {category}
@@ -119,7 +100,7 @@ export default function Post() {
         ))}
         <button
           className="px-4 py-1 rounded-full border border-default-200 bg-default-50 focus:outline-none hover:bg-default-100 hover:text-primaryColor hover:transition-colors duration-500"
-          onClick={() => setSelectedCategory('')}
+          onClick={() => setSelectedCategory("")}
         >
           <MdLockReset />
         </button>
@@ -139,20 +120,18 @@ export default function Post() {
       {/* Tabs for For You and Following */}
       <div className="flex my-5 rounded-xl bg-default-100 p-1 gap-6 text-xs w-full">
         <button
-          className={`px-4 py-2 rounded-xl
-             w-full ${
-               selectedTab === 'forYou' ? 'bg-default-50' : 'bg-default-100'
-             } transition-colors duration-700 ease-in-out`}
-          onClick={() => setSelectedTab('forYou')}
+          className={`px-4 py-2 rounded-xl w-full ${
+            selectedTab === "forYou" ? "bg-default-50" : "bg-default-100"
+          } transition-colors duration-700 ease-in-out`}
+          onClick={() => setSelectedTab("forYou")}
         >
           For You
         </button>
         <button
-          className={`px-4 py-2 rounded-xl
-             w-full ${
-               selectedTab === 'following' ? 'bg-default-50' : 'bg-default-100'
-             } transition-colors duration-700 ease-in-out`}
-          onClick={() => setSelectedTab('following')}
+          className={`px-4 py-2 rounded-xl w-full ${
+            selectedTab === "following" ? "bg-default-50" : "bg-default-100"
+          } transition-colors duration-700 ease-in-out`}
+          onClick={() => setSelectedTab("following")}
         >
           Following
         </button>
@@ -160,9 +139,9 @@ export default function Post() {
 
       {/* Tab Content */}
       <InfiniteScroll
-        dataLength={postsLength}
+        dataLength={allPosts.length}
         next={fetchData}
-        hasMore={hasMore}
+        hasMore={allPosts.length < totalPosts}
         loader={
           <div className="flex items-center justify-center mt-5">
             <Spinner />
@@ -175,8 +154,8 @@ export default function Post() {
         }
       >
         {/* Render Posts */}
-        <div key={selectedTab} className="grid grid-cols-1 gap-5 mt-5">
-          {filteredPosts().map((post) => (
+        <div className="grid grid-cols-1 gap-5 mt-5">
+          {filteredPosts().map((post: TPost) => (
             <PostCard key={post._id} post={post} />
           ))}
         </div>

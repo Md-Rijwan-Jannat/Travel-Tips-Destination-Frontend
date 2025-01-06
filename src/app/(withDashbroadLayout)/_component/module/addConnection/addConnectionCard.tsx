@@ -1,12 +1,12 @@
-import React from 'react';
-import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card';
-import { Avatar } from '@nextui-org/avatar';
-import { Button } from '@nextui-org/button';
-import { User } from '@nextui-org/user';
-import { Tooltip } from '@nextui-org/tooltip';
-import { UserPlus, X } from 'lucide-react';
-import Link from 'next/link';
-import { GoVerified } from 'react-icons/go';
+import React from "react";
+import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
+import { Avatar } from "@nextui-org/avatar";
+import { Button } from "@nextui-org/button";
+import Link from "next/link";
+import { GoVerified } from "react-icons/go";
+import { useUser } from "@/src/hooks/useUser";
+import { X } from "lucide-react";
+import Follow from "../publicProfile/follow";
 
 interface AddConnectionCardProps {
   name: string;
@@ -29,6 +29,7 @@ const AddConnectionCard: React.FC<AddConnectionCardProps> = ({
   onConnect,
   onIgnore,
 }) => {
+  const { userInfo: user } = useUser();
   return (
     <Card className="max-w-[340px] w-full mx-auto">
       <CardHeader className="justify-between">
@@ -46,12 +47,12 @@ const AddConnectionCard: React.FC<AddConnectionCardProps> = ({
                 className="text-[14px] text-default-800 flex items-center gap-1 mt-0.5 whitespace-nowrap"
                 href={`/profile/${_id}`}
               >
-                {name}{' '}
+                {name}{" "}
                 {verified && <GoVerified className="text-primaryColor" />}
               </Link>
             </div>
             <p className="text-default-500 text-[12px]">
-              {title ? title : 'No bio available'}
+              {title ? title : "No bio available"}
             </p>
           </div>
         </div>
@@ -61,23 +62,15 @@ const AddConnectionCard: React.FC<AddConnectionCardProps> = ({
           ( {followers.length} ) mutual connections
         </p>
       </CardBody>
-      <CardFooter className="gap-3">
+      <CardFooter className="gap-3 flex justify-between items-center">
+        <div className="-mt-3">
+          {" "}
+          {_id !== user?._id && user?._id && <Follow userId={_id} />}
+        </div>
         <Button
-          className="flex-1 primary-button"
+          className="secondary-button"
           radius="full"
           size="sm"
-          variant="flat"
-          onPress={onConnect}
-          startContent={<UserPlus size={18} />}
-        >
-          Connect
-        </Button>
-        <Button
-          className="flex-1 secondary-button"
-          color="default"
-          radius="full"
-          size="sm"
-          variant="light"
           onPress={onIgnore}
           startContent={<X size={18} />}
         >

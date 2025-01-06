@@ -1,11 +1,11 @@
-import React from 'react';
-import { Avatar } from '@nextui-org/avatar';
-import { PiCrownSimpleDuotone } from 'react-icons/pi';
-import { motion } from 'framer-motion';
-import { useStartPaymentProcessMutation } from '@/src/redux/features/payment/subscriptionsApi';
-import { TPost, TPaymentData } from '@/src/types';
-import { useUser } from '@/src/hooks/useUser';
-import { useGetMyPostsQuery } from '@/src/redux/features/post/postApi';
+import React from "react";
+import { Avatar } from "@nextui-org/avatar";
+import { PiCrownSimpleDuotone } from "react-icons/pi";
+import { motion } from "framer-motion";
+import { useStartPaymentProcessMutation } from "@/src/redux/features/payment/subscriptionsApi";
+import { TPost, TPaymentData } from "@/src/types";
+import { useUser } from "@/src/hooks/useUser";
+import { useGetMyPostsQuery } from "@/src/redux/features/post/postApi";
 
 interface TPremiumPostSuggestionCardProps {
   post: TPost;
@@ -27,7 +27,7 @@ export default function PremiumPostSuggestionCard({
     postsFetched && posts?.some((p: TPost) => p.likes?.length > 0);
 
   const truncatedTitle =
-    post?.title.length > 5 ? post?.title.slice(0, 5) + '...' : post?.title;
+    post?.title.length > 5 ? post?.title.slice(0, 5) + "..." : post?.title;
 
   const handleSubscription = async () => {
     if (!user || user.verified) return;
@@ -38,8 +38,8 @@ export default function PremiumPostSuggestionCard({
       customerName: user.name!,
       customerEmail: user.email!,
       customerAddress: user.address!,
-      customerCountry: user.country || 'N/A',
-      customerNumber: 'N/A',
+      customerCountry: user.country || "N/A",
+      customerNumber: "N/A",
     };
 
     try {
@@ -52,7 +52,7 @@ export default function PremiumPostSuggestionCard({
         window.location.href = response.data.paymentResponse.payment_url;
       }
     } catch (error) {
-      console.error('Error starting payment process:', error);
+      console.error("Error starting payment process:", error);
     }
   };
 
@@ -86,14 +86,14 @@ export default function PremiumPostSuggestionCard({
             whileHover={{ scale: hasLikedPosts ? 1.05 : 1 }}
             className={`${
               user?.verified || !hasLikedPosts
-                ? 'cursor-not-allowed'
-                : 'cursor-pointer'
+                ? "cursor-not-allowed"
+                : "cursor-pointer"
             } flex items-center gap-1 rounded-full px-3 py-1 border border-default-200 hover:bg-default-100 transition-colors-opacity duration-500 ease-in-out text-xs text-default-500`}
             onClick={handleSubscription}
             disabled={user?.verified || !hasLikedPosts || isLoading}
           >
             {isLoading ? (
-              'Processing...'
+              "Processing..."
             ) : user?.verified || !hasLikedPosts ? (
               <>
                 Subscribed
