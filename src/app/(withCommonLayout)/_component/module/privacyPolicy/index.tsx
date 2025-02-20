@@ -35,7 +35,7 @@ export default function PrivacyPolicy() {
           <h1 className="text-4xl font-bold text-center text-primaryColor mb-8">
             Privacy Policy
           </h1>
-          <p className="text-center text-secondaryColor mb-12">
+          <p className="text-center text-default-700 mb-12">
             At TravelTips & Destination Guides, we value your privacy and are
             committed to protecting your personal information.
           </p>
@@ -76,7 +76,7 @@ export default function PrivacyPolicy() {
               us.
             </p>
             <Link
-              href="#"
+              href="contact"
               className="text-primaryColor hover:underline inline-flex items-center"
             >
               <HelpCircle size={16} className="mr-2" />
