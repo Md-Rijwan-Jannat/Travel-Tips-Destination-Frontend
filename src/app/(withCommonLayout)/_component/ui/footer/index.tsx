@@ -139,7 +139,7 @@ const Footer = () => {
                 </a>
               </p>
               <p className="flex items-center gap-1">
-                <p>Address:</p> 123 Fitness Lane, Wellness City, Fitland 45678
+                Address: 123 Fitness Lane, Wellness City, Fitland 45678
               </p>
             </div>
           </motion.div>
