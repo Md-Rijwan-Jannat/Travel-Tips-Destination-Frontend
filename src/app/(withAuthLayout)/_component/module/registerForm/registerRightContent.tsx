@@ -3,13 +3,22 @@ import React from "react";
 
 import { useGetAllUsersQuery } from "@/src/redux/features/user/userApi";
 import { TUser } from "@/src/types";
+import Link from "next/link";
+import BrandLogo from "@/src/components/shared/logo";
 
 export default function RegisterRightContent() {
   const { data: usersData } = useGetAllUsersQuery({ sort: "-createdAt" });
   const users = usersData?.data as TUser[];
 
   return (
-    <div className="w-full md:w-[500px] xl:w-[530px] p-8 flex flex-col justify-center items-center rounded-r-lg relative overflow-hidden">
+    <div className="w-full md:w-[500px] xl:w-[530px] p-8 flex flex-col justify-center items-center rounded-r-lg relative overflow-hidden mb-10 md:mb-0">
+      <Link
+        className="flex items-center justify-center w-full mb-10 gap-2 -ml-4 -mt-4 md:hidden"
+        href="/"
+      >
+        <BrandLogo />
+        <p className="font-bold text-pink-600 text-xl">TT&DG</p>
+      </Link>
       {/* Foreground Content */}
       <div className="relative text-center z-10">
         <h3 className="text-3xl font-bold text-default-900 flex flex-wrap items-center justify-center">
