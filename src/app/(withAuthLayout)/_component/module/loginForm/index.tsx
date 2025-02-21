@@ -129,7 +129,7 @@ export default function LoginForm() {
           <DemoCredential onDemoClick={setDemoCredentials} />
         </div>
         <div className="flex flex-col md:flex-row bg-default-100 rounded-lg w-full overflow-hidden my-5">
-          <div className="p-5 absolute">
+          <div className="p-5 absolute cursor-pointer z-20">
             <Link className="flex items-center gap-2" href="/">
               <BrandLogo />
               <p className="font-bold text-pink-600 text-xl">TT&DG</p>

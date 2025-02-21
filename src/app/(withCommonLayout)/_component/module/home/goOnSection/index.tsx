@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import CountUp from "react-countup";
 
-const SocialMediaSolutionSection: React.FC = () => {
+const GoOnSection: React.FC = () => {
   // Set up intersection observer for both sides
   const { ref: leftRef, inView: leftInView } = useInView({
     triggerOnce: true,
@@ -146,4 +146,4 @@ const SocialMediaSolutionSection: React.FC = () => {
   );
 };
 
-export default SocialMediaSolutionSection;
+export default GoOnSection;

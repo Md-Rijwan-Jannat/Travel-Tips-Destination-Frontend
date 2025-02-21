@@ -37,7 +37,7 @@ const EssentialDestinationsSlider: FC = () => {
         });
       },
       {
-        threshold: 0.1, // Adjust based on when you want the animation to trigger (0.1 = 10% visible)
+        threshold: 0.1,
       }
     );
 

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useRef, useEffect, useState } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import SectionTitle from '../../../ui/sectionTitle';
+import React, { useRef, useEffect, useState } from "react";
+import { motion, useAnimation } from "framer-motion";
+import SectionTitle from "../../../ui/sectionTitle";
 
 type CardData = {
   title: string;
@@ -12,63 +12,63 @@ type CardData = {
 
 const cardsData: CardData[] = [
   {
-    title: 'Earth 2.0',
+    title: "Earth 2.0",
     description:
-      'Exploring sustainable solutions to build a better future for our planet.',
+      "Exploring sustainable solutions to build a better future for our planet.",
     imgUrl:
-      'https://template.creativemox.com/uptrend/wp-content/uploads/sites/26/2024/06/earth.png',
+      "https://template.creativemox.com/uptrend/wp-content/uploads/sites/26/2024/06/earth.png",
   },
   {
-    title: 'Muzisca',
+    title: "Muzisca",
     description:
-      'Bringing harmony to life with music that transcends boundaries.',
+      "Bringing harmony to life with music that transcends boundaries.",
     imgUrl:
-      'https://template.creativemox.com/uptrend/wp-content/uploads/sites/26/2024/06/muszica.png',
+      "https://template.creativemox.com/uptrend/wp-content/uploads/sites/26/2024/06/muszica.png",
   },
   {
-    title: 'Atica Co',
-    description: 'Innovating in digital solutions to drive businesses forward.',
+    title: "Atica Co",
+    description: "Innovating in digital solutions to drive businesses forward.",
     imgUrl:
-      'https://template.creativemox.com/uptrend/wp-content/uploads/sites/26/2024/06/atica.png',
+      "https://template.creativemox.com/uptrend/wp-content/uploads/sites/26/2024/06/atica.png",
   },
   {
-    title: 'Fox Hub',
+    title: "Fox Hub",
     description:
-      'Your ultimate platform for smart investments and financial growth.',
+      "Your ultimate platform for smart investments and financial growth.",
     imgUrl:
-      'https://template.creativemox.com/uptrend/wp-content/uploads/sites/26/2024/06/fox-hub.png',
+      "https://template.creativemox.com/uptrend/wp-content/uploads/sites/26/2024/06/fox-hub.png",
   },
   {
-    title: 'Asgardia',
+    title: "Asgardia",
     description:
-      'A visionary project focused on space exploration and human advancement.',
+      "A visionary project focused on space exploration and human advancement.",
     imgUrl:
-      'https://template.creativemox.com/uptrend/wp-content/uploads/sites/26/2024/06/asgardia.png',
+      "https://template.creativemox.com/uptrend/wp-content/uploads/sites/26/2024/06/asgardia.png",
   },
   {
-    title: 'Tower',
+    title: "Tower",
     description:
-      'Building skyscrapers and landmark structures for modern cities.',
+      "Building skyscrapers and landmark structures for modern cities.",
     imgUrl:
-      'https://template.creativemox.com/uptrend/wp-content/uploads/sites/26/2024/06/tower.png',
+      "https://template.creativemox.com/uptrend/wp-content/uploads/sites/26/2024/06/tower.png",
   },
   {
-    title: 'Aven',
+    title: "Aven",
     description:
-      'Nature-inspired solutions for a sustainable and eco-friendly lifestyle.',
+      "Nature-inspired solutions for a sustainable and eco-friendly lifestyle.",
     imgUrl:
-      'https://template.creativemox.com/uptrend/wp-content/uploads/sites/26/2024/06/aven.png',
+      "https://template.creativemox.com/uptrend/wp-content/uploads/sites/26/2024/06/aven.png",
   },
   {
-    title: 'Leaf',
+    title: "Leaf",
     description:
-      'Promoting green practices to preserve our planet’s natural resources.',
+      "Promoting green practices to preserve our planet’s natural resources.",
     imgUrl:
-      'https://template.creativemox.com/uptrend/wp-content/uploads/sites/26/2024/06/leaf.png',
+      "https://template.creativemox.com/uptrend/wp-content/uploads/sites/26/2024/06/leaf.png",
   },
 ];
 
-const OurService: React.FC = () => {
+const ServiceSection: React.FC = () => {
   const controls = useAnimation();
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -79,7 +79,7 @@ const OurService: React.FC = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
-            controls.start('visible');
+            controls.start("visible");
           }
         });
       },
@@ -127,7 +127,7 @@ const OurService: React.FC = () => {
                 alt={card.title}
                 className="w-16 h-16 mb-4"
                 whileHover={{ rotate: 10, scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 200 }}
+                transition={{ type: "spring", stiffness: 200 }}
               />
               <h3 className="text-lg font-semibold mb-2">{card.title}</h3>
               <p className="text-default-700 mb-4">{card.description}</p>
@@ -139,4 +139,4 @@ const OurService: React.FC = () => {
   );
 };
 
-export default OurService;
+export default ServiceSection;

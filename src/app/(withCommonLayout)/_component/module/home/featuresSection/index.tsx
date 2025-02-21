@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   FaGoogle,
@@ -7,10 +7,10 @@ import {
   FaYoutube,
   FaTwitter,
   FaSpotify,
-} from 'react-icons/fa';
-import { motion, useInView } from 'framer-motion';
-import SectionTitle from '../../../ui/sectionTitle';
-import { useRef } from 'react';
+} from "react-icons/fa";
+import { motion, useInView } from "framer-motion";
+import SectionTitle from "../../../ui/sectionTitle";
+import { useRef } from "react";
 
 export default function FeaturesSection() {
   const sectionRef = useRef(null);
@@ -25,9 +25,9 @@ export default function FeaturesSection() {
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.3, ease: 'easeOut', delay: 0.1 }}
+            transition={{ duration: 0.3, ease: "easeOut", delay: 0.1 }}
             whileHover={{ scale: 1.05 }}
-            className="bg-background/30 hover:shadow-xl backdrop-blur-xl border border-default-100 rounded-lg p-6 text-center"
+            className="bg-background/30 hover:shadow-lg backdrop-blur-xl border border-default-100 rounded-lg p-6 text-center"
           >
             <div className="flex justify-center gap-4 mb-4">
               <motion.div whileHover={{ scale: 1.05 }}>
@@ -50,9 +50,9 @@ export default function FeaturesSection() {
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.3, ease: 'easeOut', delay: 0.3 }}
+            transition={{ duration: 0.3, ease: "easeOut", delay: 0.3 }}
             whileHover={{ scale: 1.05 }}
-            className="bg-background/30 hover:shadow-xl backdrop-blur-xl border border-default-100 rounded-lg p-6 text-center"
+            className="bg-background/30 hover:shadow-lg backdrop-blur-xl border border-default-100 rounded-lg p-6 text-center"
           >
             <div className="flex flex-col items-center gap-2 mb-4">
               <motion.div
@@ -60,21 +60,21 @@ export default function FeaturesSection() {
                 className="flex items-center gap-2 bg-pink-200 px-3 py-2 rounded-full"
               >
                 <FaYoutube className="text-pink-700" />
-                <div className="w-10 h-2 bg-pink-400 rounded-full"></div>
+                <div className="w-10 h-2 bg-pink-400 rounded-full" />
               </motion.div>
               <motion.div
                 whileHover={{ scale: 1.1 }}
                 className="flex items-center gap-2 bg-pink-200 px-3 py-2 rounded-full"
               >
                 <FaTwitter className="text-pink-700" />
-                <div className="w-10 h-2 bg-pink-400 rounded-full"></div>
+                <div className="w-10 h-2 bg-pink-400 rounded-full" />
               </motion.div>
               <motion.div
                 whileHover={{ scale: 1.1 }}
                 className="flex items-center gap-2 bg-pink-200 px-3 py-2 rounded-full"
               >
                 <FaSpotify className="text-pink-700" />
-                <div className="w-10 h-2 bg-pink-400 rounded-full"></div>
+                <div className="w-10 h-2 bg-pink-400 rounded-full" />
               </motion.div>
             </div>
             <p className="text-default-700">
@@ -87,9 +87,9 @@ export default function FeaturesSection() {
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.3, ease: 'easeOut', delay: 0.6 }}
+            transition={{ duration: 0.3, ease: "easeOut", delay: 0.6 }}
             whileHover={{ scale: 1.05 }}
-            className="bg-background/30 hover:shadow-xl backdrop-blur-md border border-default-100 rounded-lg p-6 text-center"
+            className="bg-background/30 hover:shadow-lg backdrop-blur-md border border-default-100 rounded-lg p-6 text-center"
           >
             <div className="flex justify-center gap-4 mb-4">
               <motion.div

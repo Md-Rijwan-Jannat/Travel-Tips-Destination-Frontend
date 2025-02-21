@@ -1,19 +1,19 @@
-import React, { FC, useRef } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import { Navigation } from 'swiper/modules';
-import { motion } from 'framer-motion';
-import { Button } from '@nextui-org/button';
-import Image from 'next/image';
-import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io';
-import SwiperCore from 'swiper';
-import LightGallery from 'lightgallery/react';
-import 'lightgallery/css/lightgallery.css';
-import 'lightgallery/css/lg-zoom.css';
-import 'lightgallery/css/lg-thumbnail.css';
-import lgThumbnail from 'lightgallery/plugins/thumbnail';
-import lgZoom from 'lightgallery/plugins/zoom';
+import React, { FC, useRef } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from "swiper/modules";
+import { motion } from "framer-motion";
+import { Button } from "@nextui-org/button";
+import Image from "next/image";
+import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import SwiperCore from "swiper";
+import LightGallery from "lightgallery/react";
+import "lightgallery/css/lightgallery.css";
+import "lightgallery/css/lg-zoom.css";
+import "lightgallery/css/lg-thumbnail.css";
+import lgThumbnail from "lightgallery/plugins/thumbnail";
+import lgZoom from "lightgallery/plugins/zoom";
 
 type DestinationCard = {
   name: string;
@@ -89,7 +89,7 @@ const TravelSlider: FC<TravelSliderProps> = ({ destinations }) => {
                     height={500}
                     src={destination.icon}
                     alt={`${destination.name} icon`}
-                    className="w-full h-[90px] rounded-md"
+                    className="w-full h-[90px] rounded-t-md"
                   />
                   <div className="flex flex-col justify-center items-center p-2">
                     <h3 className="text-default-800 font-semibold">

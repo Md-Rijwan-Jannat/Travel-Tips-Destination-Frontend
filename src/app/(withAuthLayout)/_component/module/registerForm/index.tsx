@@ -106,7 +106,7 @@ export default function RegisterForm() {
           <div className="w-full md:w-[500px] xl:w-[530px] flex flex-col justify-center">
             <div className="flex flex-col gap-6 p-2 pt-5 pb-10 md:px-12">
               <Link
-                className="md:flex items-center gap-2 hidden -ml-5 mb-2"
+                className="md:flex items-center gap-2 hidden -ml-5 mb-2 cursor-pointer z-20"
                 href="/"
               >
                 <BrandLogo />

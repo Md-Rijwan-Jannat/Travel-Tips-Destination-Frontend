@@ -47,7 +47,7 @@ const Footer = () => {
               transition={{ delay: 0.4 }}
               className="w-full md:w-1/3 flex flex-col items-start text-start"
             >
-              <h3 className="text-sm font-semibold text-default-900 mb-2 mt-5">
+              <h3 className="text-sm font-semibold text-default-900 mb-2 mt-5 whitespace-nowrap">
                 Satisfied Travelers
               </h3>
               <div className="text-4xl font-bold text-pink-500">
