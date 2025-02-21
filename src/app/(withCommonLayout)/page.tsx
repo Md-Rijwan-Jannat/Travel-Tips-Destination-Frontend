@@ -1,5 +1,6 @@
 import { Suspense, lazy } from "react";
 import Loader from "@/src/components/ui/loader";
+import Testimonials from "./_component/module/home/testimonials";
 
 // Lazy load components
 const LandingBanner = lazy(
@@ -8,15 +9,13 @@ const LandingBanner = lazy(
 const FeaturesSection = lazy(
   () => import("./_component/module/home/featuresSection")
 );
-const OurService = lazy(
+const ServiceSection = lazy(
   () => import("./_component/module/home/serviceSection")
 );
-const EssentialAppsSlider = lazy(
+const EssentialDestination = lazy(
   () => import("./_component/module/home/essentialDestinations")
 );
-const SocialMediaSolutionSection = lazy(
-  () => import("./_component/module/home/goOnSection")
-);
+const GoOnSection = lazy(() => import("./_component/module/home/goOnSection"));
 const SubscriptionSection = lazy(
   () => import("./_component/module/home/goOnSection/subscribtionSection")
 );
@@ -28,11 +27,11 @@ export default function Home() {
         <LandingBanner />
         {/* <WhyWeAre /> */}
         <FeaturesSection />
-        <OurService />
-        <EssentialAppsSlider />
-        <SocialMediaSolutionSection />
+        <ServiceSection />
+        <EssentialDestination />
+        <GoOnSection />
         <SubscriptionSection />
-        {/* <Testimonials /> */}
+        <Testimonials />
       </Suspense>
     </div>
   );

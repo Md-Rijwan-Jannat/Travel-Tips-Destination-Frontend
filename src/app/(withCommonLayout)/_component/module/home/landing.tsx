@@ -15,6 +15,7 @@ type TLandingBannerProps = object;
 const LandingBanner: FC<TLandingBannerProps> = () => {
   const { data: usersData } = useGetAllUsersQuery({ sort: "-createdAt" });
   const users = usersData?.data as TUser[];
+
   return (
     <section className="relative top-[50px] flex flex-col items-center justify-center gap-4 py-8 md:py-10 overflow-hidden h-[600px] md:h-[65vh]">
       {/* Main Content */}

@@ -12,3 +12,4 @@ export * from "./message.type";
 export * from "./chat.type";
 export * from "./story.type";
 export * from "./termSection.type";
+export * from "./review.type";
