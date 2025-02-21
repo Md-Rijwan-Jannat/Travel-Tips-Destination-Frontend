@@ -3,19 +3,15 @@
 import { motion } from "framer-motion";
 import { Button } from "@nextui-org/button";
 import Image from "next/image";
-import { Progress } from "@nextui-org/progress";
 import { useGetAllReviewsQuery } from "@/src/redux/features/review/reviewApi";
 import { TReview } from "@/src/types";
 import SectionTitle from "../../../ui/sectionTitle";
-
-const stats = [
-  { label: "Project Success rate", value: 85 },
-  { label: "Brand Marketing", value: 95 },
-];
+import Link from "next/link";
+import { Avatar } from "@nextui-org/avatar";
 
 export default function Testimonials() {
-  const { data: reviewData, isLoading } = useGetAllReviewsQuery(undefined);
-  const reviews = reviewData?.data?.slice(0, 4) ?? [];
+  const { data: reviewData } = useGetAllReviewsQuery(undefined);
+  const reviews = reviewData?.data?.slice(0, 4) ?? ([] as TReview[]);
 
   return (
     <>
@@ -39,15 +35,18 @@ export default function Testimonials() {
                 >
                   <div className="flex items-start gap-4">
                     <div className="relative h-16 w-16 flex-shrink-0">
-                      <Image
-                        src={user?.image ?? "/placeholder.svg"}
-                        alt={user?.name}
-                        fill
-                        className="rounded-full object-cover"
+                      <Avatar
+                        name={user?.name?.charAt(0)?.toUpperCase()}
+                        src={user?.image || undefined}
+                        radius="full"
+                        className="text-xl"
+                        size="lg"
                       />
                     </div>
                     <div className="space-y-1">
-                      <blockquote className="text-sm">{quote}</blockquote>
+                      <blockquote className="text-sm">
+                        {quote.slice(0, 45) + "..."}
+                      </blockquote>
                       <div
                         className={`${index === 0 || index === 3 ? "text-default-50" : "text-default-700"}`}
                       >
@@ -68,35 +67,27 @@ export default function Testimonials() {
           >
             <div className="space-y-4">
               <h2 className="text-4xl font-bold text-pink-500">
-                Amazing Response From Our Users
+                Join Our Travel Community & Explore Hidden Gems!
               </h2>
               <p className="text-gray-600">
-                Omnis quis sunt quasi aliquet senectus tenetur dolor! Omnis!
-                Corrupti, est arcu, felis, molestiae impedit vel felis eget.
+                Discover expert travel tips, must-visit destinations, and
+                exclusive guides curated by real travelers. Whether you are a
+                solo backpacker, a luxury traveler, or someone planning a family
+                getaway, our community is here to help you make the most of
+                every adventure. Get insider recommendations, find hidden gems
+                off the beaten path, and connect with fellow travelers who share
+                your passion for exploration. Share your stories, ask for
+                advice, and stay updated on the latest travel trends—all in one
+                place!
               </p>
-            </div>
-
-            <div className="space-y-6">
-              {stats.map(({ label, value }) => (
-                <div key={label} className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="font-medium text-gray-900">{label}</span>
-                    <span className="text-pink-500">{value}%</span>
-                  </div>
-                  <Progress
-                    value={value}
-                    color="danger"
-                    className="h-2"
-                    aria-label={label}
-                  />
-                </div>
-              ))}
             </div>
 
             <Button
               variant="solid"
               radius="full"
-              className="font-medium button-primary"
+              as={Link}
+              href="/reviews"
+              className="font-medium secondary-button"
             >
               MORE REVIEWS
             </Button>

@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Tabs, Tab } from '@nextui-org/tabs';
-import { Pagination } from '@nextui-org/pagination';
+import React, { useState } from "react";
+import { Tabs, Tab } from "@nextui-org/tabs";
+import { Pagination } from "@nextui-org/pagination";
 import {
   useGetAllUsersQuery,
   useGetAllPremiumUsersQuery,
   useUpdateUserRoleMutation,
   useUpdateUserStatusMutation,
-} from '@/src/redux/features/adminManagement/manageUserApi';
-import { TUser } from '@/src/types';
-import UserTable from './userTable';
-import Empty from '@/src/components/ui/empty';
-import TableSkeleton from '@/src/components/ui/skeleton/tableSkeleton';
+} from "@/src/redux/features/adminManagement/manageUserApi";
+import { TUser } from "@/src/types";
+import UserTable from "./userTable";
+import Empty from "@/src/components/ui/empty";
+import TableSkeleton from "@/src/components/ui/skeleton/tableSkeleton";
 
 export default function AllUsers() {
   // Separate page states for both tabs
@@ -26,7 +26,7 @@ export default function AllUsers() {
     isLoading: isLoadingAllUsers,
     isError: isErrorAllUsers,
   } = useGetAllUsersQuery({
-    sort: '-createdAt',
+    sort: "-createdAt",
     limit: limit.toString(),
     page: pageAll.toString(),
   });
@@ -51,7 +51,7 @@ export default function AllUsers() {
   const metaPremium = premiumUsersData?.meta;
 
   // Feedback states
-  const [feedbackMessage, setFeedbackMessage] = useState('');
+  const [feedbackMessage, setFeedbackMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
   const handleStatusUpdate = async (userId: string, newStatus: string) => {
@@ -62,11 +62,11 @@ export default function AllUsers() {
       }).unwrap();
 
       if (res?.data?.success) {
-        setFeedbackMessage('User status updated successfully!');
+        setFeedbackMessage("User status updated successfully!");
         setIsSuccess(true);
       }
     } catch (error) {
-      setFeedbackMessage('Failed to update user status. Please try again.');
+      setFeedbackMessage("Failed to update user status. Please try again.");
       setIsSuccess(false);
     }
   };
@@ -76,11 +76,11 @@ export default function AllUsers() {
       const res = await updateUserRole({ userId, role: newRole }).unwrap();
 
       if (res?.data?.success) {
-        setFeedbackMessage('User role updated successfully!');
+        setFeedbackMessage("User role updated successfully!");
         setIsSuccess(true);
       }
     } catch (error) {
-      setFeedbackMessage('Failed to update user role. Please try again.');
+      setFeedbackMessage("Failed to update user role. Please try again.");
       setIsSuccess(false);
     }
   };
@@ -117,7 +117,7 @@ export default function AllUsers() {
                     showControls
                     total={metaAll?.totalPage || 1}
                     page={pageAll}
-                    className="mb-5 px-5 py-1 mx-3 border-none shadow-none rounded-full bg-default-50"
+                    className="mb-5 px-5 py-2 mx-3 border-none shadow-none rounded-full bg-default-50"
                     onChange={handlePageChangeAll}
                   />
                 </div>
@@ -140,7 +140,7 @@ export default function AllUsers() {
                     showControls
                     total={metaPremium?.totalPage || 1}
                     page={pagePremium}
-                    className="mb-5 px-5 py-1 mx-3 border-none shadow-none rounded-full bg-default-50"
+                    className="mb-5 px-5 py-2 mx-3 border-none shadow-none rounded-full bg-default-50"
                     onChange={handlePageChangePremium}
                   />
                 </div>

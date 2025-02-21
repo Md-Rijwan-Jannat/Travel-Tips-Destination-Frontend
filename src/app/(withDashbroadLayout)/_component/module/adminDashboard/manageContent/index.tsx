@@ -75,7 +75,7 @@ export default function ManageContent() {
                       showControls
                       total={metaAll?.totalPage || 1}
                       page={pageAll}
-                      className="mb-5 px-5 py-1 mx-3 border-none shadow-none rounded-full bg-default-50"
+                      className="mb-5 px-5 py-2 mx-3 border-none shadow-none rounded-full bg-default-50"
                       onChange={handlePageChangeAll}
                     />
                   </div>
@@ -97,7 +97,7 @@ export default function ManageContent() {
                       showControls
                       total={metaPremium?.totalPage || 1}
                       page={pagePremium}
-                      className="mb-5 px-5 py-1 mx-3 border-none shadow-none rounded-full bg-default-50"
+                      className="mb-5 px-5 py-2 mx-3 border-none shadow-none rounded-full bg-default-50"
                       onChange={handlePageChangePremium}
                     />
                   </div>
