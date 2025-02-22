@@ -66,7 +66,7 @@ export default function Testimonials() {
             className="space-y-8"
           >
             <div className="space-y-4">
-              <h2 className="text-4xl font-bold text-pink-500">
+              <h2 className="text-lg md:text-2xl lg:text-4xl font-bold text-pink-500">
                 Join Our Travel Community & Explore Hidden Gems!
               </h2>
               <p className="text-gray-600">
